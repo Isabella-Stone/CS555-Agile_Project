@@ -1,0 +1,26 @@
+{
+  "name": "cs555-agile_project",
+  "version": "1.0.0",
+  "description": "This is the Hoboken Happenings application!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Isabella-Stone/CS555-Agile_Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Isabella-Stone/CS555-Agile_Project/issues"
+  },
+  "homepage": "https://github.com/Isabella-Stone/CS555-Agile_Project#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.17.3",
+    "handlebars": "^4.7.8",
+    "mongodb": "^6.1.0"
+  }
+}
