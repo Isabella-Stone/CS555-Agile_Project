@@ -1,0 +1,1 @@
+//attractions data functions
