@@ -4,17 +4,6 @@ const router = Router();
 import { } from "../data/business.js";
 import { } from "../data/users.js";
 
-router
-  .route("/login")
-  .post(async (req, res) => {
-    try {
-        
-    } catch (e) {
-      return res.status(400).render("login", { message: e, error: true, auth: false });
-    }
-    return res.render("login", {auth: false});
-  });
-
 router.route("/signup")
   .get(async (req, res) => {
     return res.json({todo: "TODO"});

@@ -1,10 +1,10 @@
-// import authRoutes from "./auth.js";
+import authRoutes from "./auth.js";
 import userRoutes from "./users.js";
 import attractionRoutes from "./attractions.js";
 import businessRoutes from "./business.js";
 
 const constructor = (app) => {
-//   app.use("/", authRoutes);
+  app.use("/auth", authRoutes);
   app.use("/user", userRoutes);
   app.use("/attraction", attractionRoutes);
   app.use("/business", businessRoutes);
@@ -27,7 +27,7 @@ const constructor = (app) => {
   });
 
   app.use("*", (req, res) => {
-    return res.redirect("/");
+    res.status(404).json({error: 'Route Not found'});
   });
 };
 
