@@ -7,22 +7,16 @@ import { } from "../data/users.js";
 router.route("/signup")
   .get(async (req, res) => {
     //return res.render("signup", { auth: false});
-    return res.json({todo: "TODO"});
+    return res.render("signUpUser", {auth: false});
   })
   .post(async (req, res) => {
     try {
-      
     }
     catch (e) {
 
     }
     return res.json({todo: "TODO"});
-    //return res.render("signup", {auth: false});
   });
-
-router.route("/logout").get(async (req, res) => {
-  return res.render("logout", { auth: false });
-});
 
 router.route("/:id")
   .get(async (req, res) => {
