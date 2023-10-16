@@ -8,8 +8,14 @@
 
 </head>
 <body id="body">
+     {{#if auth}}
+      <div class="nav">
+        <a href="/">Home</a>
+        <a href="/auth/logout">Logout</a>
+      </div>
+    {{/if}}
     {{{body}}}
-    <link rel = "stylesheet" href = "../public/css/lab10.css">
+    <link rel = "stylesheet" href = "../public/css/hobokenhappenings.css">
     <script src="../public/js/hobokenhappenings.js"></script>
 </body>
 </html>
