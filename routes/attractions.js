@@ -9,11 +9,11 @@ router
   .route("/")
   .get(async (req, res) => {
     try {
-        
+      let attractionList = await getAllAttractions();
+      return res.render("attractions", {attractions:attractionList, auth: false});
     } catch (e) {
-
+      return res.sendStatus(500);
     }
-    return res.render("upcomingAttractions", {auth: false});
   })
   .post(async (req, res) => {
     let attractionInfo = req.body;
@@ -48,7 +48,7 @@ router
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
-      return res.render('attractions', {auth: false });
+      return res.render('attraction', {attraction: attraction, auth: false });
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }
