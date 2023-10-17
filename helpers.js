@@ -44,3 +44,38 @@ export const checkPassword = (password) => {
     }
     return password;
 }
+
+export const checkAge = (age) => {
+    if (typeof age !== 'number') {
+        throw  `Age must be a valid number`;
+    }
+    if (age < 13) {
+        throw `Must be 13 years of age or older to sign-up`;
+    }
+    if (age > 120) {
+        throw `Must be between 13-120 years of age to sign-up`;
+    }
+    return age;
+}
+
+export const checkUsername = (username) => {
+    username = checkString(username, "Username");
+    if (username.length < 2 || username.length > 25) {
+        throw `Error: ${username} cannot be less than 2 or greater than 25 characters`;
+    }
+    if (username.split(" ").length > 1) {
+        throw `Error: Username cannot contain spaces`;
+    }
+    if (!/[a-zA-Z]/.test(username)) {
+        throw `Error: Username must contain at least one letter`;
+    }
+    return username;
+}
+
+export const checkId = (id) => {
+    id = checkString(id, "Id");
+    if (!ObjectId.isValid(id)) {
+        throw 'Error: Invalid Object Id';
+    }
+    return id;
+}
