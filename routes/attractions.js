@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, getAttractionByID, editAttraction, deleteAttraction} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get} from "../data/attractions.js";
 import { } from "../data/users.js";
 import {checkId} from "../helpers.js";
 
@@ -44,7 +44,7 @@ router
       return res.status(400).json({error: `${e}`});
     }
     try {
-      let attraction = await getAttractionByID(req.params.id);
+      let attraction = await get(req.params.id);
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
