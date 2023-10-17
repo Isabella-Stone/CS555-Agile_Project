@@ -2,6 +2,7 @@ import * as helpers from '../helpers.js';
 import { attractions, businesses } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import e from 'express';
+// no error checking for ids yet, no error checking for photo submissions
 //createAttraction()
 const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
     if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
