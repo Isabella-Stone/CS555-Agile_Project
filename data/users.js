@@ -6,7 +6,7 @@ const saltRounds = 8;
 
 //Creates a user with the given values and sets points to 0
 export const createUser = async (firstName, lastName, emailAddress, password, username, age) => {
-  if (!firstName || !lastName || !emailAddress || !password || username || !age) {
+  if (!firstName || !lastName || !emailAddress || !password || !username || !age) {
     throw 'All input fields must be provided (createUser)';
   }
 
@@ -39,7 +39,7 @@ export const createUser = async (firstName, lastName, emailAddress, password, us
   const newInsertInformation = await userCollection.insertOne(newUser);
   if (!newInsertInformation.insertedId) {
     throw 'Insert failed!';
-  } 
+  }
   return await getUserById(newInsertInformation.insertedId.toString());
 }
 

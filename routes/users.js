@@ -22,15 +22,18 @@ router.route("/signup")
       userInfo.lastName = checkName(userInfo.lastName);
       userInfo.emailAddress = checkEmail(userInfo.emailAddress);
       userInfo.password = checkPassword(userInfo.password);
+      if (userInfo.password !== userInfo.confirmPassword) {
+        throw `Error: Passwords do not match`;
+      }
       userInfo.username = checkUsername(userInfo.username);
-      userInfo.age = checkAge(userInfo.age);
+      userInfo.ageInput = checkAge(parseInt(userInfo.ageInput));
     }
     catch (e) {
       return res.status(400).json({error: `${e}`});
     }
     try {
       const newUser = await createUser(userInfo.firstName, userInfo.lastName, 
-      userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.age);
+      userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
       return res.status(200).json(newUser);
     } catch (e) {
       return res.status(400).json({error: `${e}`});
