@@ -71,7 +71,7 @@ export const checkUsername = (username) => {
     if (!/[a-zA-Z]/.test(username)) {
         throw `Error: Username must contain at least one letter`;
     }
-    return username;
+    return username.toLowerCase();
 }
 
 export const checkId = (id) => {
