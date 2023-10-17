@@ -1,8 +1,9 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { } from "../data/attractions.js";
+import { createAttraction, getAllAttractions, getAttractionByID, editAttraction, deleteAttraction} from "../data/attractions.js";
 import { } from "../data/users.js";
+import {checkId} from "../helpers.js";
 
 router
   .route("/")
@@ -15,22 +16,42 @@ router
     return res.render("upcomingAttractions", {auth: false});
   })
   .post(async (req, res) => {
+    let attractionInfo = req.body;
     try {
-        
+      const newAttraction = await createAttraction(
+        attractionInfo.businessId,
+        attractionInfo.submissions,
+        attractionInfo.attractionName,
+        attractionInfo.pointsOffered,
+        attractionInfo.description,
+        attractionInfo.bonusPoints,
+        attractionInfo.date,
+        attractionInfo.startTime,
+        attractionInfo.endTime
+      );
+      return res.render("attractions", {auth: false});
     } catch (e) {
-
+      return res.status(500).json(`${e}`)    
     }
-    return res.render("attractions", {auth: false});
+    
   });
   router
   .route("/:id")
   .get(async (req, res) => {
     try {
-        
+      req.params.id = checkId(req.params.id, 'ID URL Param');
     } catch (e) {
-
+      return res.status(400).json({error: `${e}`});
     }
-    return res.render("attraction", {auth: false});
-  });
+    try {
+      let attraction = await getAttractionByID(req.params.id);
+      if (!attraction) {
+        return res.status(404).json({ error: 'Attraction not found' });
+      }
+      return res.render('attractions', {auth: false });
+    } catch (e) {
+      return res.status(404).json({error: `${e}`});
+    }
+  })
 
 export default router;
