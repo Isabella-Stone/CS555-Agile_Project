@@ -22,6 +22,12 @@
         <label for="ageInput">Age:</label>
         <input type="number" id="ageInput" name="ageInput">
 
+        {{#if error}}
+            <p>{{message}}</p>
+        {{/if}}
+
+        <br>     
+
         <button type="submit">Submit</button>
     </form>
 

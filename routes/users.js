@@ -29,14 +29,14 @@ router.route("/signup")
       userInfo.ageInput = checkAge(parseInt(userInfo.ageInput));
     }
     catch (e) {
-      return res.status(400).json({error: `${e}`});
+      return res.status(400).render("signUpUser", {auth: false, error: true, message: e});
     }
     try {
       const newUser = await createUser(userInfo.firstName, userInfo.lastName, 
       userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
       return res.status(200).json(newUser);
     } catch (e) {
-      return res.status(400).json({error: `${e}`});
+      return res.status(400).render("signUpUser", {auth: false, error: true, message: e});
     }
   });
 
