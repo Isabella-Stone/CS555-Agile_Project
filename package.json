@@ -8,6 +8,16 @@
     "test": "jest",
     "start": "node app.js"
   },
+  "jest": {
+    "collectCoverage": true,
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Isabella-Stone/CS555-Agile_Project.git"
@@ -19,6 +29,7 @@
   },
   "homepage": "https://github.com/Isabella-Stone/CS555-Agile_Project#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
@@ -26,6 +37,11 @@
     "mongodb": "^6.1.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "@babel/core": "^7.23.2",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.0",
+    "@babel/preset-env": "^7.23.2",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "xss": "^1.0.14"
   }
 }

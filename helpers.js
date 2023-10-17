@@ -20,9 +20,9 @@ export const checkName = (name, stringName) => {
 
 export const checkEmail = (email) => {
     email = checkString(email, "Email");
-    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-        throw `Error: Invalid email format`;
-    }
+    // if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+    //     throw `Error: Invalid email format`;
+    // }
     return email.toLowerCase();
 }
 
