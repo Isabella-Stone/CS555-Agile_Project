@@ -1,9 +1,225 @@
+import * as helpers from '../helpers.js';
+import { attractions, businesses } from '../config/mongoCollections.js';
+import { ObjectId } from 'mongodb';
+import e from 'express';
 //createAttraction()
+const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
+    if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
+      throw 'Error: All fields need to have valid values';
+    }
+    description = helpers.checkString(description);
+    date = helpers.checkString(date);
+    attractionName = attractionName.checkString(date);
+    let splitDate = date.split('/');
+    if (splitDate.length !== 3) {
+      throw 'Error: Date must be in MM/DD/YYYY format';
+    }
+    let regexNum = /^[0-9]*$/;
+    if (
+      splitDate[0].length !== 2 ||
+      splitDate[1].length !== 2 ||
+      splitDate[2].length !== 4 ||
+      !regexNum.test(splitDate[0]) ||
+      !regexNum.test(splitDate[1]) ||
+      !regexNum.test(splitDate[2])
+    ) {
+      throw 'Error: Date must be in MM/DD/YYYY format';
+    }
+    if (splitDate[0] * 1 < 1 || splitDate[0] * 1 > 12) {
+      throw 'Error: Date must be in MM/DD/YYYY format';
+    }
+    if (splitDate[1] * 1 < 1 || splitDate[1] * 1 > 31) {
+      throw 'Error: Date must be in MM/DD/YYYY format';
+    }
+    startTime = helpers.checkString(startTime);
+    endTime = helpers.checkString(endTime);
+    let st = startTime.split(':');
+    let et = endTime.split(':');
+    if (
+      st.length != 2 ||
+      st[0].length != 2 ||
+      st[1].length != 2 ||
+      !regexNum.test(st[0]) ||
+      !regexNum.test(st[1])
+    ) {
+      throw 'Error: Must provide start time in HH:MM format';
+    }
+    if (
+      et.length != 2 ||
+      et[0].length != 2 ||
+      et[1].length != 2 ||
+      !regexNum.test(et[0]) ||
+      !regexNum.test(et[1])
+    ) {
+      throw 'Error: Must provide end time in HH:MM format';
+    }
+    if (st[0] * 1 < 0 || st[0] * 1 > 23) {
+      throw 'Error: Must provide start time in HH:MM format';
+    }
+    if (st[1] * 1 < 0 || st[1] * 1 > 59) {
+      throw 'Error: Must provide start time in HH:MM format';
+    }
+    if (et[0] * 1 < 0 || et[0] * 1 > 23) {
+      throw 'Error: Must provide end time in HH:MM format';
+    }
+    if (et[1] * 1 < 0 || et[1] * 1 > 59) {
+      throw 'Error: Must provide end time in HH:MM format';
+    }
+    if (!regexNum.test(pointsOffered)) {
+      throw 'Points offered must be a number';
+    }
+    if (!regexNum.test(bonusPoints)) {
+        throw 'Bonus Points must be a number';
+    }
+    pointsOffered = parseInt(pointsOffered);
+    bonusPoints = parseInt(bonusPoints);
+    let newAttraction = {
+      _id: new ObjectId(),
+      businessId: businessId,
+      attractionName: attractionName,
+      date: date,
+      startTime: startTime,
+      endTime: endTime,
+      pointsOffered: pointsOffered,
+      bonusPoints: bonusPoints,
+      description: notes,
+      submissions: submissions
+    };
+    const attractionCollection = await attractions();
+    if (await attractionCollection.findOne({ attractionName: attractionName })) {
+        throw 'Error: Attraction name already exists';
+    }
+    const insertInfo = await attractionCollection.insertOne(newAttraction);
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add trip';
+    const trip = await get(newAttraction._id);
+    return trip;
+  };
 
 //getAllAttractions()
+const getAllAttractionsByBusinessId = async (businessId) => {
+    if (!businessId) {
+      throw 'You must provide an id to search for';
+    }
+    businessId = helpers.checkString(businessId);
+    const businessesCollection = await businesses();
+    const attractionsList = await businessesCollection.find({ businessId: businessId }).toArray();
+    if (!attractionsList) throw 'Could not get all attractions';
+    return attractionsList;
+  };
+
+const getAllAttractions = async () => {
+    const attractionCollection = await attractions();
+    const attractionList = await attractionCollection.find({}).toArray();
+    return attractionList;
+};
 
 //getAttractionByID()
+const get = async (attractionId) => {
+    if (!attractionId) {
+      throw 'You must provide an id to search for';
+    }
+    attractionId = helpers.checkString(attractionId);
+    if (!ObjectId.isValid(attractionId)) {
+        throw 'Error: Invalid Object Id';
+      }
+      const attractionCollection = await attractions();
+      const attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
+      if (!attraction) throw 'Error: Attraction not found';
+      attraction._id = attraction._id.toString();
+      return attraction;
+  };
+
 
 //editAttraction()
+const editAttraction = async (businessId, attractionId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
+    if (!businessId || !attractionId || !submissions || !attractionName || !date || !startTime || !pointsOffered || !description || !bonusPoints  ||!endTime ) {
+        throw 'Error: All fields need to have valid values';
+    }
+    description = helpers.checkString(description);
+    date = helpers.checkString(date);
+    attractionName = attractionName.checkString(date);
+    let regexNum = /^[0-9]*$/;
+    startTime = helpers.checkString(startTime);
+    endTime = helpers.checkString(endTime);
+    let st = startTime.split(':');
+    let et = endTime.split(':');
+    if (
+        st.length != 2 ||
+        st[0].length != 2 ||
+        st[1].length != 2 ||
+        !regexNum.test(st[0]) ||
+        !regexNum.test(st[1])
+    ) {
+        throw 'Error: Must provide start time in HH:MM format';
+    }
+    if (
+        et.length != 2 ||
+        et[0].length != 2 ||
+        et[1].length != 2 ||
+        !regexNum.test(et[0]) ||
+        !regexNum.test(et[1])
+    ) {
+        throw 'Error: Must provide end time in HH:MM format';
+    }
+    if (st[0] * 1 < 0 || st[0] * 1 > 23) {
+        throw 'Error: Must provide start time in HH:MM format';
+    }
+      if (st[1] * 1 < 0 || st[1] * 1 > 59) {
+        throw 'Error: Must provide start time in HH:MM format';
+      }
+      if (et[0] * 1 < 0 || et[0] * 1 > 23) {
+        throw 'Error: Must provide end time in HH:MM format';
+      }
+      if (et[1] * 1 < 0 || et[1] * 1 > 59) {
+        throw 'Error: Must provide end time in HH:MM format';
+      }
+      if (!regexNum.test(pointsOffered)) {
+        throw 'Points offered must be a number';
+      }
+      if (!regexNum.test(bonusPoints)) {
+          throw 'Bonus Points must be a number';
+      }
+      pointsOffered = parseInt(pointsOffered);
+      bonusPoints = parseInt(bonusPoints);
+
+    const attractionCollection = await attraction();
+    let attraction = await attractionCollection.findOne({ _id: ObjectId(attractionId) });
+    const updatedAttraction = {
+        _id: new ObjectId(),
+        businessId: businessId,
+        attractionName: attractionName,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        pointsOffered: pointsOffered,
+        bonusPoints: bonusPoints,
+        description: notes,
+        submissions: submissions
+    };
+    const updatedInfo = await attractionCollection.replaceOne({ _id: ObjectId(attractionId) }, updatedAttraction);
+  
+    if (updatedInfo.modifiedCount === 0) {
+      throw 'Could not update attraction successfully';
+    }
+  
+    return updatedInfo.value;
+};
 
 //deleteAttraction() //shouldn't be able to delete event after its start time
+const deleteAttraction = async (attractionId) => {
+    if (!attractionId) {
+        throw `Error: Id must be inputted`;
+      }
+      if (!ObjectId.isValid(attractionId)) {
+        throw 'Error: Invalid Object Id';
+      }
+      const attractionCollection = await attractions();
+      const deletionInfo = await attractionCollection.findOneAndDelete({
+        _id: new ObjectId(id)
+      });
+      if (deletionInfo.lastErrorObject.n === 0) throw `Error: Could not delete attraction with id of ${id}`;
+    
+      return { ...deletionInfo.value, deleted: true };
+};
+
+export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get };
