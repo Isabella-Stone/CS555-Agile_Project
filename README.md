@@ -2,9 +2,11 @@
  
 This is how you run our code!!
 
-1. download the code and unzip it
-2. run the "npm i" command
-3. run the "npm start" command
-4. click on the link provided in the console to bring you to Hoboken Happenings!
+1. Download the code and unzip it
+2. Open the folder inside of VS Code
+3. Open a new terminal
+4. Run the "npm i" or "npm install" command inside the terminal
+5. Run the "npm start" command inside the terminal
+6. Hold CTRL and click on the link provided (http://localhost:3000) in the terminal to bring you to Hoboken Happenings!
 
-We don't currently have a seed file, but we are going to be using MongoDB to be storing all users, businesses, and attractions. 
+We don't currently have a seed file, but we are going to be using MongoDB to store all users, businesses, and attractions. 
