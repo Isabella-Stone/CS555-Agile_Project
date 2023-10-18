@@ -1,5 +1,5 @@
 import { users, businesses } from "../config/mongoCollections.js";
-import { checkName, checkEmail, checkPassword, checkString, checkAge, checkUsername, checkId } from "../helpers.js";
+import { checkString, checkName, checkEmail, checkPassword, checkAge, checkUsername, checkId } from "../helpers.js";
 import { ObjectId } from 'mongodb';
 import bcrypt from 'bcrypt';
 const saltRounds = 8;
@@ -43,14 +43,13 @@ export const createUser = async (firstName, lastName, emailAddress, password, us
   return await getUserById(newInsertInformation.insertedId.toString());
 }
 
-//*assuming we store emails lowercase
 export const checkUser = async (emailAddress, password) => {
     if (!emailAddress || !password) {
-      throw 'All input fields must be provided';
+      throw new Error("All input fields must be provided");
     }
   
     emailAddress = checkEmail(emailAddress);
-    password = checkPassword(password);
+    password = checkString(password, "Password");
   
     const userCollection = await users();
     const businessCollection = await businesses();
@@ -59,7 +58,7 @@ export const checkUser = async (emailAddress, password) => {
     const business = await businessCollection.findOne({emailAddress: emailAddress});
 
     if (user === null && business == null) {
-      throw `Either the email address or password is invalid`;
+      throw new Error ("Either the email address or password is invalid");
     }
     else {
       let same = await bcrypt.compare(password, user.password);
@@ -81,7 +80,7 @@ export const checkUser = async (emailAddress, password) => {
         }
       }
       else {
-        throw `Either the email address or password is invalid`;
+        throw new Error("Either the email address or password is invalid");
       }
     }
   };
