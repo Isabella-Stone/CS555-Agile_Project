@@ -11,12 +11,12 @@ const constructor = (app) => {
 
   app.get("/", async (req, res) => {
     if (!req.session || !req.session.user || !req.session.user.id) {
-      return res.render("homepage", { auth: false, title: "Home" });
+      return res.render("landingPage", { auth: false, title: "Home" });
     }
     try {
 
     } catch (e) {
-      return res.status(500).render("homepage", { error: e, body: e});
+      return res.status(500).render("landingPage", { error: e, body: e});
     }
     return res.render("main", {
         title: "Home",

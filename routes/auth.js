@@ -9,12 +9,12 @@ router
     return res.render("login", {auth: false, error: false, message: ""});
   })
   .post(async (req, res) => {
-    let emailAddress = xss(req.body.emailAdressInput);
+    let emailAddress = xss(req.body.emailAddressInput);
     let password = xss(req.body.passwordInput);
     try {
         let user = await checkUser(emailAddress, password);
         req.session.user = user;
-        return res.status(400).render("homepage", {auth: true});
+        return res.status(400).render("upcomingAttractions", {auth: true});
     } 
     catch (e) {
       return res.status(400).render("login", {auth: false, error: true, message: e});
