@@ -34,7 +34,7 @@ router.route("/signup")
     try {
       const newUser = await createUser(userInfo.firstName, userInfo.lastName, 
       userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
-      return res.redirect("/auth/login");
+      return res.redirect("/auth/login", {auth: false});
     } catch (e) {
       return res.status(400).render("signUpUser", {auth: false, error: true, message: e});
     }
