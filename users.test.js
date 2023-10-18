@@ -6,10 +6,11 @@ test("successfully 'signs in' the user", async () => {
     expect(signedIn).toStrictEqual({firstName: "Isabella", lastName: "Stone", emailAddress: "ibellarose1@gmail.com", username: "ibellarose1"});
 })
 
-test("successfully 'signs in' another user", async () => {
-    const Victoria = await createUser("Victoria", "Stone", "vicgrace@aol.com", "Greatpassword8?", "vicgrace24", 18);
-    const signedIn = await checkUser("vicgrace@aol.com", "Greatpassword8?");
-    expect(signedIn).toStrictEqual({firstName: "Victoria", lastName: "Stone", emailAddress: "vicgrace@aol.com", username: "vicgrace24"});
+test('Gets a preexisting user', async () => {
+    const user = await createUser("Megan", "Sanford", "msanford@stevens.edu", "Abc123!!", "megxsan", 21);
+    const holder = await checkUser("msanford@stevens.edu", "Abc123!!")
+
+    expect(holder).toStrictEqual({firstName: "Megan", lastName: "Sanford", emailAddress: "msanford@stevens.edu", username: "megxsan"})
 })
 
 it("should not allow user to sign in with wrong password", async () => {        
