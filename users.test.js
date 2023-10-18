@@ -8,10 +8,10 @@ test('Gets a preexisting user', async () => {
 })
 
 test('Gets a preexisting user', async () => {
-    const user = await createUser("Megan", "Sanford", "msanford@gmail.com", "Abc123!!", "megxsan", 21);
-    const holder = await checkUser("msanford@gmail.com", "Abc123!!")
+    const user = await createUser("Megan", "Sanford", "msanford@stevens.edu", "Abc123!!", "megxsan", 21);
+    const holder = await checkUser("msanford@stevens.edu", "Abc123!!")
 
-    expect(holder).toStrictEqual({firstName: "Megan", lastName: "Sanford", emailAddress: "msanford@gmail.com", username: "megxsan"})
+    expect(holder).toStrictEqual({firstName: "Megan", lastName: "Sanford", emailAddress: "msanford@stevens.edu", username: "megxsan"})
 })
 
 test('Adding a user with invalid input', async () => {
