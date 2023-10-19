@@ -121,6 +121,7 @@ export const getUserByUsername = async (username) => {
   if (!user) {
     throw 'Error: User not found';
   } 
+  user._id = user._id.toString();
   return user;
 };
 
@@ -136,6 +137,7 @@ export const getUserByEmail = async (email) => {
   if (!user) {
     throw 'Error: User not found';
   } 
+  user._id = user._id.toString();
   return user;
 };
 
