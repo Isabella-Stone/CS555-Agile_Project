@@ -10,7 +10,7 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     }
     description = helpers.checkString(description);
     date = helpers.checkString(date);
-    attractionName = attractionName.checkString(date);
+    attractionName = helpers.checkString(attractionName);
     let splitDate = date.split('/');
     if (splitDate.length !== 3) {
       throw 'Error: Date must be in MM/DD/YYYY format';
@@ -83,7 +83,7 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
       endTime: endTime,
       pointsOffered: pointsOffered,
       bonusPoints: bonusPoints,
-      description: notes,
+      description: description,
       submissions: submissions
     };
     const attractionCollection = await attractions();
