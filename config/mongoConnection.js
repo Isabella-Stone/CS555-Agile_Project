@@ -17,10 +17,4 @@ const closeConnection = async () => {
   await _connection.close();
 };
 
-// afterAll(async() => {
-//   // Closing the DB connection allows Jest to exit successfully.
-//   await _connection.close();
-// })
-
-
 export {dbConnection, closeConnection};
