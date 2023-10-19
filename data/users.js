@@ -61,14 +61,20 @@ export const checkUser = async (emailAddress, password) => {
       throw new Error ("Either the email address or password is invalid");
     }
     else {
-      let same = await bcrypt.compare(password, user.password);
+      let same;
+      if (business == null) {
+        same = await bcrypt.compare(password, user.password);
+      } else {
+        same = await bcrypt.compare(password, business.password);
+      }
+      
       if (same) {
         if (user == null) {
           //is business
-          let name = user.name;
-          let emailAddress = user.emailAddress
-          let username = user.username;
-          return {name, lastName, emailAddress, username};
+          let name = business.name;
+          let emailAddress = business.emailAddress
+          let username = business.username;
+          return {name, emailAddress, username};
         }
         else {
           //is user
