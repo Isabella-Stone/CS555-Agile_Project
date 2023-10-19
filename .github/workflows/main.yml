@@ -18,5 +18,7 @@ jobs:
         with:
           node-version: 18.13.0
           cache: 'npm'
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.40.4
       - run: npm ci
       - run: npm run test
