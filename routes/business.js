@@ -1,5 +1,5 @@
 import { businesses } from "../config/mongoCollections.js";
-import { createBusiness } from "../data/business.js"
+import { createBusiness, getBusinessById, getBusinessByUsername } from "../data/business.js"
 import { checkName, checkEmail, checkPassword, checkAge, checkUsername } from "../helpers.js";
 import { Router } from "express";
 const router = Router();
@@ -54,7 +54,36 @@ router.route("/signup")
 
 router.route("/:id")
   .get(async (req, res) => {
-    return res.render("businessProfile", { auth: false});
+    try {
+      let id;
+      if (req.params.id.charAt(0) == ':')
+      {
+        id = req.params.id.slice(1);
+      }
+      else
+      {
+        id = req.params.id;
+      }
+      const business = await getBusinessById(id);
+      console.log(business);
+      return res.render("businessProfile", {auth: true, business: business});
+    }
+    catch (e)
+    {
+      console.log(e);
+      return res.status(400).render("businessProfile", {auth: true, error: true, message: e});
+    }
+  })
+  .post(async (req, res) => {
+    //add check to make sure authenticated user has same id as param
+    try
+    {
+
+    }
+    catch (e)
+    {
+      return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
+    }
   });
 
 export default router;
