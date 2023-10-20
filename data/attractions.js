@@ -92,8 +92,8 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     }
     const insertInfo = await attractionCollection.insertOne(newAttraction);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add trip';
-    const trip = await get(newAttraction._id.toString());
-    return trip;
+    const attraction = await get(newAttraction._id.toString());
+    return attraction;
   };
 
 //getAllAttractions()
@@ -102,8 +102,8 @@ const getAllAttractionsByBusinessId = async (businessId) => {
       throw 'You must provide an id to search for';
     }
     businessId = helpers.checkString(businessId, "Business ID");
-    const businessesCollection = await businesses();
-    const attractionsList = await businessesCollection.find({ businessId: businessId }).toArray();
+    const attractionCollection = await attractions();
+    const attractionsList = await attractionCollection.find({ businessId: businessId }).toArray();
     if (!attractionsList) throw 'Could not get all attractions';
     return attractionsList;
   };
