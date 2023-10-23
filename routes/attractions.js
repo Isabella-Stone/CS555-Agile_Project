@@ -10,8 +10,9 @@ router
   .get(async (req, res) => {
     try {
       let attractionList = await getAllAttractions();
-      return res.render("attractions", {attractions:attractionList, auth: false});
-    } catch (e) {
+      return res.render("attractions", {attractions: attractionList, auth: false});
+    } 
+    catch (e) {
       return res.sendStatus(500);
     }
   })

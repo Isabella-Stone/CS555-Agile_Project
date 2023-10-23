@@ -106,7 +106,7 @@ const getAllAttractionsByBusinessId = async (businessId) => {
     const attractionsList = await businessesCollection.find({ businessId: businessId }).toArray();
     if (!attractionsList) throw 'Could not get all attractions';
     return attractionsList;
-  };
+};
 
 const getAllAttractions = async () => {
     const attractionCollection = await attractions();
