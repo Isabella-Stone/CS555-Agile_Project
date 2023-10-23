@@ -8,9 +8,9 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
       throw 'Error: All fields need to have valid values';
     }
-    description = helpers.checkString(description);
-    date = helpers.checkString(date);
-    attractionName = attractionName.checkString(date);
+    description = helpers.checkString(description, "Attraction description");
+    date = helpers.checkString(date, "Attraction date");
+    attractionName = helpers.checkString(attractionName, "Attraction name");
     let splitDate = date.split('/');
     if (splitDate.length !== 3) {
       throw 'Error: Date must be in MM/DD/YYYY format';
@@ -32,8 +32,8 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     if (splitDate[1] * 1 < 1 || splitDate[1] * 1 > 31) {
       throw 'Error: Date must be in MM/DD/YYYY format';
     }
-    startTime = helpers.checkString(startTime);
-    endTime = helpers.checkString(endTime);
+    startTime = helpers.checkString(startTime, "Attraction start time");
+    endTime = helpers.checkString(endTime, "Attraction end time");
     let st = startTime.split(':');
     let et = endTime.split(':');
     if (
@@ -83,7 +83,7 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
       endTime: endTime,
       pointsOffered: pointsOffered,
       bonusPoints: bonusPoints,
-      description: notes,
+      description: description,
       submissions: submissions
     };
     const attractionCollection = await attractions();
@@ -92,8 +92,8 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     }
     const insertInfo = await attractionCollection.insertOne(newAttraction);
     if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add trip';
-    const trip = await get(newAttraction._id);
-    return trip;
+    const attraction = await get(newAttraction._id.toString());
+    return attraction;
   };
 
 //getAllAttractions()
@@ -101,9 +101,9 @@ const getAllAttractionsByBusinessId = async (businessId) => {
     if (!businessId) {
       throw 'You must provide an id to search for';
     }
-    businessId = helpers.checkString(businessId);
-    const businessesCollection = await businesses();
-    const attractionsList = await businessesCollection.find({ businessId: businessId }).toArray();
+    businessId = helpers.checkString(businessId, "Business ID");
+    const attractionCollection = await attractions();
+    const attractionsList = await attractionCollection.find({ businessId: businessId }).toArray();
     if (!attractionsList) throw 'Could not get all attractions';
     return attractionsList;
 };
@@ -119,7 +119,7 @@ const get = async (attractionId) => {
     if (!attractionId) {
       throw 'You must provide an id to search for';
     }
-    attractionId = helpers.checkString(attractionId);
+    attractionId = helpers.checkString(attractionId, "Attraction ID");
     if (!ObjectId.isValid(attractionId)) {
         throw 'Error: Invalid Object Id';
       }
@@ -136,12 +136,12 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
     if (!businessId || !attractionId || !submissions || !attractionName || !date || !startTime || !pointsOffered || !description || !bonusPoints  ||!endTime ) {
         throw 'Error: All fields need to have valid values';
     }
-    description = helpers.checkString(description);
-    date = helpers.checkString(date);
-    attractionName = attractionName.checkString(date);
+    description = helpers.checkString(description, "Attraction description");
+    date = helpers.checkString(date, "Attraction date");
+    attractionName = helpers.checkString(attractionName, "Attraction name");
     let regexNum = /^[0-9]*$/;
-    startTime = helpers.checkString(startTime);
-    endTime = helpers.checkString(endTime);
+    startTime = helpers.checkString(startTime, "Attraction start time");
+    endTime = helpers.checkString(endTime, "Attraction end time");
     let st = startTime.split(':');
     let et = endTime.split(':');
     if (

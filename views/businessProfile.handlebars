@@ -1,0 +1,25 @@
+<main>
+
+    {{#if error}}
+        <p>{{message}}</p>
+    {{else}}
+        <div>
+            <h1>{{business.name}}</h1>
+            <p id="username">Username: {{business.username}}</p>
+            <p id="emailAddress">Email Address: {{business.emailAddress}}</p>
+            <p id="firstName">User First Name: {{business.firstName}}</p>
+            <p id="lastName">User Last Name: {{business.lastName}}</p>
+            <p id="age">Age: {{business.age}}</p>
+            <p id="numPosted">Number of Postings: {{business.numPosted}}</p>
+            <p id="lastDatePosted">Date of Last Post: {{business.lastDatePosted}}</p>
+            {{!-- {{#if ownPage}}
+            <button
+                id="editProfile"
+                onclick="window.location.href='/business/id/{{business._id}}/editProfile';"
+            >Edit Profile</button>
+            {{/if}} --}}
+            {{!-- <p id="currentUsername" hidden>{{currentUsername}}</p> --}}
+        </div>
+    {{/if}}
+
+</main>

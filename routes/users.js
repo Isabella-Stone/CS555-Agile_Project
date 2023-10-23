@@ -2,7 +2,7 @@ import { users } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
 import { } from "../data/business.js";
-import { createUser } from "../data/users.js";
+import { createUser, getUserById } from "../data/users.js";
 import { checkAge, checkEmail, checkName, checkPassword, checkUsername } from "../helpers.js";
 
 router.route("/signup")
@@ -34,15 +34,44 @@ router.route("/signup")
     try {
       const newUser = await createUser(userInfo.firstName, userInfo.lastName, 
       userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
-      return res.redirect("/auth/login", {auth: false});
+      return res.redirect("/auth/login");
     } catch (e) {
       return res.status(400).render("signUpUser", {auth: false, error: true, message: e});
     }
   });
 
-router.route("/:id")
+  router.route("/:id")
   .get(async (req, res) => {
-    return res.render("userProfile", { auth: false});
+    try {
+      let id;
+      if (req.params.id.charAt(0) == ':')
+      {
+        id = req.params.id.slice(1);
+      }
+      else
+      {
+        id = req.params.id;
+      }
+      const user = await getUserById(id);
+      console.log(user);
+      return res.render("userProfile", {auth: false, user: user});
+    }
+    catch (e)
+    {
+      console.log(e);
+      return res.status(400).render("userProfile", {auth: true, error: true, message: e});
+    }
+  })
+  .post(async (req, res) => {
+    //add check to make sure authenticated user has same id as param
+    try
+    {
+
+    }
+    catch (e)
+    {
+      return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
+    }
   });
 
 export default router;
