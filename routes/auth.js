@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { checkUser } from "../data/users.js";
+import { getAllAttractions } from "../data/attractions.js";
 const router = Router();
 import xss from 'xss';
 
@@ -14,7 +15,8 @@ router
     try {
         let user = await checkUser(emailAddress, password);
         req.session.user = user;
-        return res.status(200).render("upcomingAttractions", {auth: true});
+        let attractionList = await getAllAttractions();
+        return res.status(200).render("upcomingAttractions", {attractions: attractionList, auth: true});
     } 
     catch (e) {
       return res.status(400).render("login", {auth: false, error: true, message: e});
