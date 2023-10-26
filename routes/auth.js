@@ -16,7 +16,7 @@ router
         let user = await checkUser(emailAddress, password);
         req.session.user = user;
         let attractionList = await getAllAttractions();
-        return res.status(200).render("upcomingAttractions", {attractions: attractionList, auth: true});
+        return res.status(200).render("upcomingAttractions", {user: user, attractions: attractionList, auth: true});
     } 
     catch (e) {
       return res.status(400).render("login", {auth: false, error: true, message: e});

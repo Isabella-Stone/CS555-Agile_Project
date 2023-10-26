@@ -1,0 +1,37 @@
+<section>
+    <h2>Edit Profile</h2>
+    <p>If you don't want to change a field, input the same information as before.</p>
+    
+    <form action="/user/{{user.username}}" method="post" id="editUser" class="column">
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName">
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName">
+
+        <label for="emailAddress">Email:</label>
+        <input type="email" id="emailAddress" name="emailAddress">
+
+        <label for="password">Password (must have at least 8 characters, 1 special character, 1 number, and 1 capital letter):</label>
+        <input type="password" id="password" name="password">
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword">
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+
+        <label for="ageInput">Age:</label>
+        <input type="number" id="ageInput" name="ageInput">
+
+        {{#if error}}
+            <p>{{message}}</p>
+        {{/if}}
+
+        <br>     
+        <input type="hidden" name="_method" value="PUT">
+        <button type="submit">Submit</button>
+    </form>
+
+</section>
