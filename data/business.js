@@ -1,5 +1,5 @@
 import { businesses } from "../config/mongoCollections.js";
-import { checkName, checkEmail, checkPassword, checkAge, checkUsername, checkId } from "../helpers.js";
+import { checkName, checkEmail, checkPassword, checkAge, checkUsername, checkId, checkString } from "../helpers.js";
 import { ObjectId } from 'mongodb';
 import bcrypt from 'bcrypt';
 const saltRounds = 8;
@@ -14,7 +14,7 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     name = checkName(name, "business name");
     emailAddress = checkEmail(emailAddress);
     password = checkPassword(password);
-    username = checkUsername(username);
+    username = checkString(username);
   
     const businessCollection = await businesses();
     let business = await businessCollection.findOne({username: username})
@@ -63,14 +63,14 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     return business;
   };
 
-  export const getBusinessByUsername = async (username) => {
-    if (!username) {
+  export const getBusinessByUsername = async (busName) => {
+    if (!busName) {
       throw `Error: username must be inputed`;
     }
-    username = checkUsername(username);
+    busName = checkString(busName);
   
     const businessCollection = await businesses();
-    const business = await businessCollection.findOne({ _id: new ObjectId(id) });
+    const business = await businessCollection.findOne({ username: busName });
     if (!business) {
       throw 'Error: Business not found';
     }

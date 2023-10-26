@@ -1,0 +1,56 @@
+<form action="/attractions" method="post" id="editAttraction" class="column">
+
+        <label for="businessIDInput">
+        BusinessID:
+        <input type="text" id="businessIDInput" name="businessIDInput">
+    </label>
+
+    <label for="attractionName">
+        Attraction Name:
+        <input type="text" id="attractionName" name="attractionName">
+    </label>
+
+    <label for="pointsOffered">
+        Points Offered:
+        <input type="text" id="pointsOffered" name="pointsOffered">
+    </label>
+
+    <label for="description">
+        Attraction Description:
+        <input type="text" id="description" name="description">
+    </label>
+
+    <label for="date">
+        Date of Attraction:
+        <input type="text" id="date" name="date">
+    </label>
+
+    <label for="startTime">
+        Start Time:
+        <input type="text" id="startTime" name="startTime">
+    </label>
+
+    <label for="endTime">
+        End Time:
+        <input type="text" id="endTime" name="endTime">
+    </label>
+
+    <label for="bonusPoints">
+        Bonus Points:
+        <input type="text" id="bonusPoints" name="bonusPoints">
+    </label>
+
+    {{!-- submissions are a text entry for now, this will be fixed later --}}
+    <label for="submissions">
+        Photo Submissions:
+        <input type="text" id="submissions" name="submissions">
+    </label>
+
+        {{#if error}}
+            <p>{{message}}</p>
+        {{/if}}
+
+        <br>     
+        <input type="hidden" name="_method" value="PUT">
+        <button type="submit">Submit</button>
+    </form>

@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName} from "../data/attractions.js";
 import { } from "../data/users.js";
 import {checkId} from "../helpers.js";
 
@@ -36,6 +36,78 @@ router
     }
     
   });
+
+
+  router.route("/editAttraction")
+  .get(async (req, res) => {
+    let attname = req.params.attname;
+    try {
+      const attractions = await getAttractionByBusinessName(attname);
+      return res.render("chooseAttraction", {auth: false, attractions: attractions});
+    }
+    catch (e)
+    {
+      return res.status(400).render("editAttractions", {auth: true, error: true, message: e});
+    }
+  })
+  .post(async (req, res) => {
+    //add check to make sure authenticated user has same id as param
+    return res.redirect(`/attraction/editAttraction/${req.body.attractionName}`)
+  });
+
+  router.route("/editAttraction/:attname")
+  .get(async (req, res) => {
+    let attname = req.params.attname;
+    console.log(attname);
+    try {
+      const attractions = await getAttractionByBusinessName(attname);
+      return res.render("chooseAttraction", {auth: false, attractions: attractions});
+    }
+    catch (e)
+    {
+      console.log(e)
+      return res.status(400).render("chooseAttraction", {auth: true, error: true, message: e});
+    }
+  })
+  .post(async (req, res) => {
+    //add check to make sure authenticated user has same id as param
+    try
+    {
+
+    }
+    catch (e)
+    {
+      return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
+    }
+  })
+  .put(async (req, res) => {
+    let attInfo = req.body;
+    let attraction;
+    if (!attInfo || Object.keys(attInfo).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
+    try {
+      const updated = await editAttraction(
+        attInfo.businessId, 
+        attInfo._id, 
+        attInfo.submissions, 
+        attInfo.attractionName, 
+        attInfo.pointsOffered, 
+        attInfo.description, 
+        attInfo.bonusPoints, 
+        attInfo.date, 
+        attInfo.startTime, 
+        attInfo.endTime);
+        let url = "/attraction/" + attInfo.attractionName;
+        
+      return res.redirect(url);
+    } catch (e) {
+      return res.status(400).render("editAttraction", {auth: false, error: true, message: e});
+    }
+  });
+
   router
   .route("/:id")
   .get(async (req, res) => {
@@ -54,5 +126,4 @@ router
       return res.status(404).json({error: `${e}`});
     }
   })
-
 export default router;

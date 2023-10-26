@@ -2,6 +2,7 @@ import * as helpers from '../helpers.js';
 import { attractions, businesses } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import e from 'express';
+import { getBusinessByUsername } from './business.js';
 // no error checking for ids yet, no error checking for photo submissions
 //createAttraction()
 const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
@@ -223,4 +224,22 @@ const deleteAttraction = async (attractionId) => {
       return { ...deletionInfo.value, deleted: true };
 };
 
-export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get };
+const getAttractionByBusinessName = async (bis_name) => {
+  if (!bis_name) {
+    throw `Error: Business name must be inputed`;
+  }
+  bis_name = helpers.checkString(bis_name);
+  let business = await getBusinessByUsername(bis_name);
+  let id = business._id.toString();
+  const attractionCollection = await attractions();
+  const attraction = await attractionCollection.find({ businessId: id }).toArray();
+  if (!attraction) {
+    return [];
+  } 
+  else{
+    return attraction;
+  }
+ 
+};
+
+export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName };
