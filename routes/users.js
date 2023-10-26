@@ -107,49 +107,21 @@ router.route("/signup")
     {
       return res.status(400).render("editProfile", {auth: true, error: true, message: e});
     }
-  })
-  .post(async (req, res) => {
-    //add check to make sure authenticated user has same id as param
-    try
-    {
+  });
 
-    }
-    catch (e)
-    {
-      return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
-    }
-  })
-  .put(async (req, res) => {
-    let userInfo = req.body;
-    let userId = req.params.id;
-    if (!userInfo || Object.keys(userInfo).length === 0) {
-      return res
-        .status(400)
-        .json({error: 'There are no fields in the request body'});
-    }
+  router.route("/redeemRewards/:username")
+  .get(async (req, res) => {
+    let username = req.params.username;
+    username = checkUsername(username);
+    let user;
     try {
-      userId = checkId(userId);
-      userInfo.firstName = checkName(userInfo.firstName);
-      userInfo.lastName = checkName(userInfo.lastName);
-      userInfo.emailAddress = checkEmail(userInfo.emailAddress);
-      userInfo.password = checkPassword(userInfo.password);
-      if (userInfo.password !== userInfo.confirmPassword) {
-        throw `Error: Passwords do not match`;
-      }
-      userInfo.username = checkUsername(userInfo.username);
-      userInfo.ageInput = checkAge(parseInt(userInfo.ageInput));
-    }
-    catch (e) {
-      return res.status(400).render("editProfile", {auth: false, error: true, message: e});
-    }
-    try {
-      const updated = await editUserInfo(userId, userInfo.firstName, userInfo.lastName, 
-        userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.age);
-        let url = "/userProfile/" + userInfo.username;
-      return res.redirect(url);
+      user = await getUserByUsername(username);
+      return res.render("redeemRewards", {auth: true, user: user});
     } catch (e) {
-      return res.status(400).render("editProfile", {auth: false, error: true, message: e});
+      //Might have to change what page is renders to
+      return res.status(400).render("upcomingAttractions", {error: true, message: e})
     }
+    
   })
 
 
