@@ -1,5 +1,5 @@
 import { businesses } from "../config/mongoCollections.js";
-import { createBusiness, getBusinessById, getBusinessByUsername } from "../data/business.js"
+import { createBusiness, getBusinessById, getBusinessByUsername, editBusinessInfo } from "../data/business.js"
 import { checkName, checkEmail, checkPassword, checkAge, checkUsername } from "../helpers.js";
 import { Router } from "express";
 const router = Router();
@@ -86,7 +86,60 @@ router.route("/:id")
     }
   })
   .put(async (req, res) => {
-    
+    let businessInfo = req.body;
+    let business;
+    if (!businessInfo || Object.keys(businessInfo).length === 0) {
+      return res
+        .status(400)
+        .json({error: 'There are no fields in the request body'});
+    }
+    try {
+      business = await getBusinessByUsername(req.params.username);
+      if (businessInfo.firstName)
+      {
+        businessInfo.firstName = checkName(businessInfo.firstName);
+      }
+      if (businessInfo.lastName)
+      {
+        businessInfo.lastName = checkName(businessInfo.lastName);
+      }
+      if (businessInfo.name)
+      {
+        businessInfo.name = checkName(businessInfo.name);
+      }
+      if (businessInfo.emailAddress)
+      {
+        businessInfo.emailAddress = checkEmail(businessInfo.emailAddress);
+      }
+      if (businessInfo.password)
+      {
+        businessInfo.password = checkPassword(businessInfo.password);
+      }
+
+      if (businessInfo.password !== businessInfo.confirmPassword) {
+        throw `Error: Passwords do not match`;
+      }
+
+      if (businessInfo.username)
+      {
+        businessInfo.username = checkUsername(businessInfo.username);
+      }
+      if (businessInfo.ageInput)
+      {
+        businessInfo.ageInput = checkAge(parseInt(businessInfo.ageInput));
+      }
+    }
+    catch (e) {
+      return res.status(400).render("editBusiness", {auth: false, error: true, message: e});
+    }
+    try {
+      const updated = await editBusinessInfo(business._id, businessInfo.firstName, businessInfo.lastName, businessInfo.name,
+        businessInfo.emailAddress, businessInfo.password, businessInfo.username, businessInfo.ageInput);
+        let url = "/business/" + businessInfo.username;
+      return res.redirect(url);
+    } catch (e) {
+      return res.status(400).render("editBusiness", {auth: false, error: true, message: e});
+    }
   })
 
 export default router;

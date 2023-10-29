@@ -76,7 +76,50 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     }
     return business;
   };
+  export const editBusinessInfo = async (firstName, lastName, name, emailAddress, password, username, age) => {
+    
+    const businessCollection = await businesses();
+    
+    let hashed1;
+    if (firstName)
+    {
+      firstName = checkName(firstName, "first name");
+    }
+    if (lastName)
+    {
+      lastName = checkName(lastName, "last name");
+    }
+    if (name)
+    {
+      name = checkName(name, "business name");
+      let business = await businessCollection.findOne({name: name})
+      if (business)
+      {
+        throw 'Business name already associated to another business';
+      }
+    }
+    if (emailAddress)
+    {
+      emailAddress = checkEmail(emailAddress);
+    }
+    if (password)
+    {
+      password = checkPassword(password);
+      hashed1 = await bcrypt.hash(password, saltRounds);
+    }
+    if (username)
+    {
+      username = checkString(username);
+      let business = await businessCollection.findOne({username: username})
+      if (business)
+      {
+        throw 'Username already associated to a business';
+      }
+    }
+    if (age)
+    {
+      age = checkAge(age);
+    }
+  };
 
 // approvePoints(attractionId, photoId)
-
-// editBusinessInfo()
