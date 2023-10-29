@@ -58,9 +58,9 @@ router
   router.route("/editAttraction/:busname")
   .get(async (req, res) => {
     let attname = req.params.busname;
-    
     try {
       const attractions = await getByName(attname);
+      console.log(attractions);
       return res.render("editAttractions", {auth: false, attractions: attractions});
     }
     catch (e)
@@ -70,6 +70,7 @@ router
   })
   .post(async (req, res) => {
     //add check to make sure authenticated user has same id as param
+    console.log("Post")
     try
     {
 
@@ -80,17 +81,22 @@ router
     }
   })
   .put(async (req, res) => {
+    console.log("put");
+    let busname = req.params.busname;
     let attInfo = req.body;
-    let attraction;
+    console.log(req.body);
+    console.log(req.params);
     if (!attInfo || Object.keys(attInfo).length === 0) {
       return res
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
     try {
+      const old = await getByName(busname);
+      console.log(old);
       const updated = await editAttraction(
-        attInfo.businessId, 
-        attInfo._id, 
+        old.businessId, 
+        old._id.toString(), 
         attInfo.submissions, 
         attInfo.attractionName, 
         attInfo.pointsOffered, 
@@ -99,17 +105,19 @@ router
         attInfo.date, 
         attInfo.startTime, 
         attInfo.endTime);
-        let url = "/attraction/" + attInfo.attractionName;
+        console.log(updated);
+        let url = "/attraction/" + updated._id;
         
       return res.redirect(url);
     } catch (e) {
-      return res.status(400).render("editAttraction", {auth: false, error: true, message: e});
+      return res.status(400).render("editAttractions", {auth: false, error: true, message: e});
     }
   });
 
   router
   .route("/:id")
   .get(async (req, res) => {
+    console.log("id get")
     try {
       req.params.id = checkId(req.params.id, 'ID URL Param');
     } catch (e) {

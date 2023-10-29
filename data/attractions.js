@@ -208,10 +208,9 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
       pointsOffered = parseInt(pointsOffered);
       bonusPoints = parseInt(bonusPoints);
 
-    const attractionCollection = await attraction();
-    let attraction = await attractionCollection.findOne({ _id: ObjectId(attractionId) });
+    const attractionCollection = await attractions();
+    // let attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
     const updatedAttraction = {
-        _id: new ObjectId(),
         businessId: businessId,
         attractionName: attractionName,
         date: date,
@@ -219,16 +218,17 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
         endTime: endTime,
         pointsOffered: pointsOffered,
         bonusPoints: bonusPoints,
-        description: notes,
+        description: description,
         submissions: submissions
     };
-    const updatedInfo = await attractionCollection.replaceOne({ _id: ObjectId(attractionId) }, updatedAttraction);
+    const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
   
     if (updatedInfo.modifiedCount === 0) {
       throw 'Could not update attraction successfully';
     }
   
-    return updatedInfo.value;
+    let newInfo = await getByName(attractionName);
+    return newInfo;
 };
 
 //deleteAttraction() //shouldn't be able to delete event after its start time
