@@ -12,6 +12,9 @@ export const checkName = (name, stringName) => {
     if (!/^[a-zA-Z]+/.test(name)) {
         throw `Error: ${stringName} cannot contain any spaces or numbers`
     }
+    if (name.split(" ").length > 1) {
+        throw `Error: ${stringName} cannot contain spaces`;
+    }
     if (name.length < 2 || name.length > 25) {
         throw `Error: ${stringName} cannot be less than 2 or greater than 25 characters`;
     }

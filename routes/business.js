@@ -84,6 +84,9 @@ router.route("/:id")
     {
       return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
     }
-  });
+  })
+  .put(async (req, res) => {
+    
+  })
 
 export default router;
