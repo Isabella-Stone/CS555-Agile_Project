@@ -131,6 +131,17 @@ const get = async (attractionId) => {
       return attraction;
   };
 
+  const getByName = async (attractionName) => {
+    if (!attractionName) {
+      throw 'You must provide an attraction name to search for';
+    }
+    attractionName = helpers.checkString(attractionName, "Attraction Name");
+      const attractionCollection = await attractions();
+      const attraction = await attractionCollection.findOne({ attractionName: attractionName });
+      if (!attraction) throw 'Error: Attraction not found';
+      return attraction;
+  };
+
 
 //editAttraction()
 const editAttraction = async (businessId, attractionId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
@@ -242,4 +253,4 @@ const getAttractionByBusinessName = async (bis_name) => {
  
 };
 
-export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName };
+export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName };

@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName} from "../data/attractions.js";
 import { } from "../data/users.js";
 import {checkId} from "../helpers.js";
 
@@ -42,12 +42,12 @@ router
   .get(async (req, res) => {
     let attname = req.params.attname;
     try {
-      const attractions = await getAttractionByBusinessName(attname);
-      return res.render("chooseAttraction", {auth: false, attractions: attractions});
+      const attractions = await getByName(attname);
+      return res.status(400).render("editAttractions", {auth: false, attractions: attractions});
     }
     catch (e)
     {
-      return res.status(400).render("editAttractions", {auth: true, error: true, message: e});
+      return res.render("chooseAttraction", {auth: true, error: true, message: e});
     }
   })
   .post(async (req, res) => {
@@ -55,17 +55,16 @@ router
     return res.redirect(`/attraction/editAttraction/${req.body.attractionName}`)
   });
 
-  router.route("/editAttraction/:attname")
+  router.route("/editAttraction/:busname")
   .get(async (req, res) => {
-    let attname = req.params.attname;
-    console.log(attname);
+    let attname = req.params.busname;
+    
     try {
-      const attractions = await getAttractionByBusinessName(attname);
-      return res.render("chooseAttraction", {auth: false, attractions: attractions});
+      const attractions = await getByName(attname);
+      return res.render("editAttractions", {auth: false, attractions: attractions});
     }
     catch (e)
     {
-      console.log(e)
       return res.status(400).render("chooseAttraction", {auth: true, error: true, message: e});
     }
   })
