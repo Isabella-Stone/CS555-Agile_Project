@@ -1,6 +1,6 @@
 import { businesses } from "../config/mongoCollections.js";
-import { createBusiness, getBusinessById, getBusinessByUsername, editBusinessInfo } from "../data/business.js"
-import { checkName, checkEmail, checkPassword, checkAge, checkUsername } from "../helpers.js";
+import { createBusiness, getBusinessById, editBusinessInfo } from "../data/business.js"
+import { checkName, checkEmail, checkPassword, checkAge, checkUsername, checkId, checkBusinessName } from "../helpers.js";
 import { Router } from "express";
 const router = Router();
 
@@ -20,7 +20,7 @@ router.route("/signup")
     try {
       businessInfo.firstName = checkName(businessInfo.firstName, "first name");
       businessInfo.lastName = checkName(businessInfo.lastName, "last name");
-      businessInfo.name = checkName(businessInfo.name, "business name");
+      businessInfo.name = checkBusinessName(businessInfo.name, "business name");
       businessInfo.emailAddress = checkEmail(businessInfo.emailAddress);
       businessInfo.password = checkPassword(businessInfo.password);
       if (businessInfo.password !== businessInfo.confirmPassword) {
@@ -65,7 +65,6 @@ router.route("/:id")
         id = req.params.id;
       }
       const business = await getBusinessById(id);
-      console.log(business);
       return res.render("businessProfile", {auth: true, business: business});
     }
     catch (e)
@@ -94,7 +93,9 @@ router.route("/:id")
         .json({error: 'There are no fields in the request body'});
     }
     try {
-      business = await getBusinessByUsername(req.params.username);
+      business = await getBusinessById(req.params.id);
+      console.log(business)
+      console.log(req.params.id)
       if (businessInfo.firstName)
       {
         businessInfo.firstName = checkName(businessInfo.firstName);
@@ -105,7 +106,7 @@ router.route("/:id")
       }
       if (businessInfo.name)
       {
-        businessInfo.name = checkName(businessInfo.name);
+        businessInfo.name = checkBusinessName(businessInfo.name);
       }
       if (businessInfo.emailAddress)
       {
@@ -135,11 +136,24 @@ router.route("/:id")
     try {
       const updated = await editBusinessInfo(business._id, businessInfo.firstName, businessInfo.lastName, businessInfo.name,
         businessInfo.emailAddress, businessInfo.password, businessInfo.username, businessInfo.ageInput);
-        let url = "/business/" + businessInfo.username;
+        let url = "/business/" + business._id;
       return res.redirect(url);
     } catch (e) {
       return res.status(400).render("editBusiness", {auth: false, error: true, message: e});
     }
   })
+
+  router.route("/editProfile/:id")
+  .get(async (req, res) => {
+    try {
+      let id = checkId(req.params.id);
+      let business = await getBusinessById(id);
+      return res.render("editBusiness", {auth: false, business: business});
+    }
+    catch (e)
+    {
+      return res.status(400).render("editBusiness", {auth: true, error: true, message: e});
+    }
+  });
 
 export default router;

@@ -21,6 +21,17 @@ export const checkName = (name, stringName) => {
     return name;
 }
 
+export const checkBusinessName = (name, stringName) => {
+    name = checkString(name, "Name");
+    if (!/^[a-zA-Z]+/.test(name)) {
+        throw `Error: ${stringName} cannot only contain letters`
+    }
+    if (name.length < 2 || name.length > 25) {
+        throw `Error: ${stringName} cannot be less than 2 or greater than 25 characters`;
+    }
+    return name;
+}
+
 export const checkEmail = (email) => {
     email = checkString(email, "Email");
     if (email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === false) {

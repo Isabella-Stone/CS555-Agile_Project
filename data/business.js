@@ -1,7 +1,7 @@
 import { businesses } from "../config/mongoCollections.js";
-import { checkName, checkEmail, checkPassword, checkAge, checkUsername, checkId, checkString } from "../helpers.js";
+import { checkName, checkEmail, checkPassword, checkAge, checkUsername, checkId, checkString, checkBusinessName } from "../helpers.js";
 import { ObjectId } from 'mongodb';
-import bcrypt from 'bcrypt';
+import bcrypt, { hash } from 'bcrypt';
 const saltRounds = 8;
 
 export const createBusiness = async (firstName, lastName, name, emailAddress, password, username, age) => {
@@ -11,7 +11,7 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
   
     firstName = checkName(firstName, "first name");
     lastName = checkName(lastName, "last name");
-    name = checkName(name, "business name");
+    name = checkBusinessName(name, "business name");
     emailAddress = checkEmail(emailAddress);
     password = checkPassword(password);
     username = checkString(username);
@@ -22,9 +22,9 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
       throw `Username already exists (createBusiness)`;
     }
   
-    business = await businessCollection.findOne({emailAddress: emailAddress})
+    business = await businessCollection.findOne({name: name})
     if (business) {
-      throw `Email already exists (createBusiness)`;
+      throw `Name already exists (createBusiness)`;
     }
     age = checkAge(age);
   
@@ -76,7 +76,8 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     }
     return business;
   };
-  export const editBusinessInfo = async (firstName, lastName, name, emailAddress, password, username, age) => {
+
+  export const editBusinessInfo = async (id, firstName, lastName, name, emailAddress, password, username, age) => {
     
     const businessCollection = await businesses();
     
@@ -91,7 +92,7 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     }
     if (name)
     {
-      name = checkName(name, "business name");
+      name = checkBusinessName(name, "business name");
       let business = await businessCollection.findOne({name: name})
       if (business)
       {
@@ -120,6 +121,30 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     {
       age = checkAge(age);
     }
+
+    let oldBusiness = await getBusinessById(id)
+
+    const businessUpdate = {
+      firstName: firstName ? firstName : oldBusiness.firstName,
+      lastName: lastName ? lastName : oldBusiness.lastName,
+      name: name ? name : oldBusiness.name,
+      emailAddress: emailAddress ? emailAddress : oldBusiness.emailAddress,
+      password: hashed1 ? hashed1 : oldBusiness.password,
+      username: username ? username : oldBusiness.username,
+      age: age ? age : oldBusiness.age
+    };
+  
+     const updateInfo = await businessCollection.findOneAndUpdate(
+       { _id: new ObjectId(id) },
+       { $set: businessUpdate }
+     );
+  
+    if (updateInfo.modifiedCount === 0) {
+      throw `At least one field must be different to successfully update user`;
+    }
+  
+    let newInfo = await getBusinessById(id);
+    return newInfo;
   };
 
 // approvePoints(attractionId, photoId)
