@@ -112,7 +112,8 @@ async function main() {
         "0", 
         "11/14/2023", 
         "08:00", 
-        "12:00"
+        "12:00",
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
       );
       const business2_attraction1 = await attractionData.createAttraction(
           business2._id.toString(),
@@ -123,7 +124,9 @@ async function main() {
           "0", 
           "11/25/2023", 
           "17:00", 
-          "20:00"
+          "20:00",
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+
       );
         const business3_attraction1 = await attractionData.createAttraction(
           business3._id.toString(),
@@ -134,7 +137,9 @@ async function main() {
           "0", 
           "11/10/2023", 
           "12:00", 
-          "14:00"
+          "14:00",
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+
       );
       const business4_attraction1 = await attractionData.createAttraction(
           business4._id.toString(),
@@ -145,7 +150,9 @@ async function main() {
           "0", 
           "11/24/2023", 
           "12:00", 
-          "20:00"
+          "20:00",
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+
         );
       const business5_attraction1 = await attractionData.createAttraction(
           business5._id.toString(),
@@ -156,7 +163,9 @@ async function main() {
           "1", 
           "12/05/2023", 
           "15:00", 
-          "19:00"
+          "19:00",
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+
       );
   } catch (e) {
     console.log('Business: ' + e);
