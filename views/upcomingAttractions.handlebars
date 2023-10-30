@@ -1,4 +1,11 @@
 <main>
-    <p>hi</p>
-    {{JSON.stringify(attractions)}}
+    <h1>Upcoming Attractions: </h1>
+    {{#each attractions}}
+        <div>
+            <h2>{{this.bussinessId}}</h2>
+            <p>{{this.dateOfEvent}}</p>
+            <p>{{this.pointsOffered}}</p>
+            <a href="/attraction/{{this._id}}">Click for Details</a>
+          </div>
+    {{/each}}
 </main>

@@ -10,7 +10,18 @@ router
   .get(async (req, res) => {
     try {
       let attractionList = await getAllAttractions();
-      return res.render("attractions", {attractions: attractionList, auth: false});
+      return res.render("upcomingAttractions", {attractions: attractionList, auth: true});
+    } 
+    catch (e) {
+      return res.sendStatus(500);
+    }
+  })
+
+router
+  .route("/create")
+  .get(async (req, res) => {
+    try {
+      return res.render("createAttraction", {auth: true});
     } 
     catch (e) {
       return res.sendStatus(500);
@@ -30,7 +41,7 @@ router
         attractionInfo.startTime,
         attractionInfo.endTime
       );
-      return res.render("attractions", {auth: false});
+      return res.render("upcomingAttractions", {auth: true});
     } catch (e) {
       return res.status(500).json(`${e}`)    
     }
