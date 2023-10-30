@@ -5,7 +5,7 @@ import e from 'express';
 import { getBusinessById, getBusinessByUsername } from './business.js';
 // no error checking for ids yet, need to add in photo
 const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image) => {
-    if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName || !image) {
+    if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
       throw 'Error: All fields need to have valid values';
     }
     description = helpers.checkString(description, "Attraction description");
