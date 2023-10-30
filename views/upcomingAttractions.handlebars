@@ -11,36 +11,37 @@
     {{#each attractions}}
     <div class="attractions">
         <div class="content">
-            <div class="contains">
-                <p class="next">Name of Event:</p>
+            <div class="row">
+                <p class="bold">Name of Event: </p>
                 <p>{{this.attractionName}}</p>
             </div>
-            <div class="contains">
-                <p class="next">Description: </p>
+            <div class="row">
+                <p class="bold">Description: </p>
                 <p>{{this.description}}</p>
             </div>
-            <div class="contains">
-                <p class="next">Date of event:</p>
+            <div class="row">
+                <p class="bold">Date of event: </p>
                 <p> {{this.date}}</p>
             </div>
-            <div class="contains">
-                <p class="next">Start Time: </p>
+            <div class="row">
+                <p class="bold">Start Time: </p>
                 <p>{{this.startTime}}</p>
             </div>
-            <div class="contains">
-                <p class="next">End Time:</p>
+            <div class="row">
+                <p class="bold">End Time: </p>
                 <p>{{this.end_time}}</p>
             </div>
-            <div class="contains">
-                <p class="next">Points offered:</p>
+            <div class="row">
+                <p class="bold">Points offered: </p>
                 <p>{{this.pointsOffered}}</p>
             </div>
-            <div class="contains">
-                <p class="next">Bonus points:</p>
+            <div class="row">
+                <p class="bold">Bonus points: </p>
                 <p>{{this.bonusPoints}}</p>
             </div>
         </div>
     </div>
+    <br/>
     {{/each}}
 </div>
 <div>

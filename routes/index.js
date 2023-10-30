@@ -6,7 +6,7 @@ import businessRoutes from "./business.js";
 const constructor = (app) => {
   app.use("/auth", authRoutes);
   app.use("/user", userRoutes);
-  app.use("/attraction", attractionRoutes);
+  app.use("/attractions", attractionRoutes);
   app.use("/business", businessRoutes);
 
   app.get("/", async (req, res) => {
