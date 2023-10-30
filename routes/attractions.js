@@ -4,6 +4,24 @@ const router = Router();
 import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName} from "../data/attractions.js";
 import { } from "../data/users.js";
 import {checkId} from "../helpers.js";
+import multer from "multer";
+import {v2 as cloudinary} from 'cloudinary';
+
+//code for the images
+let cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
+let api_key = process.env.CLOUDINARY_API_KEY;
+let api_secret = process.env.CLOUDINARY_API_SECRET;
+
+cloudinary.config({
+  cloud_name: cloud_name,
+  api_key: api_key, 
+  api_secret: api_secret, 
+  secure: true
+})
+
+let upload = multer({
+  storage: multer.diskStorage({})
+})
 
 router
   .route("/")
@@ -27,8 +45,12 @@ router
       return res.sendStatus(500);
     }
   })
-  .post(async (req, res) => {
+  .post(upload.single("image"), async (req, res) => {
     let attractionInfo = req.body;
+    let image;
+    if(req.file && req.file.path){
+      image = req.file.path;
+    }
     try {
       const newAttraction = await createAttraction(
         attractionInfo.businessId,

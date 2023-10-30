@@ -4,8 +4,8 @@ import { ObjectId } from 'mongodb';
 import e from 'express';
 import { getBusinessById, getBusinessByUsername } from './business.js';
 // no error checking for ids yet, need to add in photo
-const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
-    if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
+const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image) => {
+    if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName || !image) {
       throw 'Error: All fields need to have valid values';
     }
     description = helpers.checkString(description, "Attraction description");
@@ -75,17 +75,6 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     pointsOffered = parseInt(pointsOffered);
     bonusPoints = parseInt(bonusPoints);
 
-    //inserting code for checking images -> will test later 
-    //*************************************************** */
-    // if (!photo || !Array.isArray(photo)) throw `You must provide an array with 1 photo`;
-    // let picture = photo[0];
-    // if (typeof picture !== "object" || Array.isArray(picture) || picture === null) throw `Not a valid picture`;
-    // if (Object.keys(picture).length != 2 || !picture.hasOwnProperty("key") || !picture.hasOwnProperty("url")) throw `Your picture does not have the correct properties`;
-    // if(typeof picture.key != 'string' || typeof picture.url != 'string') throw `The key and url of the picture must be a string`;
-    // picture.key = picture.key.trim();
-    // picture.url = picture.url.trim();
-    // if (picture.key.length === 0 || picture.url.trim().length === 0) throw `Picture must have a key and url that is a valid string`;
-    
     let newAttraction = {
       _id: new ObjectId(),
       businessId: businessId,
@@ -96,9 +85,8 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
       pointsOffered: pointsOffered,
       bonusPoints: bonusPoints,
       description: description,
-      submissions: submissions
-      //this photo might need to change later on 
-      // photo: photo
+      submissions: submissions,
+      image: image
     };
     const attractionCollection = await attractions();
     if (await attractionCollection.findOne({ attractionName: attractionName })) {
