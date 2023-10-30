@@ -117,20 +117,21 @@ router
   router
   .route("/:id")
   .get(async (req, res) => {
-    console.log("id get")
+    let id = req.params.id;
     try {
-      req.params.id = checkId(req.params.id, 'ID URL Param');
+      id = checkId(id);
     } catch (e) {
       return res.status(400).json({error: `${e}`});
     }
     try {
-      let attraction = await get(req.params.id);
+      let attraction = await get(id);
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
-      return res.render('attraction', {attraction: attraction, auth: false });
+      return res.render('viewAttraction', {attraction: attraction, auth: false });
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }
   })
+  
 export default router;
