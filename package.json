@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "jest --forceExit",
+    "seed": "node tasks/seed.js",
     "start": "node app.js"
   },
   "jest": {

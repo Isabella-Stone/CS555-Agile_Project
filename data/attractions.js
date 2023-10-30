@@ -2,8 +2,8 @@ import * as helpers from '../helpers.js';
 import { attractions, businesses } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import e from 'express';
-// no error checking for ids yet, no error checking for photo submissions
-//createAttraction()
+import { getBusinessByUsername } from './business.js';
+// no error checking for ids yet, need to add in photo
 const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
     if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
       throw 'Error: All fields need to have valid values';
@@ -74,6 +74,18 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     }
     pointsOffered = parseInt(pointsOffered);
     bonusPoints = parseInt(bonusPoints);
+
+    //inserting code for checking images -> will test later 
+    //*************************************************** */
+    // if (!photo || !Array.isArray(photo)) throw `You must provide an array with 1 photo`;
+    // let picture = photo[0];
+    // if (typeof picture !== "object" || Array.isArray(picture) || picture === null) throw `Not a valid picture`;
+    // if (Object.keys(picture).length != 2 || !picture.hasOwnProperty("key") || !picture.hasOwnProperty("url")) throw `Your picture does not have the correct properties`;
+    // if(typeof picture.key != 'string' || typeof picture.url != 'string') throw `The key and url of the picture must be a string`;
+    // picture.key = picture.key.trim();
+    // picture.url = picture.url.trim();
+    // if (picture.key.length === 0 || picture.url.trim().length === 0) throw `Picture must have a key and url that is a valid string`;
+    
     let newAttraction = {
       _id: new ObjectId(),
       businessId: businessId,
@@ -85,6 +97,8 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
       bonusPoints: bonusPoints,
       description: description,
       submissions: submissions
+      //this photo might need to change later on 
+      // photo: photo
     };
     const attractionCollection = await attractions();
     if (await attractionCollection.findOne({ attractionName: attractionName })) {
@@ -127,6 +141,17 @@ const get = async (attractionId) => {
       const attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
       if (!attraction) throw 'Error: Attraction not found';
       attraction._id = attraction._id.toString();
+      return attraction;
+  };
+
+  const getByName = async (attractionName) => {
+    if (!attractionName) {
+      throw 'You must provide an attraction name to search for';
+    }
+    attractionName = helpers.checkString(attractionName, "Attraction Name");
+      const attractionCollection = await attractions();
+      const attraction = await attractionCollection.findOne({ attractionName: attractionName });
+      if (!attraction) throw 'Error: Attraction not found';
       return attraction;
   };
 
@@ -183,10 +208,9 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
       pointsOffered = parseInt(pointsOffered);
       bonusPoints = parseInt(bonusPoints);
 
-    const attractionCollection = await attraction();
-    let attraction = await attractionCollection.findOne({ _id: ObjectId(attractionId) });
+    const attractionCollection = await attractions();
+    // let attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
     const updatedAttraction = {
-        _id: new ObjectId(),
         businessId: businessId,
         attractionName: attractionName,
         date: date,
@@ -194,16 +218,17 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
         endTime: endTime,
         pointsOffered: pointsOffered,
         bonusPoints: bonusPoints,
-        description: notes,
+        description: description,
         submissions: submissions
     };
-    const updatedInfo = await attractionCollection.replaceOne({ _id: ObjectId(attractionId) }, updatedAttraction);
+    const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
   
     if (updatedInfo.modifiedCount === 0) {
       throw 'Could not update attraction successfully';
     }
   
-    return updatedInfo.value;
+    let newInfo = await getByName(attractionName);
+    return newInfo;
 };
 
 //deleteAttraction() //shouldn't be able to delete event after its start time
@@ -223,4 +248,22 @@ const deleteAttraction = async (attractionId) => {
       return { ...deletionInfo.value, deleted: true };
 };
 
-export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get };
+const getAttractionByBusinessName = async (bis_name) => {
+  if (!bis_name) {
+    throw `Error: Business name must be inputed`;
+  }
+  bis_name = helpers.checkString(bis_name);
+  let business = await getBusinessByUsername(bis_name);
+  let id = business._id.toString();
+  const attractionCollection = await attractions();
+  const attraction = await attractionCollection.find({ businessId: id }).toArray();
+  if (!attraction) {
+    return [];
+  } 
+  else{
+    return attraction;
+  }
+ 
+};
+
+export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName };

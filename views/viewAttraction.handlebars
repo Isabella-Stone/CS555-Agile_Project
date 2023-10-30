@@ -1,0 +1,16 @@
+<main>
+    {{#if error}}
+        <p>{{message}}</p>
+    {{else}}
+    <div>
+        <h1>{{attraction.attractionName}}</h1>
+        <h3>Date: {{attraction.date}}</h3>
+        <h3>{{attraction.startTime}} - {{attraction.endTime}}</h3>
+        <p></p>
+        <p>{{attraction.description}}</p>
+        <p></p>
+        <h3>Points Offered: {{attraction.pointsOffered}}</h3>
+        <h3>Bonus Points: {{attraction.bonusPoints}}</h3>
+    </div>
+    {{/if}}
+</main>

@@ -181,8 +181,8 @@ export const emailAlreadyExists = async (email) => {
 
 //Edits user info based on given information 
 export const editUserInfo = async (id, firstName, lastName, emailAddress, password, username, age) => {
-  if (!id || !firstName || !lastName || !emailAddress || !password || username || !age) {
-    throw 'All input fields must be provided (createUser)';
+  if (!id || !firstName || !lastName || !emailAddress || !password || !username || !age) {
+    throw 'All input fields must be provided (updateUser)';
   }
   id = checkId(id);
   firstName = checkName(firstName);
@@ -191,43 +191,51 @@ export const editUserInfo = async (id, firstName, lastName, emailAddress, passwo
   password = checkPassword(password);
   username = checkUsername(username);
   age = checkAge(age);
-
   let oldUser = await getUserById(id);
-  let usernameUser = await getUserByUsername(username);
-  let emailUser = await getUserByEmail(emailAddress);
-  if (oldUser.id !== usernameUser.id) {
-    throw `Username already exists (updateUser)`;
-  }
-  if (oldUser.id !== emailUser.id) {
-    throw `Email Address already exists (updateUser)`;
+  let usernameExists;
+  let emailExists;
+  
+  if (oldUser.username !== username) {
+    usernameExists = await usernameAlreadyExists(username);
+    if (usernameExists) {
+      throw `Username already exists (updateUser)`
+    }
   }
 
-  const hashed = await bcrypt.hash(password, saltRounds);
+  if (oldUser.emailAddress !== emailAddress) {
+    emailExists = await emailAlreadyExists(emailAddress);
+    if (emailExists) {
+      throw `Email already exists (updateUser)`
+    }
+  }
+
+  const hashed1 = await bcrypt.hash(password, saltRounds);
 
   const userUpdate = {
     firstName: firstName,
     lastName: lastName,
     emailAddress: emailAddress,
-    password: hashed,
+    password: hashed1,
     username: username,
     age: age,
     points: oldUser.points
   };
 
   const userCollection = await users();
-  const updateInfo = await userCollection.findOneAndUpdate(
-    { _id: new ObjectId(id) },
-    { $set: userUpdate },
-    { returnDocument: 'after' }
-  );
+  // const updateInfo = await userCollection.findOneAndUpdate(
+  //   { _id: new ObjectId(id) },
+  //   { $set: userUpdate },
+  //   { returnDocument: 'after' }
+  // );
+
+  const updateInfo = await userCollection.replaceOne({_id: new ObjectId(id)}, userUpdate);
+
   if (updateInfo.modifiedCount === 0) {
     throw `At least one field must be different to successfully update user`;
   }
-  if (updateInfo.lastErrorObject.n === 0) {
-    throw 'Error: Update failed';
-  }
 
-  return updateInfo.value;
+  let newInfo = await getUserByUsername(username);
+  return newInfo;
 };
 
 //Deletes user with the given id

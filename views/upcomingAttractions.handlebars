@@ -1,11 +1,47 @@
+<div class="resize">
+    <ul id="navbar">
+        <li><a href="http://localhost:3000/user/{{user.username}}" target="_self" class="nav-item">Profile</a></li> 
+        <li><a href="http://localhost:3000/user/redeemRewards/{{user.username}}" target="_self" class="nav-item">Redeem Rewards</a></li> 
+        <li><a href="http://localhost:3000/attraction/editAttraction/{{user.username}}" target="_self" class="nav-item">Click here to edit an attraction</a></li> 
+    </ul>
+</div>
+
 <main>
-    <h1>Upcoming Attractions: </h1>
+    <div class="attraction-holder">
     {{#each attractions}}
-        <div>
-            <h2>{{this.bussinessId}}</h2>
-            <p>{{this.dateOfEvent}}</p>
-            <p>{{this.pointsOffered}}</p>
-            <a href="/attraction/{{this._id}}">Click for Details</a>
-          </div>
+    <div class="attractions">
+        <div class="content">
+            <div class="contains">
+                <p class="next">Name of Event:</p>
+                <p>{{this.attractionName}}</p>
+            </div>
+            <div class="contains">
+                <p class="next">Description: </p>
+                <p>{{this.description}}</p>
+            </div>
+            <div class="contains">
+                <p class="next">Date of event:</p>
+                <p> {{this.date}}</p>
+            </div>
+            <div class="contains">
+                <p class="next">Start Time: </p>
+                <p>{{this.startTime}}</p>
+            </div>
+            <div class="contains">
+                <p class="next">End Time:</p>
+                <p>{{this.end_time}}</p>
+            </div>
+            <div class="contains">
+                <p class="next">Points offered:</p>
+                <p>{{this.pointsOffered}}</p>
+            </div>
+            <div class="contains">
+                <p class="next">Bonus points:</p>
+                <p>{{this.bonusPoints}}</p>
+            </div>
+        </div>
+    </div>
     {{/each}}
+</div>
+<div>
 </main>
