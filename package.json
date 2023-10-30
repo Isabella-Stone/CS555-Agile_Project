@@ -30,12 +30,17 @@
   },
   "homepage": "https://github.com/Isabella-Stone/CS555-Agile_Project#readme",
   "dependencies": {
+    "@cloudinary/url-gen": "^1.12.0",
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
     "handlebars": "^4.7.8",
-    "mongodb": "^6.1.0"
+    "mongodb": "^6.1.0",
+    "mongoose": "^7.6.3",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
