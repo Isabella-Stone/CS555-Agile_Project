@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName} from "../data/attractions.js";
 import { } from "../data/users.js";
 import {checkId} from "../helpers.js";
 
@@ -10,7 +10,7 @@ router
   .get(async (req, res) => {
     try {
       let attractionList = await getAllAttractions();
-      return res.render("upcomingAttractions", {attractions: attractionList, auth: true});
+      return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
     } 
     catch (e) {
       return res.sendStatus(500);
@@ -49,7 +49,7 @@ router
   });
 
 
-  router.route("/editAttraction")
+  router.route("/editAttraction/:busname/:attname")
   .get(async (req, res) => {
     let attname = req.params.attname;
     try {
@@ -61,22 +61,30 @@ router
       return res.render("chooseAttraction", {auth: true, error: true, message: e});
     }
   })
+
+  router.route("/editAttraction")
   .post(async (req, res) => {
     //add check to make sure authenticated user has same id as param
-    return res.redirect(`/attraction/editAttraction/${req.body.attractionName}`)
+    console.log("Here 2")
+    try {
+      let businessName = await getBusinessNameByAttractionName(req.body.attractionName);
+      return res.redirect(`/attractions/editAttraction/${businessName}/${req.body.attractionName}`)
+    } catch (e) {
+      return res.render("chooseAttraction", {auth: true, error: true, message: e});
+    }
+    
   });
 
   router.route("/editAttraction/:busname")
   .get(async (req, res) => {
-    let attname = req.params.busname;
+    let busName = req.params.busname;
     try {
-      const attractions = await getByName(attname);
-      console.log(attractions);
-      return res.render("editAttractions", {auth: false, attractions: attractions});
+      const attractions = await getAttractionByBusinessName(busName);
+      return res.render("chooseAttraction", {auth: false, attractions: attractions});
     }
     catch (e)
     {
-      return res.status(400).render("chooseAttraction", {auth: true, error: true, message: e});
+      return res.status(400).render("upcomingAttractions", {auth: true, error: true, message: e});
     }
   })
   .post(async (req, res) => {
@@ -117,7 +125,7 @@ router
         attInfo.startTime, 
         attInfo.endTime);
         console.log(updated);
-        let url = "/attraction/" + updated._id;
+        let url = "/attractions/" + updated._id;
         
       return res.redirect(url);
     } catch (e) {
