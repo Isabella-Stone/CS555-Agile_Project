@@ -33,13 +33,13 @@ test('Trying to get a user by emailAddress that does not exist', async () => {
 
 test("successfully creates an attraction", async () => {
     const att = await createAttraction("12345", "none", "Movie2 Nights", "50", "fun night out", "0", "10/25/2023", "08:00", "12:00");
-    expect(att).toStrictEqual({_id: att._id, businessId: "12345", attractionName: "Movie2 Nights", date: "10/25/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none"});
+    expect(att).toStrictEqual({_id: att._id, businessId: "12345", attractionName: "Movie2 Nights", date: "10/25/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none", image: null});
 })
 
 test("gets attraction by id", async () => {
     const a1 = await createAttraction("123456", "none", "Movie3 Night 2.0", "50", "fun night out", "0", "10/26/2023", "08:00", "12:00");
     const getAttraction = await get(a1._id.toString());
-    expect(getAttraction).toStrictEqual({_id: getAttraction._id, businessId: "123456", attractionName: "Movie3 Night 2.0", date: "10/26/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none"});
+    expect(getAttraction).toStrictEqual({_id: getAttraction._id, businessId: "123456", attractionName: "Movie3 Night 2.0", date: "10/26/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none", image: null});
 })
 
 test('Gets a preexisting user', async () => {
