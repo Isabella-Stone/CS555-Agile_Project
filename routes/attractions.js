@@ -6,6 +6,7 @@ import { } from "../data/users.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
+import { getBusinessByUsername } from "../data/business.js";
 
 //code for the images
 let cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
@@ -38,6 +39,7 @@ router
 router
   .route("/create")
   .get(async (req, res) => {
+    console.log("In get");
     try {
       return res.render("createAttraction", {auth: true});
     } 
@@ -51,19 +53,23 @@ router
     if(req.file && req.file.path){
       image = req.file.path;
     }
+    console.log(req.body);
+    console.log(req)
     try {
+      let business = await getBusinessByUsername(req.session.user.username);
       const newAttraction = await createAttraction(
-        attractionInfo.businessId,
-        attractionInfo.submissions,
+        business._id.toString(),
+        "none",
         attractionInfo.attractionName,
         attractionInfo.pointsOffered,
         attractionInfo.description,
         attractionInfo.bonusPoints,
         attractionInfo.date,
         attractionInfo.startTime,
-        attractionInfo.endTime
+        attractionInfo.endTime,
+        attractionInfo.image
       );
-      return res.render("upcomingAttractions", {auth: true});
+      return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
       return res.status(500).json(`${e}`)    
     }
