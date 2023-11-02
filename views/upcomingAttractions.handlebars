@@ -18,7 +18,7 @@
         <div class="content">
             <div class="row">
                 <p class="bold">Name of Event: </p>
-                <p>{{this.attractionName}}</p>
+                <a href="http://localhost:3000/attractions/{{this._id}}" target="_self" class="attractionUrl">{{this.attractionName}}</a>
             </div>
             <div class="row">
                 <p class="bold">Description: </p>
@@ -34,7 +34,7 @@
             </div>
             <div class="row">
                 <p class="bold">End Time: </p>
-                <p>{{this.end_time}}</p>
+                <p>{{this.endTime}}</p>
             </div>
             <div class="row">
                 <p class="bold">Points offered: </p>

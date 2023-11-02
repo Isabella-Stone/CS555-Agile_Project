@@ -11,3 +11,10 @@
 .bold {
     font-weight: bold;
 }
+
+.attractionUrl {
+    text-decoration: underline;
+    padding: 0px;
+    padding-top: 16px;
+    font-weight: bold;
+  }
