@@ -1,9 +1,13 @@
 <div class="resize">
     <ul id="navbar">
+        {{#if session.user.is_business}}
+        <li><a href="http://localhost:3000/business/{{session.user._id}}" target="_self" class="nav-item">Profile</a></li> 
+        <li><a href="http://localhost:3000/attractions/create" target="_self" class="nav-item">Click here to create an attraction</a></li> 
+        <li><a href="http://localhost:3000/attractions/editAttraction/{{session.user.username}}" target="_self" class="nav-item">Click here to edit an attraction</a></li> 
+        {{else}}
         <li><a href="http://localhost:3000/user/{{user.username}}" target="_self" class="nav-item">Profile</a></li> 
         <li><a href="http://localhost:3000/user/redeemRewards/{{user.username}}" target="_self" class="nav-item">Redeem Rewards</a></li> 
-        <li><a href="http://localhost:3000/attractions/create" target="_self" class="nav-item">Click here to create an attraction</a></li> 
-        <li><a href="http://localhost:3000/attractions/editAttraction/{{user.username}}" target="_self" class="nav-item">Click here to edit an attraction</a></li> 
+        {{/if}}
     </ul>
 </div>
 

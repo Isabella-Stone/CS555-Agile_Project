@@ -15,6 +15,7 @@ router
     try {
         let user = await checkUser(emailAddress, password);
         req.session.user = user;
+        req.session.user.is_business = user.name ? true : false
         let attractionList = await getAllAttractions();
         // return res.redirect(req.session.redirect ? req.session.redirect : '/attractions');
         return res.redirect('/attractions');

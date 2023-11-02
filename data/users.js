@@ -74,7 +74,8 @@ export const checkUser = async (emailAddress, password) => {
           let name = business.name;
           let emailAddress = business.emailAddress
           let username = business.username;
-          return {name, emailAddress, username};
+          let _id = String(business._id)
+          return {name, emailAddress, username, _id};
         }
         else {
           //is user
@@ -82,7 +83,8 @@ export const checkUser = async (emailAddress, password) => {
           let lastName = user.lastName;
           let emailAddress = user.emailAddress
           let username = user.username;
-          return {firstName, lastName, emailAddress, username};
+          let _id = String(user._id)
+          return {firstName, lastName, emailAddress, username, _id};
         }
       }
       else {
