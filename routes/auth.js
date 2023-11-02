@@ -16,7 +16,8 @@ router
         let user = await checkUser(emailAddress, password);
         req.session.user = user;
         let attractionList = await getAllAttractions();
-        return res.redirect(req.session.redirect ? req.session.redirect : '/attractions');
+        // return res.redirect(req.session.redirect ? req.session.redirect : '/attractions');
+        return res.redirect('/attractions');
     } 
     catch (e) {
       return res.status(400).render("login", {error: true, message: e});
