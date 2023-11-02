@@ -29,14 +29,14 @@ router.route("/signup")
       userInfo.ageInput = checkAge(parseInt(userInfo.ageInput));
     }
     catch (e) {
-      return res.status(400).render("signUpUser", {auth: false, error: true, message: e});
+      return res.status(400).render("signUpUser", {error: true, message: e});
     }
     try {
       const newUser = await createUser(userInfo.firstName, userInfo.lastName, 
       userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
       return res.redirect("/auth/login");
     } catch (e) {
-      return res.status(400).render("signUpUser", {auth: false, error: true, message: e});
+      return res.status(400).render("signUpUser", {error: true, message: e});
     }
   });
 
@@ -45,11 +45,11 @@ router.route("/signup")
     try {
       let username = checkUsername(req.params.username);
       const user = await getUserByUsername(username);
-      return res.render("userProfile", {auth: false, user: user});
+      return res.render("userProfile", {user: user});
     }
     catch (e)
     {
-      return res.status(400).render("userProfile", {auth: true, error: true, message: e});
+      return res.status(400).render("userProfile", {error: true, message: e});
     }
   })
   .post(async (req, res) => {
@@ -60,7 +60,7 @@ router.route("/signup")
     }
     catch (e)
     {
-      return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
+      return res.status(400).render("businessProfile", {error: true, message: e});
     }
   })
   .put(async (req, res) => {
