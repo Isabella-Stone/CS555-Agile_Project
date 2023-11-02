@@ -32,6 +32,12 @@ const constructor = (app) => {
   app.use("/attractions", attractionRoutes);
   app.use("/business", businessRoutes);
 
+  app.get("/", async (req, res) => {
+    if (!req.session || !req.session.user || !req.session.user.id) {
+      return res.render("landingPage", {title: "Home" });
+    }
+  });
+
   app.use("*", (req, res) => {
     res.status(404).json({error: 'Route Not found'});
   });
