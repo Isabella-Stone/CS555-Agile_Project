@@ -131,8 +131,6 @@ router
     console.log("put");
     let busname = req.params.busname;
     let attInfo = req.body;
-    console.log(req.body);
-    console.log(req.params);
     if (!attInfo || Object.keys(attInfo).length === 0) {
       return res
         .status(400)
@@ -140,7 +138,6 @@ router
     }
     try {
       const old = await getByName(busname);
-      console.log(old);
       const updated = await editAttraction(
         old.businessId, 
         old._id.toString(), 
