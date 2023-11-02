@@ -143,7 +143,7 @@ const get = async (attractionId) => {
       return attraction;
   };
 
-
+//STILL NEEDS TO RECEIVE NEW IMAGE FROM EDITATTRACTION PAGE CURRENTLY HARDCODED
 //editAttraction()
 const editAttraction = async (businessId, attractionId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
     if (!businessId || !attractionId || !submissions || !attractionName || !date || !startTime || !pointsOffered || !description || !bonusPoints  ||!endTime ) {
@@ -207,7 +207,8 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
         pointsOffered: pointsOffered,
         bonusPoints: bonusPoints,
         description: description,
-        submissions: submissions
+        submissions: submissions,
+        image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
     };
     const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
   
