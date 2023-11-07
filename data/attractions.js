@@ -11,59 +11,40 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     description = helpers.checkString(description, "Attraction description");
     date = helpers.checkString(date, "Attraction date");
     attractionName = helpers.checkString(attractionName, "Attraction name");
-    let splitDate = date.split('/');
-    if (splitDate.length !== 3) {
-      throw 'Error: Date must be in MM/DD/YYYY format';
-    }
-    let regexNum = /^[0-9]*$/;
-    if (
-      splitDate[0].length !== 2 ||
-      splitDate[1].length !== 2 ||
-      splitDate[2].length !== 4 ||
-      !regexNum.test(splitDate[0]) ||
-      !regexNum.test(splitDate[1]) ||
-      !regexNum.test(splitDate[2])
-    ) {
-      throw 'Error: Date must be in MM/DD/YYYY format';
-    }
-    if (splitDate[0] * 1 < 1 || splitDate[0] * 1 > 12) {
-      throw 'Error: Date must be in MM/DD/YYYY format';
-    }
-    if (splitDate[1] * 1 < 1 || splitDate[1] * 1 > 31) {
-      throw 'Error: Date must be in MM/DD/YYYY format';
-    }
+    date = helpers.checkDate(date);
     startTime = helpers.checkString(startTime, "Attraction start time");
     endTime = helpers.checkString(endTime, "Attraction end time");
-    let st = startTime.split(':');
-    let et = endTime.split(':');
+    let regexNum = /^[0-9]*$/;
+    let splitStartTime = startTime.split(':');
+    let splitEndTime = endTime.split(':');
     if (
-      st.length != 2 ||
-      st[0].length != 2 ||
-      st[1].length != 2 ||
-      !regexNum.test(st[0]) ||
-      !regexNum.test(st[1])
+      splitStartTime.length != 2 ||
+      splitStartTime[0].length != 2 ||
+      splitStartTime[1].length != 2 ||
+      !regexNum.test(splitStartTime[0]) ||
+      !regexNum.test(splitStartTime[1])
     ) {
       throw 'Error: Must provide start time in HH:MM format';
     }
     if (
-      et.length != 2 ||
-      et[0].length != 2 ||
-      et[1].length != 2 ||
-      !regexNum.test(et[0]) ||
-      !regexNum.test(et[1])
+      splitEndTime.length != 2 ||
+      splitEndTime[0].length != 2 ||
+      splitEndTime[1].length != 2 ||
+      !regexNum.test(splitEndTime[0]) ||
+      !regexNum.test(splitEndTime[1])
     ) {
       throw 'Error: Must provide end time in HH:MM format';
     }
-    if (st[0] * 1 < 0 || st[0] * 1 > 23) {
+    if (splitStartTime[0] * 1 < 0 || splitStartTime[0] * 1 > 23) {
       throw 'Error: Must provide start time in HH:MM format';
     }
-    if (st[1] * 1 < 0 || st[1] * 1 > 59) {
+    if (splitStartTime[1] * 1 < 0 || splitStartTime[1] * 1 > 59) {
       throw 'Error: Must provide start time in HH:MM format';
     }
-    if (et[0] * 1 < 0 || et[0] * 1 > 23) {
+    if (splitEndTime[0] * 1 < 0 || splitEndTime[0] * 1 > 23) {
       throw 'Error: Must provide end time in HH:MM format';
     }
-    if (et[1] * 1 < 0 || et[1] * 1 > 59) {
+    if (splitEndTime[1] * 1 < 0 || splitEndTime[1] * 1 > 59) {
       throw 'Error: Must provide end time in HH:MM format';
     }
     if (!regexNum.test(pointsOffered)) {
