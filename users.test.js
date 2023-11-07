@@ -1,4 +1,5 @@
-import {createUser,checkUser,getUserById, getAllUsers, getUserByEmail, editUserInfo} from "./data/users";
+import { createUser, editUserInfo, checkUser } from "./data/editUsers.js";
+import { getAllUsers, getUserById, getUserByUsername, getUserByEmail, usernameAlreadyExists, emailAlreadyExists } from "./data/getUsers.js"
 import {createAttraction,get} from "./data/attractions";
 import {} from "./helpers";
 import { ObjectId } from "mongodb";

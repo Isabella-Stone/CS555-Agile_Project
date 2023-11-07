@@ -2,12 +2,12 @@ import { users } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
 import { } from "../data/business.js";
-import { createUser, editUserInfo, getUserById, getUserByUsername } from "../data/users.js";
+import { createUser, editUserInfo } from "../data/editUsers.js";
+import { getAllUsers, getUserById, getUserByUsername, getUserByEmail, usernameAlreadyExists, emailAlreadyExists } from "../data/getUsers.js";
 import { checkAge, checkEmail, checkId, checkName, checkPassword, checkUsername } from "../helpers.js";
 
 router.route("/signup")
   .get(async (req, res) => {
-    //return res.render("signup", { auth: false});
     return res.render("signUpUser", {auth: false});
   })
   .post(async (req, res) => {
