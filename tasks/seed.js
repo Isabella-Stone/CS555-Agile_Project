@@ -1,4 +1,4 @@
-import { userData, businessData, attractionData } from '../data/index.js';
+import { getUserData, editUserData, businessData, attractionData } from '../data/index.js';
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 
 //lets drop the database each time this is run
@@ -7,7 +7,7 @@ await db.dropDatabase();
 
 async function main() {
   try {
-    const user1 = await userData.createUser(
+    const user1 = await editUserData.createUser(
         "Areeb", 
         "Chaudhry", 
         "areeb1@gmail.com", 
@@ -15,7 +15,7 @@ async function main() {
         "kash123", 
         21
     );
-    const user2 = await userData.createUser(
+    const user2 = await editUserData.createUser(
         'Shailaja', 
         'Vyas', 
         'svyaslol@gmail.com',
@@ -23,7 +23,7 @@ async function main() {
         "svyas456",
         22
     );
-    const user3 = await userData.createUser(
+    const user3 = await editUserData.createUser(
         "Mariam", 
         "Dardir", 
         "mariamd@gmail.com", 
@@ -31,7 +31,7 @@ async function main() {
         "mxrixm", 
         21
     );
-    const user4 = await userData.createUser(
+    const user4 = await editUserData.createUser(
         "Patrick", 
         "Hill", 
         "pattyhills@gmail.com", 
@@ -39,7 +39,7 @@ async function main() {
         "pattyhill", 
         48
     );
-    const user5 = await userData.createUser(
+    const user5 = await editUserData.createUser(
         "Megan", 
         "Sanford", 
         "msanford@gmail.com", 

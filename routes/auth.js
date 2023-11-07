@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkUser } from "../data/users.js";
+import { checkUser } from "../data/editUsers.js";
 import { getAllAttractions } from "../data/attractions.js";
 const router = Router();
 import xss from 'xss';

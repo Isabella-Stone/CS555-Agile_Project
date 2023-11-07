@@ -2,7 +2,6 @@ import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
 import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName} from "../data/attractions.js";
-import { } from "../data/users.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
