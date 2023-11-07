@@ -21,6 +21,11 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     if (business) {
       throw `Username already exists (createBusiness)`;
     }
+
+    business = await businessCollection.findOne({emailAddress: emailAddress})
+    if (business) {
+      throw `Email address already exists (createBusiness)`;
+    }
   
     business = await businessCollection.findOne({name: name})
     if (business) {

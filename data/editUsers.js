@@ -57,21 +57,22 @@ export const checkUser = async (emailAddress, password) => {
 
     const user = await userCollection.findOne({emailAddress: emailAddress});
     const business = await businessCollection.findOne({emailAddress: emailAddress});
+    let isUser = (user !== null);
+    let isBusiness = (business !== null);
 
-    if (user === null && business === null) {
+    if (!isUser && !isBusiness) {
       throw new Error ("Either the email address or password is invalid");
     }
     else {
-      let same;
-      if (business === null) {
-        same = await bcrypt.compare(password, user.password);
+      let validPassword;
+      if (isUser) {
+        validPassword = await bcrypt.compare(password, user.password);
       } else {
-        same = await bcrypt.compare(password, business.password);
+        validPassword = await bcrypt.compare(password, business.password);
       }
       
-      if (same) {
-        if (user === null) {
-          //is business
+      if (validPassword) {
+        if (isBusiness) {
           let name = business.name;
           let emailAddress = business.emailAddress
           let username = business.username;
