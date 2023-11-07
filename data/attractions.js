@@ -155,38 +155,7 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
     let regexNum = /^[0-9]*$/;
     startTime = helpers.checkString(startTime, "Attraction start time");
     endTime = helpers.checkString(endTime, "Attraction end time");
-    let st = startTime.split(':');
-    let et = endTime.split(':');
-    if (
-        st.length != 2 ||
-        st[0].length != 2 ||
-        st[1].length != 2 ||
-        !regexNum.test(st[0]) ||
-        !regexNum.test(st[1])
-    ) {
-        throw 'Error: Must provide start time in HH:MM format';
-    }
-    if (
-        et.length != 2 ||
-        et[0].length != 2 ||
-        et[1].length != 2 ||
-        !regexNum.test(et[0]) ||
-        !regexNum.test(et[1])
-    ) {
-        throw 'Error: Must provide end time in HH:MM format';
-    }
-    if (st[0] * 1 < 0 || st[0] * 1 > 23) {
-        throw 'Error: Must provide start time in HH:MM format';
-    }
-      if (st[1] * 1 < 0 || st[1] * 1 > 59) {
-        throw 'Error: Must provide start time in HH:MM format';
-      }
-      if (et[0] * 1 < 0 || et[0] * 1 > 23) {
-        throw 'Error: Must provide end time in HH:MM format';
-      }
-      if (et[1] * 1 < 0 || et[1] * 1 > 59) {
-        throw 'Error: Must provide end time in HH:MM format';
-      }
+    let time = helpers.checkTime(startTime, endTime);
       if (!regexNum.test(pointsOffered)) {
         throw 'Points offered must be a number';
       }
@@ -202,8 +171,8 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
         businessId: businessId,
         attractionName: attractionName,
         date: date,
-        startTime: startTime,
-        endTime: endTime,
+        startTime: time.startTime,
+        endTime: time.endTime,
         pointsOffered: pointsOffered,
         bonusPoints: bonusPoints,
         description: description,
