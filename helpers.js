@@ -134,3 +134,29 @@ export const checkTime = (startTime, endTime) =>
       let times = {startTime: startTime, endTime: endTime}
       return times;
   }
+
+  export const checkDate = (date) =>
+  {
+    let splitDate = date.split('/');
+    if (splitDate.length !== 3) {
+        throw 'Error: Date must be in MM/DD/YYYY format';
+      }
+      let regexNum = /^[0-9]*$/;
+      if (
+        splitDate[0].length !== 2 ||
+        splitDate[1].length !== 2 ||
+        splitDate[2].length !== 4 ||
+        !regexNum.test(splitDate[0]) ||
+        !regexNum.test(splitDate[1]) ||
+        !regexNum.test(splitDate[2])
+      ) {
+        throw 'Error: Date must be in MM/DD/YYYY format';
+      }
+      if (splitDate[0] * 1 < 1 || splitDate[0] * 1 > 12) {
+        throw 'Error: Date must be in MM/DD/YYYY format';
+      }
+      if (splitDate[1] * 1 < 1 || splitDate[1] * 1 > 31) {
+        throw 'Error: Date must be in MM/DD/YYYY format';
+      }
+      return date;
+  }
