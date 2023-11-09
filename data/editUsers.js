@@ -46,7 +46,7 @@ export const createUser = async (firstName, lastName, emailAddress, password, us
 
 export const checkUser = async (emailAddress, password) => {
     if (!emailAddress || !password) {
-      throw new Error("All input fields must be provided");
+      throw "All input fields must be provided";
     }
   
     emailAddress = checkEmail(emailAddress);
@@ -61,7 +61,7 @@ export const checkUser = async (emailAddress, password) => {
     let isBusiness = (business !== null);
 
     if (!isUser && !isBusiness) {
-      throw new Error ("Either the email address or password is invalid");
+      throw "Either the email address or password is invalid";
     }
     else {
       let validPassword;
@@ -90,7 +90,7 @@ export const checkUser = async (emailAddress, password) => {
         }
       }
       else {
-        throw new Error("Either the email address or password is invalid");
+        throw "Either the email address or password is invalid";
       }
     }
   };

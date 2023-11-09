@@ -55,6 +55,15 @@ button {
     cursor: pointer;
 }
 
+.signup {
+    color: #0074d9;
+    text-decoration: none;
+}
+
+.error {
+    color: red;
+}
+
 
 /*attraction page*/
 .attractionUrl {

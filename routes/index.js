@@ -34,7 +34,8 @@ const constructor = (app) => {
 
   app.get("/", async (req, res) => {
     if (!req.session || !req.session.user || !req.session.user.id) {
-      return res.render("landingPage", {title: "Home" });
+      return res.redirect('/auth/login');
+      // return res.render("login", {title: "Home" });
     }
   });
 
