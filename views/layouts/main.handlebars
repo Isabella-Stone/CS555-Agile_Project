@@ -24,8 +24,8 @@
           <li><a href="/auth/logout">Logout</a></li>
           {{else}}
           <li><a href="/attractions/">Upcoming Attractions</a></li>
-          <li><a href="/user/{{user.username}}" target="_self" class="nav-item">Profile</a></li> 
-          <li><a href="/user/redeemRewards/{{user.username}}" target="_self" class="nav-item">Redeem Rewards</a></li> 
+          <li><a href="/user/{{session.user.username}}" target="_self" class="nav-item">Profile</a></li> 
+          <li><a href="/user/redeemRewards/{{session.user.username}}" target="_self" class="nav-item">Redeem Rewards</a></li> 
           <li><a href="/auth/logout">Logout</a></li>
           {{/if}}
       </ul>
