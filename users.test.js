@@ -76,7 +76,15 @@ test("successfully 'signs in' the user", async () => {
 })
 
 it("should not allow user to sign in with wrong password", async () => {        
-    await expect(checkUser("ibellarose1@gmail.com", "wrongpassword!!!")).rejects.toThrow("Either the email address or password is invalid");
+    let error;
+    try{
+        const user = await checkUser("ibellarose1@gmail.com", "wrongpassword!!!");
+
+    }catch(e){
+        error = e
+    }
+
+    expect(error).toStrictEqual("Either the email address or password is invalid")
 });
 
 it("should not allow user to sign in with wrong email", async () => {        
