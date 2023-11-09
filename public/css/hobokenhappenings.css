@@ -69,12 +69,14 @@ button {
 }
 
 
-/*attractions page*/
+/*all attractions page*/
 .attractionUrl {
-    text-decoration: underline;
+    text-decoration: none;
     padding: 0px;
-    padding-top: 16px;
+    padding-top: 25px;
+    padding-bottom: 5px;
     font-weight: bold;
+    font-size: 25px;
 }
 
 .attraction {
@@ -83,6 +85,14 @@ button {
     padding: 16px;
     margin: 16px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
 }
 
+.date {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
 
