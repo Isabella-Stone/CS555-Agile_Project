@@ -17,11 +17,15 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 
 /*forms*/
+#login-form {
+    margin-top: 100px;
+}
+
 #login-form, #signUpBusiness-form, #signUpUser-form {
     max-width: 400px;
     width: 100%;
@@ -65,10 +69,20 @@ button {
 }
 
 
-/*attraction page*/
+/*attractions page*/
 .attractionUrl {
     text-decoration: underline;
     padding: 0px;
     padding-top: 16px;
     font-weight: bold;
 }
+
+.attraction {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+

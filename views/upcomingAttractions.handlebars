@@ -14,10 +14,8 @@
 <main>
     <div class="attraction-holder">
     {{#each attractions}}
-    <div class="attractions">
-        <div class="content">
+    <div class="attraction">
             <div class="row">
-                <p class="bold">Name of Event: </p>
                 <a href="http://localhost:3000/attractions/{{this._id}}" target="_self" class="attractionUrl">{{this.attractionName}}</a>
             </div>
             <div class="row">
@@ -25,7 +23,7 @@
                 <p>{{this.description}}</p>
             </div>
             <div class="row">
-                <p class="bold">Date of event: </p>
+                <p class="bold">Date: </p>
                 <p> {{this.date}}</p>
             </div>
             <div class="row">
@@ -44,7 +42,6 @@
                 <p class="bold">Bonus points: </p>
                 <p>{{this.bonusPoints}}</p>
             </div>
-        </div>
     </div>
     <br/>
     {{/each}}
