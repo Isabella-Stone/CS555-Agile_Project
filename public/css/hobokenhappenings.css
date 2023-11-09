@@ -1,3 +1,4 @@
+/*general*/
 .column {
     display: flex;
     flex-direction: column;
@@ -12,9 +13,53 @@
     font-weight: bold;
 }
 
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+/*forms*/
+#login-form, #signUpBusiness-form, #signUpUser-form {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+input {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #195c96;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+/*attraction page*/
 .attractionUrl {
     text-decoration: underline;
     padding: 0px;
     padding-top: 16px;
     font-weight: bold;
-  }
+}
