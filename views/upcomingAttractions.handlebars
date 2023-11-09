@@ -1,34 +1,20 @@
-<div class="resize">
-    <ul id="navbar">
-        {{#if session.user.is_business}}
-        <li><a href="http://localhost:3000/business/{{session.user._id}}" target="_self" class="nav-item">Profile</a></li> 
-        <li><a href="http://localhost:3000/attractions/create" target="_self" class="nav-item">Click here to create an attraction</a></li> 
-        <li><a href="http://localhost:3000/attractions/editAttraction/{{session.user.username}}" target="_self" class="nav-item">Click here to edit an attraction</a></li> 
-        {{else}}
-        <li><a href="http://localhost:3000/user/{{user.username}}" target="_self" class="nav-item">Profile</a></li> 
-        <li><a href="http://localhost:3000/user/redeemRewards/{{user.username}}" target="_self" class="nav-item">Redeem Rewards</a></li> 
-        {{/if}}
-    </ul>
-</div>
-
 <main>
     <div class="attraction-holder">
-    {{#each attractions}}
-    <div class="attraction">
-            <div class="row">
-                <a href="http://localhost:3000/attractions/{{this._id}}" target="_self" class="attractionUrl">{{this.attractionName}}</a>
-                <p class="date"> {{this.date}}, {{this.startTime}}-{{this.endTime}}</p>
+        {{#each attractions}}
+            <div class="attraction">
+                    <div class="row">
+                        <a href="http://localhost:3000/attractions/{{this._id}}" target="_self" class="attractionUrl">{{this.attractionName}}</a>
+                        <p class="date"> {{this.date}}, {{this.startTime}}-{{this.endTime}}</p>
+                    </div>
+                    <div class="row">
+                        <i>{{this.description}}</i>
+                    </div>
+                    <div class="row">
+                        <p class="bold">Points offered: </p>
+                        <p>{{this.pointsOffered}} (+ {{this.bonusPoints}} bonus points)</p>
+                    </div>
             </div>
-            <div class="row">
-                <i>{{this.description}}</i>
-            </div>
-            <div class="row">
-                <p class="bold">Points offered: </p>
-                <p>{{this.pointsOffered}} (+ {{this.bonusPoints}} bonus points)</p>
-            </div>
+        <br/>
+        {{/each}}
     </div>
-    <br/>
-    {{/each}}
-</div>
-<div>
 </main>
