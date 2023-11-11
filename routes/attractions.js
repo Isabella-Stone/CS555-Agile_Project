@@ -154,6 +154,7 @@ router
   router
   .route("/:id")
   .get(async (req, res) => {
+    console.log(req.session)
     let id = req.params.id;
     try {
       id = checkId(id);
@@ -165,7 +166,7 @@ router
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
-      return res.render('viewAttraction', {attraction: attraction, auth: false });
+      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business});
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }

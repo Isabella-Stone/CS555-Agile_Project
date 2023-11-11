@@ -14,4 +14,32 @@
         <img src={{attraction.image}} alt="Image" width="300" height="300">
     </div>
     {{/if}}
+
+    {{#if isUser}}
+        {{!-- we need to change the true to an actual var that tells if a user or business is looking at the page --}}
+        <form action="/attractions/:id/submission" method="post" id="submission" class="column" enctype="multipart/form-data">
+            <label for="image">Photo Submission</label>
+            <br/>
+            <input 
+                type="file"
+                id="image"
+                accept=".img,.jpeg,.png"
+                name="image"
+            >
+            <br/>
+
+            <label for="rating" class="column">On a scale of 1 to 5, how satisfied were you with the event?</label>
+            <select id="rating" name="rating">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+
+            <label for="reasoning">Why did you give this rating?</label>
+            <input type="text" id="reasoning" name="reasoning">
+            <button type="submit">Submit</button>
+        </form>
+    {{/if}}
 </main>
