@@ -6,13 +6,12 @@ import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessByUsername } from "../data/business.js";
-import dotenv from 'dotenv';
-dotenv.config();
+import dotenv from 'dotenv/config';
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY, 
-  api_secret: process.env.API_SECRET, 
+  api_secret: process.env.API_SECRET,
   secure: true
 })
 let upload = multer({ dest: 'uploads/'})
@@ -40,7 +39,7 @@ router
       return res.sendStatus(500);
     }
   })
-  .post(upload.single("image"),async (req, res, next) => {
+  .post(upload.single("image"),async (req, res) => {
     console.log(req.file)
     let attractionInfo = req.body;
     let image = null;
@@ -61,7 +60,7 @@ router
         attractionInfo.date,
         attractionInfo.startTime,
         attractionInfo.endTime,
-        attractionInfo.image
+        image
       );
       return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
