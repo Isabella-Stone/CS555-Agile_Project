@@ -160,3 +160,11 @@ export const checkTime = (startTime, endTime) =>
       }
       return date;
   }
+  export const checkStatus = (name) => {
+    name = checkString(name, "Status");
+    const validStatuses = ["approved", "declined", "pending"];
+    if (!validStatuses.includes(name)) {
+        throw `Error: Invalid Status.`;
+    }
+    return name;
+  }

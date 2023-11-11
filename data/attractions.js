@@ -56,6 +56,21 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     pointsOffered = parseInt(pointsOffered);
     bonusPoints = parseInt(bonusPoints);
 
+    const businessCollection = await businesses();
+    const existingBusiness = await businessCollection.findOne({ _id: new ObjectId(businessId) });
+
+    if (existingBusiness)
+    {
+        await businessCollection.updateOne(
+            {_id: new ObjectId(businessId)},
+            {$inc: {numPosted: 1}}
+        );
+    }
+    else
+    {
+        throw 'Error: businessId not associated with a business';
+    }
+
     let newAttraction = {
       _id: new ObjectId(),
       businessId: businessId,
