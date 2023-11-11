@@ -6,22 +6,16 @@ import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessByUsername } from "../data/business.js";
-
-//code for the images
-let cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
-let api_key = process.env.CLOUDINARY_API_KEY;
-let api_secret = process.env.CLOUDINARY_API_SECRET;
+import dotenv from 'dotenv';
+dotenv.config();
 
 cloudinary.config({
-  cloud_name: cloud_name,
-  api_key: api_key, 
-  api_secret: api_secret, 
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY, 
+  api_secret: process.env.API_SECRET, 
   secure: true
 })
-
-let upload = multer({
-  storage: multer.diskStorage({})
-})
+let upload = multer({ dest: 'uploads/'})
 
 router
   .route("/")
@@ -46,14 +40,15 @@ router
       return res.sendStatus(500);
     }
   })
-  .post(upload.single("image"), async (req, res) => {
+  .post(upload.single("image"),async (req, res, next) => {
+    console.log(req.file)
     let attractionInfo = req.body;
-    let image;
+    let image = null;
     if(req.file && req.file.path){
       image = req.file.path;
+      let cloudinaryImage = await cloudinary.uploader.upload(image);
+      image = cloudinaryImage.secure_url;
     }
-    console.log(req.body);
-    console.log(req)
     try {
       let business = await getBusinessByUsername(req.session.user.username);
       const newAttraction = await createAttraction(
