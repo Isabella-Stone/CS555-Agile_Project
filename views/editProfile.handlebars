@@ -1,8 +1,8 @@
-<section>
+<main>
     <h2>Edit Profile</h2>
     <p>If you don't want to change a field, input the same information as before.</p>
     
-    <form action="/user/{{user.username}}" method="post" id="editUser" class="column">
+    <form action="/user/{{user.username}}" method="post" id="editUser-form" class="column">
 
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" name="firstName">
@@ -19,7 +19,7 @@
         <label for="confirmPassword">Confirm Password:</label>
         <input type="password" id="confirmPassword" name="confirmPassword">
 
-        <label for="username">Username:</label>
+        <label for="username">Username: </label>
         <input type="text" id="username" name="username">
 
         <label for="ageInput">Age:</label>
@@ -33,5 +33,4 @@
         <input type="hidden" name="_method" value="PUT">
         <button type="submit">Submit</button>
     </form>
-
-</section>
+</main>

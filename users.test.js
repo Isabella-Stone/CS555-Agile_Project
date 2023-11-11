@@ -75,12 +75,24 @@ test("successfully 'signs in' the user", async () => {
     expect(signedIn).toStrictEqual({_id: String(Isabella._id), firstName: "Isabella", lastName: "Stone", emailAddress: "ibellarose1@gmail.com", username: "ibellarose1"});
 })
 
-it("should not allow user to sign in with wrong password", async () => {        
-    await expect(checkUser("ibellarose1@gmail.com", "wrongpassword!!!")).rejects.toThrow("Either the email address or password is invalid");
+test("should not allow user to sign in with wrong password", async () => {    
+    let error;
+    try {
+        let a = await checkUser("ibellarose1@gmail.com", "wrongpassword!!!");
+    } catch (e) {
+        error = e;
+    }
+    expect(error).toStrictEqual("Either the email address or password is invalid");
 });
 
-it("should not allow user to sign in with wrong email", async () => {        
-    await expect(checkUser("bademail@aol.com", "Greatpassword8?")).rejects.toThrow("Either the email address or password is invalid");
+test("should not allow user to sign in with wrong email", async () => {
+    let error;
+    try {
+        let b = await checkUser("bademail@aol.com", "Greatpassword8?");
+    } catch (e) {
+        error = e;
+    }
+    expect(error).toStrictEqual("Either the email address or password is invalid");
 });
 
 test("successfully creates a user", async () => {
