@@ -1,3 +1,4 @@
+import { getUserData, editUserData, businessData, attractionData, submissionData } from './data/index.js';
 import { createUser, editUserInfo, checkUser } from "./data/editUsers.js";
 import { getAllUsers, getUserById, getUserByUsername, getUserByEmail, usernameAlreadyExists, emailAlreadyExists } from "./data/getUsers.js"
 import {createAttraction,get} from "./data/attractions";
@@ -33,14 +34,34 @@ test('Trying to get a user by emailAddress that does not exist', async () => {
 })
 
 test("successfully creates an attraction", async () => {
-    const att = await createAttraction("12345", "none", "Movie2 Nights", "50", "fun night out", "0", "10/25/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png");
-    expect(att).toStrictEqual({_id: att._id, businessId: "12345", attractionName: "Movie2 Nights", date: "10/25/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none", image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"});
+    let business1 = await businessData.createBusiness
+    (
+        'Fred', 
+        'Bagel', 
+        'OBagel', 
+        'obagel@gmail.com',
+        'Hello123!',
+        'obagel_official',
+        20
+    );
+    const att = await createAttraction(business1._id.toString(), "none", "Movie2 Nights", "50", "fun night out", "0", "10/25/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png");
+    expect(att).toStrictEqual({_id: att._id, businessId: business1._id.toString(), attractionName: "Movie2 Nights", date: "10/25/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none", image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"});
 })
 
 test("gets attraction by id", async () => {
-    const a1 = await createAttraction("123456", "none", "Movie3 Night 2.0", "50", "fun night out", "0", "10/26/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png");
+    let business2 = await businessData.createBusiness
+    (
+        'Joe', 
+        'Giovanni', 
+        'Giovannis Italian',
+        'giovannis@gmail.com',
+        'Hello!123',
+        'giovannis_italian',
+        30
+    );
+    const a1 = await createAttraction(business2._id.toString(), "none", "Movie3 Night 2.0", "50", "fun night out", "0", "10/26/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png");
     const getAttraction = await get(a1._id.toString());
-    expect(getAttraction).toStrictEqual({_id: getAttraction._id, businessId: "123456", attractionName: "Movie3 Night 2.0", date: "10/26/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none", image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"});
+    expect(getAttraction).toStrictEqual({_id: getAttraction._id, businessId: business2._id.toString(), attractionName: "Movie3 Night 2.0", date: "10/26/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: "none", image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"});
 })
 
 test('Gets a preexisting user', async () => {
