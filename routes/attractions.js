@@ -39,8 +39,7 @@ router
       return res.sendStatus(500);
     }
   })
-  .post(upload.single("image"),async (req, res) => {
-    console.log(req.file)
+  .post(upload.single("image"), async (req, res) => {
     let attractionInfo = req.body;
     let image = null;
     if(req.file && req.file.path){
@@ -166,10 +165,23 @@ router
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
-      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business});
+      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id});
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }
   })
+  .post(upload.single("image"), async (req, res) => {
+    let submissionInfo = req.body;
+    let image = null;
+    if(req.file && req.file.path){
+      image = req.file.path;
+      let cloudinaryImage = await cloudinary.uploader.upload(image);
+      image = cloudinaryImage.secure_url;
+    }
+    console.log(image);
+    console.log(submissionInfo.rating);
+    console.log(submissionInfo.reasoning);
+    //now we just need to call the function to take in the submission
+  });
   
 export default router;

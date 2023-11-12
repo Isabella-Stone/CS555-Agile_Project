@@ -16,8 +16,7 @@
     {{/if}}
 
     {{#if isUser}}
-        {{!-- we need to change the true to an actual var that tells if a user or business is looking at the page --}}
-        <form action="/attractions/:id/submission" method="post" id="submission" class="column" enctype="multipart/form-data">
+        <form action= "/attractions/{{id}}" method="post" id="submission" class="column" enctype="multipart/form-data">
             <label for="image">Photo Submission</label>
             <br/>
             <input 
