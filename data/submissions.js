@@ -5,10 +5,10 @@ import { getBusinessById, getBusinessByUsername } from './business.js';
 import { getUserById } from './getUsers.js';
 import { get } from './attractions.js';
 
-const newSubmission = async (attractionId, userId, image, comment, date, time, status) => {
+const newSubmission = async (attractionId, userId, image, comment, rating, date, time, status) => {
     //TODO: time and date range checks?
     //status: (approved, declined, pending), optional param
-    if (!attractionId || !userId || !image || !comment || !date || !time) {
+    if (!attractionId || !userId || !image || !comment || !rating || !date || !time) {
         throw 'Error: All fields need to have valid values';
     }
     //check for image?
@@ -21,6 +21,7 @@ const newSubmission = async (attractionId, userId, image, comment, date, time, s
         throw 'Error: userId does not belong to a user';
     }
     comment = helpers.checkString(comment, "comment");
+    rating = helpers.checkRating(rating);
     date = helpers.checkDate(date);
     time = helpers.checkString(time, "time");
     let regexNum = /^[0-9]*$/;
@@ -67,6 +68,7 @@ const newSubmission = async (attractionId, userId, image, comment, date, time, s
         userId: userId,
         image: image,
         comment: comment,
+        rating: rating,
         date: date,
         time: time,
         status: status

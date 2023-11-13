@@ -203,6 +203,7 @@ async function main() {
       user1._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I love bagels", 
+      4,
       "11/14/2023", 
       "10:30",
       "approved"
@@ -212,6 +213,7 @@ async function main() {
       user2._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I've never had such a good breakfast sandwich!", 
+      5,
       "11/14/2023", 
       "11:00",
       "approved"
@@ -221,6 +223,7 @@ async function main() {
       user3._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "This bagel is bussin", 
+      5,
       "11/14/2023", 
       "11:15",
       "pending"
@@ -230,6 +233,7 @@ async function main() {
       user6._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "This food was awful! Never coming back", 
+      1,
       "11/14/2023", 
       "11:00",
       "declined"
@@ -240,6 +244,7 @@ async function main() {
       user1._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I love sushi", 
+      5,
       "11/10/2023", 
       "13:30",
       "approved"
@@ -249,6 +254,7 @@ async function main() {
       user2._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "The sushi brings back memories", 
+      4,
       "11/10/2023", 
       "13:00",
       "pending"
@@ -260,6 +266,7 @@ async function main() {
       user2._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I'm thankful for a good breakfast", 
+      3,
       "11/23/2023", 
       "11:00",
       "approved"

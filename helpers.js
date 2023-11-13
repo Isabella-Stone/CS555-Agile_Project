@@ -168,3 +168,15 @@ export const checkTime = (startTime, endTime) =>
     }
     return name;
   }
+  export const checkRating = (rating) => {
+    if (typeof rating !== 'number') {
+        throw  `Age must be a valid number`;
+    }
+    if (rating < 1) {
+        throw `Rating must be over 1`;
+    }
+    if (rating > 5) {
+        throw `Rating must be less than 5`;
+    }
+    return rating;
+}
