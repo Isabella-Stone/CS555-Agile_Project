@@ -7,6 +7,7 @@ import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
+import { newSubmission } from "../data/submissions.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -182,6 +183,20 @@ router
     console.log(submissionInfo.rating);
     console.log(submissionInfo.reasoning);
     //now we just need to call the function to take in the submission
+    let date = new Date();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let year = date.getFullYear();
+    let fullDate = `${month}/${day}/${year}`;
+    let hour = date.getHours();
+    // try{
+    //   //now run the function and then render the proper page
+    //   let submission = await newSubmission(req.params.id, req.session.id, image, reasoning, fullDate, hour)
+    //   return res.render('viewAttraction', {attraction: req.params.id, auth: false, isUser: !req.session.user.is_business, submission: submission});
+    // } catch (e) {
+    //   return res.status(404).json({error: `${e}`});
+    // }
+
   });
   
 export default router;
