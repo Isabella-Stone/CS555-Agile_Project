@@ -170,7 +170,7 @@ export const checkTime = (startTime, endTime) =>
   }
   export const checkRating = (rating) => {
     if (typeof rating !== 'number') {
-        throw  `Age must be a valid number`;
+        throw `Rating must be a valid number`;
     }
     if (rating < 1) {
         throw `Rating must be over 1`;
