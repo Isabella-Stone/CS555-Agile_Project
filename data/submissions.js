@@ -94,22 +94,55 @@ const getSubmissionsByUserId = async (userId, attractionId) => {
     return submissionsForAUser;
 };
 const getSubmissions = async (attractionId) => {
-
+    if (!attractionId) {
+        throw 'You must provide an id to search for';
+    }
+    attractionId = helpers.checkString(attractionId, "Attraction ID");
+    if (!ObjectId.isValid(attractionId)) {
+        throw 'Error: Invalid Object Id';
+    }
+    const attractionCollection = await attractions();
+    const attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
+    if (!attraction) throw 'Error: Attraction not found';
+    return attraction.submissions;
 };
 const getApprovedSubmissions = async (attractionId) => {
+    //TODO
+    if (!attractionId) {
+        throw 'You must provide an id to search for';
+    }
+    attractionId = helpers.checkString(attractionId, "Attraction ID");
+    if (!ObjectId.isValid(attractionId)) {
+        throw 'Error: Invalid Object Id';
+    }
+    const attractionCollection = await attractions();
+    const attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
 
+    if (!attraction) throw 'Error: Attraction not found';
+    let fullSubList = attraction.submissions;
+    
+    let approvedSubsList = [];
+    for (let i=0;i<fullSubList.length;i++)
+    {
+        let currentSub = fullSubList[i];
+        if (currentSub.status.localeCompare('approved') == 0)
+        {
+            approvedSubsList.push(fullSubList[i]);
+        }
+    }
+    return approvedSubsList;
 };
 const getSubmission = async (id) => {
-
+    
 };
 const approveSubmission = async (id) => {
 
 };
 const declineSubmission = async (id) => {
-
+    
 };
 const editSubmission = async () => {
     //may not need
 };
 
-export { newSubmission, getSubmissions, getSubmission, approveSubmission, declineSubmission, editSubmission};
+export { newSubmission, getSubmissions, getSubmission, getApprovedSubmissions, approveSubmission, declineSubmission, editSubmission};
