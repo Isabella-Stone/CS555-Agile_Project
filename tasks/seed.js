@@ -119,7 +119,6 @@ async function main() {
   //change this once business id is no longer used to reference attractions
     business1_attraction1 = await attractionData.createAttraction(
         business1._id.toString(),
-        [], 
         "Bagel Party", 
         "50", 
         "early bird special", 
@@ -131,7 +130,6 @@ async function main() {
       );
       business1_attraction2 = await attractionData.createAttraction(
         business1._id.toString(),
-        [], 
         "Thanskgiving Brunch", 
         "50", 
         "Share Thanksgiving as a Community", 
@@ -143,7 +141,6 @@ async function main() {
       );
       business2_attraction1 = await attractionData.createAttraction(
           business2._id.toString(),
-          [], 
           "Italian Festival", 
           "100", 
           "Exploring Italian Culture", 
@@ -156,7 +153,6 @@ async function main() {
       );
         business3_attraction1 = await attractionData.createAttraction(
           business3._id.toString(),
-          [], 
           "Grand Opening", 
           "50", 
           "Free Sushi Samples to Celebrate", 
@@ -169,7 +165,6 @@ async function main() {
       );
       business4_attraction1 = await attractionData.createAttraction(
           business4._id.toString(),
-          [], 
           "Waterfront City Celebration", 
           "100", 
           "Community Get Together", 
@@ -182,7 +177,6 @@ async function main() {
         );
       business5_attraction1 = await attractionData.createAttraction(
           business5._id.toString(),
-          [], 
           "Boys and Girls Club Mural Revealing", 
           "50", 
           "Fundraising and Community Outreach Event", 

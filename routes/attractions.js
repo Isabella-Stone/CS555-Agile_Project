@@ -52,7 +52,6 @@ router
       let business = await getBusinessByUsername(req.session.user.username);
       const newAttraction = await createAttraction(
         business._id.toString(),
-        "none",
         attractionInfo.attractionName,
         attractionInfo.pointsOffered,
         attractionInfo.description,
