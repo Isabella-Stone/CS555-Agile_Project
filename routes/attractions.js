@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder} from "../data/attractions.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
@@ -21,7 +21,7 @@ router
   .route("/")
   .get(async (req, res) => {
     try {
-      let attractionList = await getAllAttractions();
+      let attractionList = await getAttractionsInChronologicalOrder();
       return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
     } 
     catch (e) {
