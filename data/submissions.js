@@ -13,6 +13,9 @@ const newSubmission = async (attractionId, userId, image, comment, rating, date,
     }
     //check for image?
     attractionId = helpers.checkString(attractionId, "Attraction ID");
+    if (!ObjectId.isValid(attractionId)) {
+        throw 'Error: Invalid attractionId';
+    }
     try {
         let user = await getUserById(userId);
     }
@@ -74,10 +77,12 @@ const newSubmission = async (attractionId, userId, image, comment, rating, date,
         status: status
       };
     const attractionCollection = await attractions();
-    await attractionCollection.updateOne(
+    const insertInfo = await attractionCollection.updateOne(
         { _id: new ObjectId(attractionId) },
         { $push: { submissions: newSubmission } }
     );
+    if (!insertInfo.acknowledged || insertInfo.modifiedCount != 1) throw 'Could not add submission';
+    return newSubmission;
 };
 const getSubmissionsByUserId = async (userId, attractionId) => {
     if (!userId) {
@@ -107,7 +112,6 @@ const getSubmissions = async (attractionId) => {
     return attraction.submissions;
 };
 const getApprovedSubmissions = async (attractionId) => {
-    //TODO
     if (!attractionId) {
         throw 'You must provide an id to search for';
     }
@@ -133,13 +137,22 @@ const getApprovedSubmissions = async (attractionId) => {
     return approvedSubsList;
 };
 const getSubmission = async (id) => {
-    
+    if (!id) {
+        throw 'Error: ID is required';
+    }
+    id = helpers.checkString(id, "User ID");
+    const attractionCollection = await attractions();
+    const attraction = await attractionCollection.findOne({ 'submissions._id': new ObjectId(id) });
+    if (!attraction) throw 'Error: Attraction not found';
+    const sub = attraction.submissions[0];
+    sub._id = sub._id.toString();
+    return sub;
 };
 const approveSubmission = async (id) => {
 
 };
 const declineSubmission = async (id) => {
-    
+
 };
 const editSubmission = async () => {
     //may not need
