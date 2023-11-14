@@ -67,7 +67,6 @@ test("gets attraction by id", async () => {
 test('Gets a preexisting user', async () => {
     const user = await createUser("Patrick", "Hill", "pattyhill@gmail.com", "Abc123!!", "pattyxhill", 48, ["Business/Restaurant Events"]);
     const holder = await checkUser("pattyhill@gmail.com", "Abc123!!")
-    console.log(user);
     expect(holder).toStrictEqual({_id: String(user._id), firstName: "Patrick", lastName: "Hill", emailAddress: "pattyhill@gmail.com", username: "pattyxhill"})
 })
 
