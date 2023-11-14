@@ -4,8 +4,8 @@ import { ObjectId } from 'mongodb';
 import e from 'express';
 import { getBusinessById, getBusinessByUsername } from './business.js';
 // no error checking for ids yet, need to add in photo
-const createAttraction = async (businessId, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image) => {
-    if (!businessId || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
+const createAttraction = async (businessId, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image, tags) => {
+    if (!businessId || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName || !tags || !image) {
       throw 'Error: All fields need to have valid values';
     }
     description = helpers.checkString(description, "Attraction description");
@@ -82,7 +82,8 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
       bonusPoints: bonusPoints,
       description: description,
       submissions: [],
-      image: image
+      image: image,
+      tags: tags
     };
     const attractionCollection = await attractions();
     if (await attractionCollection.findOne({ attractionName: attractionName })) {

@@ -11,6 +11,10 @@
         <p></p>
         <h3>Points Offered: {{attraction.pointsOffered}}</h3>
         <h3>Bonus Points: {{attraction.bonusPoints}}</h3>
+        <p class="bold">Tags: </p>
+            {{#each attraction.tags}}
+                <li>{{this}}</li>
+            {{/each}}
         <img src={{attraction.image}} alt="Image" width="300" height="300">
     </div>
     {{/if}}

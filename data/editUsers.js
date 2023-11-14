@@ -6,8 +6,8 @@ import bcrypt from 'bcrypt';
 const saltRounds = 8;
 
 //Creates a user with the given values and sets points to 0
-export const createUser = async (firstName, lastName, emailAddress, password, username, age) => {
-  if (!firstName || !lastName || !emailAddress || !password || !username || !age) {
+export const createUser = async (firstName, lastName, emailAddress, password, username, age, interests) => {
+  if (!firstName || !lastName || !emailAddress || !password || !username || !age || !interests) {
     throw 'All input fields must be provided (createUser)';
   }
 
@@ -34,7 +34,8 @@ export const createUser = async (firstName, lastName, emailAddress, password, us
     password: hashed,
     username: username,
     age: age,
-    points: 0
+    points: 0,
+    interests: interests
   };
   const userCollection = await users();
   const newInsertInformation = await userCollection.insertOne(newUser);

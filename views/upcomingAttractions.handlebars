@@ -25,6 +25,12 @@
                         <p class="bold">Points offered: </p>
                         <p>{{this.pointsOffered}} (+ {{this.bonusPoints}} bonus points)</p>
                     </div>
+                    <div class="row">
+                        <p class="bold">Tags: </p>
+                        {{#each this.interests}}
+                            <li>{{this}}</li>
+                        {{/each}}
+                    </div>
             </div>
         <br/>
         {{/each}}

@@ -72,6 +72,22 @@ router
       image = cloudinaryImage.secure_url;
     }
     try {
+      let tags = [];
+      if (Object.keys(attractionInfo).includes("interestsInput1")) {
+        tags.push("City-wide Events");
+      }
+      if (Object.keys(attractionInfo).includes("interestsInput2")) {
+        tags.push("Business/Restaurant Events");
+      }
+      if (Object.keys(attractionInfo).includes("interestsInput3")) {
+        tags.push("Art Events");
+      }
+      if (Object.keys(attractionInfo).includes("interestsInput4")) {
+        tags.push("Cultural Events");
+      }
+      if (Object.keys(attractionInfo).includes("interestsInput5")) {
+        tags.push("Volunteering Events");
+      }
       let business = await getBusinessByUsername(req.session.user.username);
       const newAttraction = await createAttraction(
         business._id.toString(),
@@ -82,7 +98,8 @@ router
         attractionInfo.date,
         attractionInfo.startTime,
         attractionInfo.endTime,
-        image
+        image,
+        tags
       );
       return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
