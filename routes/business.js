@@ -85,6 +85,7 @@ router.route("/:id")
     }
   })
   .put(async (req, res) => {
+    console.log("TOP PUT BUSINESS")
     let businessInfo = req.body;
     let business;
     if (!businessInfo || Object.keys(businessInfo).length === 0) {
@@ -94,8 +95,7 @@ router.route("/:id")
     }
     try {
       business = await getBusinessById(req.params.id);
-      console.log(business)
-      console.log(req.params.id)
+      console.log(business);
       if (businessInfo.firstName)
       {
         businessInfo.firstName = checkName(businessInfo.firstName);
@@ -131,14 +131,16 @@ router.route("/:id")
       }
     }
     catch (e) {
+      console.log(e);
       return res.status(400).render("editBusiness", {auth: false, error: true, message: e});
     }
     try {
       const updated = await editBusinessInfo(business._id, businessInfo.firstName, businessInfo.lastName, businessInfo.name,
         businessInfo.emailAddress, businessInfo.password, businessInfo.username, businessInfo.ageInput);
-        let url = "/business/" + business._id;
+      let url = "/business/" + business._id;
       return res.redirect(url);
     } catch (e) {
+      console.log(e);
       return res.status(400).render("editBusiness", {auth: false, error: true, message: e});
     }
   })

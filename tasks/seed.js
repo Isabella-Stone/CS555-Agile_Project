@@ -1,4 +1,4 @@
-import { getUserData, editUserData, businessData, attractionData } from '../data/index.js';
+import { getUserData, editUserData, businessData, attractionData, submissionData } from '../data/index.js';
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 
 //lets drop the database each time this is run
@@ -6,8 +6,14 @@ const db = await dbConnection();
 await db.dropDatabase();
 
 async function main() {
+  let user1, user2, user3, user4, user5, user6;
+  let business1, business2, business3, business4, business5;
+  let business1_attraction1, business1_attraction2, business2_attraction1, business3_attraction1, business4_attraction1, business5_attraction1;
+  let attraction1_submission1, attraction1_submission2, attraction1_submission3, attraction1_submission4;
+  let attraction4_submission1, attraction4_submission2;
+  let attraction6_submission1;
   try {
-    const user1 = await editUserData.createUser(
+    user1 = await editUserData.createUser(
         "Areeb", 
         "Chaudhry", 
         "areeb1@gmail.com", 
@@ -15,7 +21,7 @@ async function main() {
         "kash123", 
         21
     );
-    const user2 = await editUserData.createUser(
+    user2 = await editUserData.createUser(
         'Shailaja', 
         'Vyas', 
         'svyaslol@gmail.com',
@@ -23,7 +29,7 @@ async function main() {
         "svyas456",
         22
     );
-    const user3 = await editUserData.createUser(
+    user3 = await editUserData.createUser(
         "Mariam", 
         "Dardir", 
         "mariamd@gmail.com", 
@@ -31,7 +37,7 @@ async function main() {
         "mxrixm", 
         21
     );
-    const user4 = await editUserData.createUser(
+    user4 = await editUserData.createUser(
         "Patrick", 
         "Hill", 
         "pattyhills@gmail.com", 
@@ -39,7 +45,7 @@ async function main() {
         "pattyhill", 
         48
     );
-    const user5 = await editUserData.createUser(
+    user5 = await editUserData.createUser(
         "Megan", 
         "Sanford", 
         "msanford@gmail.com", 
@@ -47,11 +53,19 @@ async function main() {
         "megsan", 
         21
     );
+    user6 = await editUserData.createUser(
+      "Ryan", 
+      "Giovanniello", 
+      "rcgiovanniello@gmail.com", 
+      "Wrong123!", 
+      "rgiova", 
+      21
+  );
   } catch (e) {
     console.log('User: ' + e);
   }
   try {
-    const business1 = await businessData.createBusiness
+    business1 = await businessData.createBusiness
     (
         'Fred', 
         'Bagel', 
@@ -61,7 +75,7 @@ async function main() {
         'obagel_official',
         20
     );
-    const business2 = await businessData.createBusiness
+    business2 = await businessData.createBusiness
     (
         'Joe', 
         'Giovanni', 
@@ -71,7 +85,7 @@ async function main() {
         'giovannis_italian',
         30
     );
-    const business3 = await businessData.createBusiness
+    business3 = await businessData.createBusiness
     (
         'Peter', 
         'Pan', 
@@ -81,7 +95,7 @@ async function main() {
         'piki_poke',
         40
     );
-    const business4 = await businessData.createBusiness
+    business4 = await businessData.createBusiness
     (
         'Ravi', 
         'Bhalla', 
@@ -91,7 +105,7 @@ async function main() {
         'city_of_hoboken',
         49
     );
-    const business5 = await businessData.createBusiness
+    business5 = await businessData.createBusiness
     (
         'Janet', 
         'Wallach',
@@ -103,9 +117,8 @@ async function main() {
     );
 
   //change this once business id is no longer used to reference attractions
-    const business1_attraction1 = await attractionData.createAttraction(
+    business1_attraction1 = await attractionData.createAttraction(
         business1._id.toString(),
-        "none", 
         "Bagel Party", 
         "50", 
         "early bird special", 
@@ -115,9 +128,19 @@ async function main() {
         "12:00",
         "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
       );
-      const business2_attraction1 = await attractionData.createAttraction(
+      business1_attraction2 = await attractionData.createAttraction(
+        business1._id.toString(),
+        "Thanskgiving Brunch", 
+        "50", 
+        "Share Thanksgiving as a Community", 
+        "5", 
+        "11/23/2023", 
+        "10:00", 
+        "12:30",
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+      );
+      business2_attraction1 = await attractionData.createAttraction(
           business2._id.toString(),
-          "none", 
           "Italian Festival", 
           "100", 
           "Exploring Italian Culture", 
@@ -128,9 +151,8 @@ async function main() {
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
 
       );
-        const business3_attraction1 = await attractionData.createAttraction(
+        business3_attraction1 = await attractionData.createAttraction(
           business3._id.toString(),
-          "none", 
           "Grand Opening", 
           "50", 
           "Free Sushi Samples to Celebrate", 
@@ -141,9 +163,8 @@ async function main() {
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
 
       );
-      const business4_attraction1 = await attractionData.createAttraction(
+      business4_attraction1 = await attractionData.createAttraction(
           business4._id.toString(),
-          "none", 
           "Waterfront City Celebration", 
           "100", 
           "Community Get Together", 
@@ -154,9 +175,8 @@ async function main() {
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
 
         );
-      const business5_attraction1 = await attractionData.createAttraction(
+      business5_attraction1 = await attractionData.createAttraction(
           business5._id.toString(),
-          "none", 
           "Boys and Girls Club Mural Revealing", 
           "50", 
           "Fundraising and Community Outreach Event", 
@@ -169,6 +189,83 @@ async function main() {
       );
   } catch (e) {
     console.log('Business: ' + e);
+  }
+  try {
+    attraction1_submission1 = await submissionData.newSubmission(
+      //attractionId, userId, image, comment, rating, date, time, status
+      business1_attraction1._id.toString(),
+      user1._id.toString(),
+      "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+      "I love bagels", 
+      4,
+      "11/14/2023", 
+      "10:30",
+      "approved"
+    );
+    attraction1_submission2 = await submissionData.newSubmission(
+      business1_attraction1._id.toString(),
+      user2._id.toString(),
+      "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+      "I've never had such a good breakfast sandwich!", 
+      5,
+      "11/14/2023", 
+      "11:00",
+      "approved"
+    );
+    attraction1_submission3 = await submissionData.newSubmission(
+      business1_attraction1._id.toString(),
+      user3._id.toString(),
+      "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+      "This bagel is bussin", 
+      5,
+      "11/14/2023", 
+      "11:15",
+      "pending"
+    );
+    attraction1_submission4 = await submissionData.newSubmission(
+      business1_attraction1._id.toString(),
+      user6._id.toString(),
+      "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+      "This food was awful! Never coming back", 
+      1,
+      "11/14/2023", 
+      "11:00",
+      "declined"
+    );
+    attraction4_submission1 = await submissionData.newSubmission(
+      business4_attraction1._id.toString(),
+      user1._id.toString(),
+      "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+      "I love sushi", 
+      5,
+      "11/10/2023", 
+      "13:30",
+      "approved"
+    );
+    attraction4_submission2 = await submissionData.newSubmission(
+      business4_attraction1._id.toString(),
+      user2._id.toString(),
+      "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+      "The sushi brings back memories", 
+      4,
+      "11/10/2023", 
+      "13:00",
+      "pending"
+    );
+
+    attraction6_submission1 = await submissionData.newSubmission(
+      business1_attraction2._id.toString(),
+      user2._id.toString(),
+      "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+      "I'm thankful for a good breakfast", 
+      3,
+      "11/23/2023", 
+      "11:00",
+      "approved"
+    );
+  }
+  catch (e) {
+    console.log('Submission: ' + e);
   }
 }
 

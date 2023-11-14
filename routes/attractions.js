@@ -1,37 +1,54 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder} from "../data/attractions.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessByUsername } from "../data/business.js";
-
-//code for the images
-let cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
-let api_key = process.env.CLOUDINARY_API_KEY;
-let api_secret = process.env.CLOUDINARY_API_SECRET;
+import dotenv from 'dotenv/config';
+import { newSubmission } from "../data/submissions.js";
 
 cloudinary.config({
-  cloud_name: cloud_name,
-  api_key: api_key, 
-  api_secret: api_secret, 
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY, 
+  api_secret: process.env.API_SECRET,
   secure: true
 })
-
-let upload = multer({
-  storage: multer.diskStorage({})
-})
+let upload = multer({ dest: 'uploads/'})
 
 router
   .route("/")
   .get(async (req, res) => {
     try {
-      let attractionList = await getAllAttractions();
+      let attractionList = await getAttractionsInChronologicalOrder();
       return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
     } 
     catch (e) {
       return res.sendStatus(500);
+    }
+  })
+  .post(async (req, res) => {
+    let filterOp = req.body;
+    if (!filterOp || Object.keys(filterOp).length === 0) {
+      return res.status(400).json({error: 'There are no fields in the request body'});
+    }
+    if (filterOp.filterOptions === 'date') {
+      try {
+        let attractionList = await getAttractionsInChronologicalOrder();
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.sendStatus(500);
+      }
+    } else 
+    // if (filterOp.filterOptions === 'recommended') 
+    {
+      try {
+        let attractionList = await getAllAttractions();
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.sendStatus(500);
+      }
     }
   })
 
@@ -48,17 +65,16 @@ router
   })
   .post(upload.single("image"), async (req, res) => {
     let attractionInfo = req.body;
-    let image;
+    let image = null;
     if(req.file && req.file.path){
       image = req.file.path;
+      let cloudinaryImage = await cloudinary.uploader.upload(image);
+      image = cloudinaryImage.secure_url;
     }
-    console.log(req.body);
-    console.log(req)
     try {
       let business = await getBusinessByUsername(req.session.user.username);
       const newAttraction = await createAttraction(
         business._id.toString(),
-        "none",
         attractionInfo.attractionName,
         attractionInfo.pointsOffered,
         attractionInfo.description,
@@ -66,7 +82,7 @@ router
         attractionInfo.date,
         attractionInfo.startTime,
         attractionInfo.endTime,
-        attractionInfo.image
+        image
       );
       return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
@@ -160,6 +176,7 @@ router
   router
   .route("/:id")
   .get(async (req, res) => {
+    console.log(req.session)
     let id = req.params.id;
     try {
       id = checkId(id);
@@ -171,10 +188,42 @@ router
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
-      return res.render('viewAttraction', {attraction: attraction, auth: false });
+      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id});
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }
   })
+  .post(upload.single("image"), async (req, res) => {
+    let submissionInfo = req.body;
+    let image = null;
+    if(req.file && req.file.path){
+      image = req.file.path;
+      let cloudinaryImage = await cloudinary.uploader.upload(image);
+      image = cloudinaryImage.secure_url;
+    }
+    //get the date in the proper format
+    let date = new Date();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let year = date.getFullYear();
+    let fullDate = `${month}/${day}/${year}`;
+    //get the time in the format hh:mm
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    if(minute < 10){
+      minute = `0${minute}`
+    }
+    let time = `${hour}:${minute}`
+
+    try{
+      //now run the function and then render the proper page
+      let submission = await newSubmission(req.params.id, req.session.user._id, image, submissionInfo.reasoning, parseInt(submissionInfo.rating), fullDate, time)
+      console.log(submission);
+      // return res.render('viewAttraction', {attraction: req.params.id, auth: false, isUser: !req.session.user.is_business, submission: submission});
+    } catch (e) {
+      return res.status(404).json({error: `${e}`});
+    }
+
+  });
   
 export default router;
