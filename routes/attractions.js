@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder} from "../data/attractions.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
@@ -21,7 +21,7 @@ router
   .route("/")
   .get(async (req, res) => {
     try {
-      let attractionList = await getAllAttractions();
+      let attractionList = await getAttractionsInChronologicalOrder();
       return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
     } 
     catch (e) {
@@ -178,23 +178,28 @@ router
       let cloudinaryImage = await cloudinary.uploader.upload(image);
       image = cloudinaryImage.secure_url;
     }
-    console.log(image);
-    console.log(submissionInfo.rating);
-    console.log(submissionInfo.reasoning);
-    //now we just need to call the function to take in the submission
+    //get the date in the proper format
     let date = new Date();
     let month = date.getMonth() + 1;
     let day = date.getDate();
     let year = date.getFullYear();
     let fullDate = `${month}/${day}/${year}`;
+    //get the time in the format hh:mm
     let hour = date.getHours();
-    // try{
-    //   //now run the function and then render the proper page
-    //   let submission = await newSubmission(req.params.id, req.session.id, image, reasoning, fullDate, hour)
-    //   return res.render('viewAttraction', {attraction: req.params.id, auth: false, isUser: !req.session.user.is_business, submission: submission});
-    // } catch (e) {
-    //   return res.status(404).json({error: `${e}`});
-    // }
+    let minute = date.getMinutes();
+    if(minute < 10){
+      minute = `0${minute}`
+    }
+    let time = `${hour}:${minute}`
+
+    try{
+      //now run the function and then render the proper page
+      let submission = await newSubmission(req.params.id, req.session.user._id, image, submissionInfo.reasoning, parseInt(submissionInfo.rating), fullDate, time)
+      console.log(submission);
+      // return res.render('viewAttraction', {attraction: req.params.id, auth: false, isUser: !req.session.user.is_business, submission: submission});
+    } catch (e) {
+      return res.status(404).json({error: `${e}`});
+    }
 
   });
   

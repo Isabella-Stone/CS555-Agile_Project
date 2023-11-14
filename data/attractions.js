@@ -232,4 +232,16 @@ const getBusinessNameByAttractionName = async (attName) => {
  
 };
 
-export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName };
+const getAttractionsInChronologicalOrder = async () => {
+  const attractionCollection = await attractions();
+  const attractionList = await attractionCollection.find({}).toArray();
+  const sortedAttractions = attractionList.sort((a, b) => new Date(a.date) - new Date(b.date));
+  if (!sortedAttractions) {
+    return [];
+  } 
+  else{
+    return sortedAttractions;
+  }
+}
+
+export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder };
