@@ -121,4 +121,12 @@ button {
     right: 0;
     margin: 10px;
 }
+.check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: center;
+    padding-left: 30px;
+    padding-right: 150px;
 
+}
