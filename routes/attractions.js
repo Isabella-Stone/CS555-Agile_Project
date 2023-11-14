@@ -5,7 +5,7 @@ import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, 
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
-import { getBusinessByUsername } from "../data/business.js";
+import { getBusinessById, getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
 import { newSubmission } from "../data/submissions.js";
 
@@ -159,8 +159,7 @@ router
       return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
     }
   })
-  .put(async (req, res) => {
-    console.log("put");
+  .put(upload.single("image"), async (req, res) => {
     let busname = req.params.busname;
     let attInfo = req.body;
     if (!attInfo || Object.keys(attInfo).length === 0) {
@@ -168,25 +167,63 @@ router
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
+    console.log(req.file);
+    let image = null;
+    if(req.file && req.file.path){
+      image = req.file.path;
+      let cloudinaryImage = await cloudinary.uploader.upload(image);
+      image = cloudinaryImage.secure_url;
+    }
+    console.log("Image: ")
+    console.log(image);
+    let old;
+    let oldBus;
     try {
-      const old = await getByName(busname);
+      old = await getByName(busname);
+      let a = await getBusinessById(old.businessId);
+      oldBus = a.name;
+      let tags = [];
+      if (Object.keys(attInfo).includes("interestsInput1")) {
+        tags.push("City-wide Events");
+      }
+      if (Object.keys(attInfo).includes("interestsInput2")) {
+        tags.push("Business/Restaurant Events");
+      }
+      if (Object.keys(attInfo).includes("interestsInput3")) {
+        tags.push("Art Events");
+      }
+      if (Object.keys(attInfo).includes("interestsInput4")) {
+        tags.push("Cultural Events");
+      }
+      if (Object.keys(attInfo).includes("interestsInput5")) {
+        tags.push("Volunteering Events");
+      }
       const updated = await editAttraction(
         old.businessId, 
         old._id.toString(), 
-        attInfo.submissions, 
+        old.submissions, 
         attInfo.attractionName, 
         attInfo.pointsOffered, 
         attInfo.description, 
         attInfo.bonusPoints, 
         attInfo.date, 
         attInfo.startTime, 
-        attInfo.endTime);
+        attInfo.endTime,
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1699984515/ruchypija6nuegzftr7q.png",
+        tags);
         console.log(updated);
         let url = "/attractions/" + updated._id;
         
       return res.redirect(url);
     } catch (e) {
-      return res.status(400).render("editAttractions", {auth: false, error: true, message: e});
+      let busiName = oldBus.replace(/ /g, '%20');
+      let attrName = old.attractionName.replace(/ /g, '%20');
+      let url2 = `http://localhost:3000/attractions/editAttraction/${busiName}/${attrName}`
+      // req.session.error = true;
+      // req.session.errorMessage = e;
+      // console.log(req.session.errorMessage);
+      console.log(url2);
+      return res.status(500).json(`${e}`)
     }
   });
 

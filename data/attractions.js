@@ -140,10 +140,9 @@ const get = async (attractionId) => {
       return attraction;
   };
 
-//STILL NEEDS TO RECEIVE NEW IMAGE FROM EDITATTRACTION PAGE CURRENTLY HARDCODED
 //editAttraction()
-const editAttraction = async (businessId, attractionId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
-    if (!businessId || !attractionId || !submissions || !attractionName || !date || !startTime || !pointsOffered || !description || !bonusPoints  ||!endTime ) {
+const editAttraction = async (businessId, attractionId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image, tags) => {
+    if (!businessId || !attractionId || !submissions || !attractionName || !date || !startTime || !pointsOffered || !description || !bonusPoints  ||!endTime || !image || !tags ) {
         throw 'Error: All fields need to have valid values';
     }
     description = helpers.checkString(description, "Attraction description");
@@ -174,7 +173,8 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
         bonusPoints: bonusPoints,
         description: description,
         submissions: submissions,
-        image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+        image: image,
+        tags: tags
     };
     const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
   

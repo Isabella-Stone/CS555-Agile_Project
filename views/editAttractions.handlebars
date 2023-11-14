@@ -1,4 +1,4 @@
-<form action="/attractions/editAttraction/{{attractions.attractionName}}" method="post" id="editAttraction" class="column">
+<form action="/attractions/editAttraction/{{attractions.attractionName}}" method="post" id="editAttraction" class="column" enctype="multipart/form-data>
 
         {{!-- <label for="businessIDInput">
         BusinessID:
@@ -40,11 +40,15 @@
         <input type="text" id="bonusPoints" name="bonusPoints">
     </label>
 
-    {{!-- submissions are a text entry for now, this will be fixed later --}}
-    <label for="submissions">
-        Photo Submissions:
-        <input type="text" id="submissions" name="submissions">
-    </label>
+    <label for="image">Attraction Image</label>
+        <br/>
+        <input 
+            type="file"
+            id="image"
+            accept=".img,.jpeg,.png"
+            name="image"
+        >
+        <br/>
 
             <h3>Please select all events you are interested in:</h3>
 
@@ -79,9 +83,9 @@
             
        </div>
     </fieldset>
-    
-        {{#if error}}
-            <p>{{message}}</p>
+
+        {{#if req.session.error}}
+            <p>{{req.session.errorMessage}}</p>
         {{/if}}
 
         <br>     

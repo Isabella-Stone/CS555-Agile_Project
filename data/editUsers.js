@@ -97,7 +97,7 @@ export const checkUser = async (emailAddress, password) => {
   };
 
 //Edits user info based on given information 
-export const editUserInfo = async (id, firstName, lastName, emailAddress, password, username, age) => {
+export const editUserInfo = async (id, firstName, lastName, emailAddress, password, username, age, interests) => {
   let hashed1;
   if (id)
   {
@@ -155,7 +155,8 @@ export const editUserInfo = async (id, firstName, lastName, emailAddress, passwo
     password: hashed1 ? hashed1 : oldUser.password,
     username: username ? username : oldUser.username,
     age: age ? age : oldUser.age,
-    points: oldUser.points
+    points: oldUser.points,
+    interests: interests ? interests : oldUser.interests
   };
 
   const userCollection = await users();

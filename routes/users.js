@@ -123,8 +123,24 @@ router.route("/signup")
       return res.status(400).render("editProfile", {auth: false, error: true, message: e});
     }
     try {
+      let interests = [];
+      if (Object.keys(userInfo).includes("interestsInput1")) {
+        interests.push("City-wide Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput2")) {
+        interests.push("Business/Restaurant Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput3")) {
+        interests.push("Art Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput4")) {
+        interests.push("Cultural Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput5")) {
+        interests.push("Volunteering Events");
+      }
       const updated = await editUserInfo(user._id, userInfo.firstName, userInfo.lastName, 
-        userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
+        userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput, interests);
       let url;
       if (userInfo.username)
       {
