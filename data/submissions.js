@@ -77,11 +77,12 @@ const newSubmission = async (attractionId, userId, image, comment, rating, date,
         status: status
       };
     const attractionCollection = await attractions();
-    const insertInfo = await attractionCollection.updateOne(
+    const updateInfo = await attractionCollection.updateOne(
         { _id: new ObjectId(attractionId) },
         { $push: { submissions: newSubmission } }
     );
-    if (!insertInfo.acknowledged || insertInfo.modifiedCount != 1) throw 'Could not add submission';
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount != 1) throw 'Could not add submission';
+    newSubmission._id = newSubmission._id.toString();
     return newSubmission;
 };
 const getSubmissionsByUserId = async (userId, attractionId) => {
@@ -142,17 +143,57 @@ const getSubmission = async (id) => {
     }
     id = helpers.checkString(id, "User ID");
     const attractionCollection = await attractions();
-    const attraction = await attractionCollection.findOne({ 'submissions._id': new ObjectId(id) });
-    if (!attraction) throw 'Error: Attraction not found';
-    const sub = attraction.submissions[0];
-    sub._id = sub._id.toString();
-    return sub;
+    
+    let attraction = await attractionCollection.findOne(
+        { 'submissions._id': new ObjectId(id) },
+        { projection: { submissions: { $elemMatch: { _id: new ObjectId(id) } } } }
+    );
+    if (!attraction || !attraction.submissions || attraction.submissions.length == 0) {
+        throw 'Error: Submission not found';
+    }
+    let submission = attraction.submissions[0];
+    submission._id = submission._id.toString();
+    return submission;
 };
 const approveSubmission = async (id) => {
+    if (!id) {
+        throw 'Error: ID is required';
+    }
+    id = helpers.checkString(id, "User ID");
 
+    let submission = await getSubmission(id);
+    if (submission.status === 'approved') {
+        throw "Error: status is already approved";
+    }
+
+    const attractionCollection = await attractions();
+    const updateInfo = await attractionCollection.updateOne(
+        { 'submissions._id': new ObjectId(id) },
+        { $set: { 'submissions.$.status': 'approved' } }
+    );
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount != 1) throw 'Could not approve submission';
+    submission = await getSubmission(id);
+    return submission;
 };
 const declineSubmission = async (id) => {
+    if (!id) {
+        throw 'Error: ID is required';
+    }
+    id = helpers.checkString(id, "User ID");
 
+    let submission = await getSubmission(id);
+    if (submission.status === 'declined') {
+        throw "Error: status is already declined";
+    }
+
+    const attractionCollection = await attractions();
+    const updateInfo = await attractionCollection.updateOne(
+        { 'submissions._id': new ObjectId(id) },
+        { $set: { 'submissions.$.status': 'declined' } }
+    );
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount != 1) throw 'Could not decline submission';
+    submission = await getSubmission(id);
+    return submission;
 };
 const editSubmission = async () => {
     //may not need
