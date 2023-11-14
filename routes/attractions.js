@@ -1,13 +1,14 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder} from "../data/attractions.js";
+import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests} from "../data/attractions.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessById, getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
 import { newSubmission } from "../data/submissions.js";
+import { getUserByEmail } from "../data/getUsers.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -40,15 +41,16 @@ router
       } catch (e) {
         return res.sendStatus(500);
       }
-    } else 
-    // if (filterOp.filterOptions === 'recommended') 
-    {
+    } else if (filterOp.filterOptions === 'Recommended') {
       try {
-        let attractionList = await getAllAttractions();
+        let user = await getUserByEmail(req.session.user.emailAddress);
+        let attractionList = await getAttractionsBasedOnUserInterests(user.interests);
         return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
       } catch (e) {
         return res.sendStatus(500);
       }
+    } else {
+      return res.sendStatus(500);
     }
   })
 

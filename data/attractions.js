@@ -252,4 +252,27 @@ const getAttractionsInChronologicalOrder = async () => {
   }
 }
 
-export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder };
+const getAttractionsBasedOnUserInterests = async (interests) => {
+  if (!interests) {
+    throw "Error: No user interests given";
+  }
+
+  const attractionCollection = await attractions();
+  const attractionList = await attractionCollection.find({tags: {$in: interests}}).toArray();
+  const sortedAttractions = attractionList.sort((a, b) => {
+    const dateComparison = new Date(a.date) - new Date(b.date)
+    if (dateComparison !== 0) {
+      return dateComparison;
+    }
+    
+    return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`)
+  });
+  if (!sortedAttractions) {
+    return [];
+  } 
+  else{
+    return sortedAttractions;
+  }
+}
+
+export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests };
