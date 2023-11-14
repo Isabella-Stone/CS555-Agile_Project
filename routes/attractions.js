@@ -28,6 +28,29 @@ router
       return res.sendStatus(500);
     }
   })
+  .post(async (req, res) => {
+    let filterOp = req.body;
+    if (!filterOp || Object.keys(filterOp).length === 0) {
+      return res.status(400).json({error: 'There are no fields in the request body'});
+    }
+    if (filterOp.filterOptions === 'date') {
+      try {
+        let attractionList = await getAttractionsInChronologicalOrder();
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.sendStatus(500);
+      }
+    } else 
+    // if (filterOp.filterOptions === 'recommended') 
+    {
+      try {
+        let attractionList = await getAllAttractions();
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.sendStatus(500);
+      }
+    }
+  })
 
 router
   .route("/create")
