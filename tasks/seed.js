@@ -192,7 +192,7 @@ async function main() {
   }
   try {
     attraction1_submission1 = await submissionData.newSubmission(
-      //attractionId, userId, image, comment, date, time
+      //attractionId, userId, image, comment, rating, date, time, status
       business1_attraction1._id.toString(),
       user1._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
@@ -233,7 +233,6 @@ async function main() {
       "declined"
     );
     attraction4_submission1 = await submissionData.newSubmission(
-      //attractionId, userId, image, comment, date, time
       business4_attraction1._id.toString(),
       user1._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
@@ -255,7 +254,6 @@ async function main() {
     );
 
     attraction6_submission1 = await submissionData.newSubmission(
-      //attractionId, userId, image, comment, date, time
       business1_attraction2._id.toString(),
       user2._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
@@ -265,7 +263,6 @@ async function main() {
       "11:00",
       "approved"
     );
-
   }
   catch (e) {
     console.log('Submission: ' + e);

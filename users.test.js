@@ -154,3 +154,109 @@ test("Should not allow user to change username into one that already exists", as
     }
     expect(error1).toStrictEqual("Username already exists (updateUser)");
 })
+test("create submission", async () => {
+    const unicornUser = await createUser("Unicorn", "Popcorn", "whatever@gmail.com", "HelpMyBrain101?", "Ihatecodingsometimes", 66);
+    let business1 = await businessData.createBusiness
+    (
+        'Run', 
+        'Faster', 
+        'Faster4U', 
+        'faster@gmail.com',
+        'Faster123!',
+        'faster_official',
+        50
+    );
+    const att = await createAttraction(business1._id.toString(), "5k Race", "50", "run for fun", "0", "11/24/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png");
+    let sub = await submissionData.newSubmission(
+        att._id.toString(),
+        unicornUser._id.toString(),
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        "I wish I could walk on water", 
+        2,
+        "11/24/2023", 
+        "13:30",
+        "declined"
+    );
+    expect(sub).toStrictEqual({
+        _id: sub._id.toString(),
+        userId: unicornUser._id.toString(),
+        image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        comment: "I wish I could walk on water",
+        rating: 2,
+        date: "11/24/2023",
+        time: "13:30",
+        status: "declined"
+    });
+})
+
+test("get submission", async () => {
+    const user = await createUser("John", "Doe", "doer@gmail.com", "HelpMyBrain101?", "johndoesmath", 33);
+    let business1 = await businessData.createBusiness
+    (
+        'Neymar', 
+        'Junior', 
+        'Divers Club', 
+        'IFlopALot@gmail.com',
+        'FloppyFish123!',
+        'floppy_futbol',
+        30
+    );
+    const att = await createAttraction(business1._id.toString(), "Swim on land or sea!", "75", "practice diving", "2", "12/25/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png");
+    let sub = await submissionData.newSubmission(
+        att._id.toString(),
+        user._id.toString(),
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        "I can dive well now", 
+        4,
+        "12/25/2023", 
+        "11:30",
+        "pending"
+    );
+    let getter = await submissionData.getSubmission(sub._id);
+    expect(getter).toStrictEqual({
+        _id: getter._id.toString(),
+        userId: user._id.toString(),
+        image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        comment: "I can dive well now",
+        rating: 4,
+        date: "12/25/2023", 
+        time: "11:30",
+        status: "pending"
+    });
+})
+
+test("approve submission", async () => {
+    const user = await createUser("John", "Doe", "doer2@gmail.com", "HelpMyBrain101?", "johndoesmath2", 22);
+    let business1 = await businessData.createBusiness
+    (
+        'Joe', 
+        'Biden', 
+        'Political Party', 
+        'prez@gmail.com',
+        'Unsecure123!',
+        'partyintheUSA',
+        30
+    );
+    const att = await createAttraction(business1._id.toString(), "argue with friends!", "100", "practice yelling", "3", "12/30/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png");
+    let sub = await submissionData.newSubmission(
+        att._id.toString(),
+        user._id.toString(),
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        "I love screaming", 
+        4,
+        "12/30/2023", 
+        "11:30",
+        "declined"
+    );
+    let approveIt = await submissionData.approveSubmission(sub._id.toString())
+    expect(approveIt).toStrictEqual({
+        _id: approveIt._id.toString(),
+        userId: user._id.toString(),
+        image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        comment: "I love screaming", 
+        rating: 4,
+        date: "12/30/2023", 
+        time: "11:30",
+        status: "approved"
+    });
+})
