@@ -235,7 +235,14 @@ const getBusinessNameByAttractionName = async (attName) => {
 const getAttractionsInChronologicalOrder = async () => {
   const attractionCollection = await attractions();
   const attractionList = await attractionCollection.find({}).toArray();
-  const sortedAttractions = attractionList.sort((a, b) => new Date(a.date) - new Date(b.date));
+  const sortedAttractions = attractionList.sort((a, b) => {
+    const dateComparison = new Date(a.date) - new Date(b.date)
+    if (dateComparison !== 0) {
+      return dateComparison;
+    }
+    
+    return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`)
+  });
   if (!sortedAttractions) {
     return [];
   } 
