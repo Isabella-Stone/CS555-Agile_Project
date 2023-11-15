@@ -1,46 +1,49 @@
 <main>
-    {{#if session.user}}
-          {{#if session.user.is_business}}
-          {{else}}
-            <div class="column">
-                <form id="filter" action="/attractions" method="POST" class="filter">
-                    <label for="filterOptions">Filter Attractions By:</label>
-                    <p></p>
-                    <select name="filterOptions" id="filterOptions">
-                        <option value="date">Date</option>
-                        <option value="Recommended">Recommended</option>
-                    </select>
-                    <p></p>
-                    <label for="submit">
-                        <button type="submit" name="submit" id="submit">Submit</button>
-                    </label>
-                </form>
-            </div>
+    <div class="column">
+        {{#if session.user}}
+            {{#if session.user.is_business}}
+            {{else}}
+                <div class="column">
+                    <form id="filter" action="/attractions" method="POST" class="filter">
+                        <br/>
+                        <label for="filterOptions">Filter Attractions By:</label>
+                        <p></p>
+                        <select name="filterOptions" id="filterOptions">
+                            <option value="date">Date</option>
+                            <option value="Recommended">Recommended</option>
+                        </select>
+                        <p></p>
+                        <label for="submit">
+                            <button type="submit" name="submit" id="submit">Submit</button>
+                        </label>
+                    </form>
+                </div>
+            {{/if}}
         {{/if}}
-    {{/if}}
-    
-    <div class="attraction-holder">
-        {{#each attractions}}
-            <div class="attraction">
-                    <div class="row">
-                        <a href="http://localhost:3000/attractions/{{this._id}}" target="_self" class="attractionUrl">{{this.attractionName}}</a>
-                        <p class="date"> {{this.date}}, {{this.startTime}}-{{this.endTime}}</p>
-                    </div>
-                    <div class="row">
-                        <i>{{this.description}}</i>
-                    </div>
-                    <div class="row">
-                        <p class="bold">Points offered: </p>
-                        <p>{{this.pointsOffered}} (+ {{this.bonusPoints}} bonus points)</p>
-                    </div>
-                    <div class="row">
-                        <h5 class="bold">Tags: </h5>
-                        {{#each this.tags}}
-                            <li>{{this}}</li>
-                        {{/each}}
-                    </div>
-            </div>
-        <br/>
-        {{/each}}
-    </div>
+        
+        <div class="attraction-holder">
+            {{#each attractions}}
+                <div class="attraction">
+                        <div class="row">
+                            <a href="http://localhost:3000/attractions/{{this._id}}" target="_self" class="attractionUrl">{{this.attractionName}}</a>
+                            <p class="date"> {{this.date}}, {{this.startTime}}-{{this.endTime}}</p>
+                        </div>
+                        <div class="row">
+                            <i>{{this.description}}</i>
+                        </div>
+                        <div class="row">
+                            <p class="bold">Points offered: </p>
+                            <p>{{this.pointsOffered}} (+ {{this.bonusPoints}} bonus points)</p>
+                        </div>
+                        <div class="row">
+                            <h5 class="bold">Tags: </h5>
+                            {{#each this.tags}}
+                                <li>{{this}}</li>
+                            {{/each}}
+                        </div>
+                </div>
+            <br/>
+            {{/each}}
+        </div>
+    </div
 </main>

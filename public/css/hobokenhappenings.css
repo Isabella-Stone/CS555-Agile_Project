@@ -7,13 +7,14 @@ greenish: #F1FFE7 */
 
 /*general*/
 body {
-    background-color: #F1FFE7;
+    /* background-color: #F1FFE7; */
     color: #3C3744;
 }
+
 .column {
     display: flex;
     flex-direction: column;
-    background-color: #F1FFE7;
+    /* background-color: #F1FFE7; */
 }
 
 .row {
@@ -91,7 +92,7 @@ input {
 }
 
 button {
-    width: 75px;
+    width: 115px;
     padding: 10px;
     background-color: #3066BE;
     color: #fff;
