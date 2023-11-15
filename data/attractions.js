@@ -4,8 +4,8 @@ import { ObjectId } from 'mongodb';
 import e from 'express';
 import { getBusinessById, getBusinessByUsername } from './business.js';
 // no error checking for ids yet, need to add in photo
-const createAttraction = async (businessId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image) => {
-    if (!businessId || !submissions || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName) {
+const createAttraction = async (businessId, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image, tags) => {
+    if (!businessId || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName || !tags || !image) {
       throw 'Error: All fields need to have valid values';
     }
     description = helpers.checkString(description, "Attraction description");
@@ -56,6 +56,21 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
     pointsOffered = parseInt(pointsOffered);
     bonusPoints = parseInt(bonusPoints);
 
+    const businessCollection = await businesses();
+    const existingBusiness = await businessCollection.findOne({ _id: new ObjectId(businessId) });
+
+    if (existingBusiness)
+    {
+        await businessCollection.updateOne(
+            {_id: new ObjectId(businessId)},
+            {$inc: {numPosted: 1}}
+        );
+    }
+    else
+    {
+        throw 'Error: businessId not associated with a business';
+    }
+
     let newAttraction = {
       _id: new ObjectId(),
       businessId: businessId,
@@ -66,8 +81,9 @@ const createAttraction = async (businessId, submissions, attractionName, pointsO
       pointsOffered: pointsOffered,
       bonusPoints: bonusPoints,
       description: description,
-      submissions: submissions,
-      image: image
+      submissions: [],
+      image: image,
+      tags: tags
     };
     const attractionCollection = await attractions();
     if (await attractionCollection.findOne({ attractionName: attractionName })) {
@@ -124,10 +140,9 @@ const get = async (attractionId) => {
       return attraction;
   };
 
-//STILL NEEDS TO RECEIVE NEW IMAGE FROM EDITATTRACTION PAGE CURRENTLY HARDCODED
 //editAttraction()
-const editAttraction = async (businessId, attractionId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime) => {
-    if (!businessId || !attractionId || !submissions || !attractionName || !date || !startTime || !pointsOffered || !description || !bonusPoints  ||!endTime ) {
+const editAttraction = async (businessId, attractionId, submissions, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image, tags) => {
+    if (!businessId || !attractionId || !submissions || !attractionName || !date || !startTime || !pointsOffered || !description || !bonusPoints  ||!endTime || !image || !tags ) {
         throw 'Error: All fields need to have valid values';
     }
     description = helpers.checkString(description, "Attraction description");
@@ -158,7 +173,8 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
         bonusPoints: bonusPoints,
         description: description,
         submissions: submissions,
-        image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+        image: image,
+        tags: tags
     };
     const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
   
@@ -217,4 +233,46 @@ const getBusinessNameByAttractionName = async (attName) => {
  
 };
 
-export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName };
+const getAttractionsInChronologicalOrder = async () => {
+  const attractionCollection = await attractions();
+  const attractionList = await attractionCollection.find({}).toArray();
+  const sortedAttractions = attractionList.sort((a, b) => {
+    const dateComparison = new Date(a.date) - new Date(b.date)
+    if (dateComparison !== 0) {
+      return dateComparison;
+    }
+    
+    return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`)
+  });
+  if (!sortedAttractions) {
+    return [];
+  } 
+  else{
+    return sortedAttractions;
+  }
+}
+
+const getAttractionsBasedOnUserInterests = async (interests) => {
+  if (!interests) {
+    throw "Error: No user interests given";
+  }
+
+  const attractionCollection = await attractions();
+  const attractionList = await attractionCollection.find({tags: {$in: interests}}).toArray();
+  const sortedAttractions = attractionList.sort((a, b) => {
+    const dateComparison = new Date(a.date) - new Date(b.date)
+    if (dateComparison !== 0) {
+      return dateComparison;
+    }
+    
+    return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`)
+  });
+  if (!sortedAttractions) {
+    return [];
+  } 
+  else{
+    return sortedAttractions;
+  }
+}
+
+export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests };

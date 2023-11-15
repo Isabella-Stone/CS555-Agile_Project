@@ -1,4 +1,24 @@
 <main>
+    {{#if session.user}}
+          {{#if session.user.is_business}}
+          {{else}}
+            <div class="column">
+                <form id="filter" action="/attractions" method="POST" class="filter">
+                    <label for="filterOptions">Filter Attractions By:</label>
+                    <p></p>
+                    <select name="filterOptions" id="filterOptions">
+                        <option value="date">Date</option>
+                        <option value="Recommended">Recommended</option>
+                    </select>
+                    <p></p>
+                    <label for="submit">
+                        <button type="submit" name="submit" id="submit">Submit</button>
+                    </label>
+                </form>
+            </div>
+        {{/if}}
+    {{/if}}
+    
     <div class="attraction-holder">
         {{#each attractions}}
             <div class="attraction">
@@ -12,6 +32,12 @@
                     <div class="row">
                         <p class="bold">Points offered: </p>
                         <p>{{this.pointsOffered}} (+ {{this.bonusPoints}} bonus points)</p>
+                    </div>
+                    <div class="row">
+                        <h5 class="bold">Tags: </h5>
+                        {{#each this.tags}}
+                            <li>{{this}}</li>
+                        {{/each}}
                     </div>
             </div>
         <br/>

@@ -9,6 +9,10 @@
                 <p id="emailAddress">Email Address: {{user.emailAddress}}</p>
                 <p id="age">Age: {{user.age}}</p>
                 <p id="points">Points: {{user.points}}</p>
+                <p id="interests">Interests: </p>
+                {{#each user.interests}}
+                <li>{{this}}</li>
+                {{/each}}
             </div>
         {{/if}}
         <a href="/user/editProfile/{{user._id}}" class="a-format">Click here to edit your profile</a>

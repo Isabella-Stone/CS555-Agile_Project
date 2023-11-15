@@ -32,8 +32,24 @@ router.route("/signup")
       return res.status(400).render("signUpUser", {error: true, message: e});
     }
     try {
+      let interests = [];
+      if (Object.keys(userInfo).includes("interestsInput1")) {
+        interests.push("City-wide Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput2")) {
+        interests.push("Business/Restaurant Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput3")) {
+        interests.push("Art Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput4")) {
+        interests.push("Cultural Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput5")) {
+        interests.push("Volunteering Events");
+      }
       const newUser = await createUser(userInfo.firstName, userInfo.lastName, 
-      userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
+      userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput, interests);
       return res.redirect("/auth/login");
     } catch (e) {
       return res.status(400).render("signUpUser", {error: true, message: e});
@@ -64,6 +80,7 @@ router.route("/signup")
     }
   })
   .put(async (req, res) => {
+    console.log("PUT")
     let userInfo = req.body;
     let user;
     if (!userInfo || Object.keys(userInfo).length === 0) {
@@ -73,25 +90,71 @@ router.route("/signup")
     }
     try {
       user = await getUserByUsername(req.params.username);
-      userInfo.firstName = checkName(userInfo.firstName);
-      userInfo.lastName = checkName(userInfo.lastName);
-      userInfo.emailAddress = checkEmail(userInfo.emailAddress);
-      userInfo.password = checkPassword(userInfo.password);
+      if (userInfo.firstName)
+      {
+        userInfo.firstName = checkName(userInfo.firstName);
+      }
+      if (userInfo.lastName)
+      {
+        userInfo.lastName = checkName(userInfo.lastName);
+      }
+      if (userInfo.emailAddress)
+      {
+        userInfo.emailAddress = checkEmail(userInfo.emailAddress);
+      }
+      if (userInfo.password)
+      {
+        userInfo.password = checkPassword(userInfo.password);
+      }
       if (userInfo.password !== userInfo.confirmPassword) {
         throw `Error: Passwords do not match`;
       }
-      userInfo.username = checkUsername(userInfo.username);
-      userInfo.ageInput = checkAge(parseInt(userInfo.ageInput));
+      if (userInfo.username)
+      {
+        userInfo.username = checkUsername(userInfo.username);
+      }
+      if (userInfo.ageInput)
+      {
+        userInfo.ageInput = checkAge(parseInt(userInfo.ageInput));
+      }
     }
     catch (e) {
+      console.log(e);
       return res.status(400).render("editProfile", {auth: false, error: true, message: e});
     }
     try {
+      let interests = [];
+      if (Object.keys(userInfo).includes("interestsInput1")) {
+        interests.push("City-wide Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput2")) {
+        interests.push("Business/Restaurant Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput3")) {
+        interests.push("Art Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput4")) {
+        interests.push("Cultural Events");
+      }
+      if (Object.keys(userInfo).includes("interestsInput5")) {
+        interests.push("Volunteering Events");
+      }
       const updated = await editUserInfo(user._id, userInfo.firstName, userInfo.lastName, 
-        userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput);
-        let url = "/user/" + userInfo.username;
+        userInfo.emailAddress, userInfo.password, userInfo.username, userInfo.ageInput, interests);
+      let url;
+      if (userInfo.username)
+      {
+        url = "/user/" + userInfo.username;
+        req.session.user.username = userInfo.username;
+      }
+      else
+      {
+        url = "/user/" + user.username;
+        req.session.user.username = user.username;
+      }
       return res.redirect(url);
     } catch (e) {
+      console.log(e);
       return res.status(400).render("editProfile", {auth: false, error: true, message: e});
     }
   });

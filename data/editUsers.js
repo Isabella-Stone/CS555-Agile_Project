@@ -6,8 +6,8 @@ import bcrypt from 'bcrypt';
 const saltRounds = 8;
 
 //Creates a user with the given values and sets points to 0
-export const createUser = async (firstName, lastName, emailAddress, password, username, age) => {
-  if (!firstName || !lastName || !emailAddress || !password || !username || !age) {
+export const createUser = async (firstName, lastName, emailAddress, password, username, age, interests) => {
+  if (!firstName || !lastName || !emailAddress || !password || !username || !age || !interests) {
     throw 'All input fields must be provided (createUser)';
   }
 
@@ -34,7 +34,8 @@ export const createUser = async (firstName, lastName, emailAddress, password, us
     password: hashed,
     username: username,
     age: age,
-    points: 0
+    points: 0,
+    interests: interests
   };
   const userCollection = await users();
   const newInsertInformation = await userCollection.insertOne(newUser);
@@ -98,45 +99,66 @@ export const checkUser = async (emailAddress, password) => {
 
 
 //Edits user info based on given information 
-export const editUserInfo = async (id, firstName, lastName, emailAddress, password, username, age) => {
-  if (!id || !firstName || !lastName || !emailAddress || !password || !username || !age) {
-    throw 'All input fields must be provided (updateUser)';
+export const editUserInfo = async (id, firstName, lastName, emailAddress, password, username, age, interests) => {
+  let hashed1;
+  if (id)
+  {
+    id = checkId(id);
   }
-  id = checkId(id);
-  firstName = checkName(firstName);
-  lastName = checkName(lastName);
-  emailAddress = checkEmail(emailAddress);
-  password = checkPassword(password);
-  username = checkUsername(username);
-  age = checkAge(age);
+  if (firstName)
+  {
+    firstName = checkName(firstName);
+  }
+  if (lastName)
+  {
+    lastName = checkName(lastName);
+  }
+  if (emailAddress)
+  {
+    emailAddress = checkEmail(emailAddress);
+  }
+  if (password)
+  {
+    password = checkPassword(password);
+    hashed1 = await bcrypt.hash(password, saltRounds);
+  }
+  if (username)
+  {
+    username = checkUsername(username);
+  }
+  if (age)
+  {
+    age = checkAge(age);
+  }
+
   let oldUser = await getUserById(id);
-  let usernameExists;
-  let emailExists;
+  let usernameExists = false;
+  let emailExists = false;
   
-  if (oldUser.username !== username) {
+  if (oldUser.username !== username && username) {
+    console.log("usernameAlreadyExists");
     usernameExists = await usernameAlreadyExists(username);
     if (usernameExists) {
       throw `Username already exists (updateUser)`
     }
   }
 
-  if (oldUser.emailAddress !== emailAddress) {
+  if (oldUser.emailAddress !== emailAddress && emailAddress) {
     emailExists = await emailAlreadyExists(emailAddress);
     if (emailExists) {
       throw `Email already exists (updateUser)`
     }
   }
 
-  const hashed1 = await bcrypt.hash(password, saltRounds);
-
   const userUpdate = {
-    firstName: firstName,
-    lastName: lastName,
-    emailAddress: emailAddress,
-    password: hashed1,
-    username: username,
-    age: age,
-    points: oldUser.points
+    firstName: firstName ? firstName : oldUser.firstName,
+    lastName: lastName ? lastName : oldUser.lastName,
+    emailAddress: emailAddress ? emailAddress : oldUser.emailAddress,
+    password: hashed1 ? hashed1 : oldUser.password,
+    username: username ? username : oldUser.username,
+    age: age ? age : oldUser.age,
+    points: oldUser.points,
+    interests: interests ? interests : oldUser.interests
   };
 
   const userCollection = await users();
@@ -146,8 +168,16 @@ export const editUserInfo = async (id, firstName, lastName, emailAddress, passwo
   if (updateInfo.modifiedCount === 0) {
     throw `At least one field must be different to successfully update user`;
   }
+  let newInfo;
+  if (username)
+  {
+    newInfo = await getUserByUsername(username);
+  }
+  else
+  {
+    newInfo = await getUserByUsername(oldUser.username);
+  }
 
-  let newInfo = await getUserByUsername(username);
   return newInfo;
 };
 

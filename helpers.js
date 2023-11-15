@@ -160,3 +160,23 @@ export const checkTime = (startTime, endTime) =>
       }
       return date;
   }
+  export const checkStatus = (name) => {
+    name = checkString(name, "Status");
+    const validStatuses = ["approved", "declined", "pending"];
+    if (!validStatuses.includes(name)) {
+        throw `Error: Invalid Status.`;
+    }
+    return name;
+  }
+  export const checkRating = (rating) => {
+    if (typeof rating !== 'number') {
+        throw `Rating must be a valid number`;
+    }
+    if (rating < 1) {
+        throw `Rating must be over 1`;
+    }
+    if (rating > 5) {
+        throw `Rating must be less than 5`;
+    }
+    return rating;
+}
