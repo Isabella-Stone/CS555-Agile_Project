@@ -44,56 +44,58 @@ export const createUser = async (firstName, lastName, emailAddress, password, us
   return await getUserById(newInsertInformation.insertedId.toString());
 }
 
+
 export const checkUser = async (emailAddress, password) => {
-    if (!emailAddress || !password) {
-      throw "All input fields must be provided";
-    }
-  
-    emailAddress = checkEmail(emailAddress);
-    password = checkString(password, "Password");
-  
-    const userCollection = await users();
-    const businessCollection = await businesses();
+  if (!emailAddress || !password) {
+    throw "All input fields must be provided";
+  }
 
-    const user = await userCollection.findOne({emailAddress: emailAddress});
-    const business = await businessCollection.findOne({emailAddress: emailAddress});
-    let isUser = (user !== null);
-    let isBusiness = (business !== null);
+  emailAddress = checkEmail(emailAddress);
+  password = checkString(password, "Password");
 
-    if (!isUser && !isBusiness) {
-      throw "Either the email address or password is invalid";
+  const userCollection = await users();
+  const businessCollection = await businesses();
+
+  const user = await userCollection.findOne({emailAddress: emailAddress});
+  const business = await businessCollection.findOne({emailAddress: emailAddress});
+  let isUser = (user !== null);
+  let isBusiness = (business !== null);
+
+  if (!isUser && !isBusiness) {
+    throw "Either the email address or password is invalid";
+  }
+  else {
+    let validPassword;
+    if (isUser) {
+      validPassword = await bcrypt.compare(password, user.password);
+    } else {
+      validPassword = await bcrypt.compare(password, business.password);
     }
-    else {
-      let validPassword;
-      if (isUser) {
-        validPassword = await bcrypt.compare(password, user.password);
-      } else {
-        validPassword = await bcrypt.compare(password, business.password);
-      }
-      
-      if (validPassword) {
-        if (isBusiness) {
-          let name = business.name;
-          let emailAddress = business.emailAddress
-          let username = business.username;
-          let _id = String(business._id)
-          return {name, emailAddress, username, _id};
-        }
-        else {
-          //is user
-          let firstName = user.firstName;
-          let lastName = user.lastName;
-          let emailAddress = user.emailAddress
-          let username = user.username;
-          let _id = String(user._id)
-          return {firstName, lastName, emailAddress, username, _id};
-        }
+    
+    if (validPassword) {
+      if (isBusiness) {
+        let name = business.name;
+        let emailAddress = business.emailAddress
+        let username = business.username;
+        let _id = String(business._id)
+        return {name, emailAddress, username, _id};
       }
       else {
-        throw "Either the email address or password is invalid";
+        //is user
+        let firstName = user.firstName;
+        let lastName = user.lastName;
+        let emailAddress = user.emailAddress
+        let username = user.username;
+        let _id = String(user._id)
+        return {firstName, lastName, emailAddress, username, _id};
       }
     }
-  };
+    else {
+      throw "Either the email address or password is invalid";
+    }
+  }
+};
+
 
 //Edits user info based on given information 
 export const editUserInfo = async (id, firstName, lastName, emailAddress, password, username, age) => {
