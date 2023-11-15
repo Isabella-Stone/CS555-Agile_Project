@@ -2,26 +2,26 @@
     {{#if error}}
         <p>{{message}}</p>
     {{else}}
-    <div>
-        <h1>{{attraction.attractionName}}</h1>
-        <h3>Date: {{attraction.date}}</h3>
-        <h3>{{attraction.startTime}} - {{attraction.endTime}}</h3>
+    <div id="information">
+        <h1 id="info-title">{{attraction.attractionName}}</h1>
+        <h3>Join us on {{attraction.date}}!</h3>
+        <h3>From {{attraction.startTime}} to {{attraction.endTime}}</h3>
         <p></p>
         <p>{{attraction.description}}</p>
         <p></p>
-        <h3>Points Offered: {{attraction.pointsOffered}}</h3>
-        <h3>Bonus Points: {{attraction.bonusPoints}}</h3>
-        <p class="bold">Tags: </p>
+        <h4>Points Offered: {{attraction.pointsOffered}}</h2>
+        <h4>Bonus Points: {{attraction.bonusPoints}}</h2>
+        <h5 class="bold">Tags: </h5>
             {{#each attraction.tags}}
                 <li>{{this}}</li>
             {{/each}}
-        <img src={{attraction.image}} alt="Image" width="300" height="300">
+        <img src={{attraction.image}} alt="Image" width="200" height="300">
     </div>
     {{/if}}
 
     {{#if isUser}}
         <form action= "/attractions/{{id}}" method="post" id="submission" class="column" enctype="multipart/form-data">
-            <label for="image">Photo Submission</label>
+            <label for="image" class="image">Photo Submission</label>
             <br/>
             <input 
                 type="file"
@@ -31,7 +31,7 @@
             >
             <br/>
 
-            <label for="rating" class="column">On a scale of 1 to 5, how satisfied were you with the event?</label>
+            <label for="rating" class="image">On a scale of 1 to 5, how satisfied were you with the event?</label>
             <select id="rating" name="rating">
                 <option>1</option>
                 <option>2</option>
@@ -39,8 +39,8 @@
                 <option>4</option>
                 <option>5</option>
             </select>
-
-            <label for="reasoning">Why did you give this rating?</label>
+            <br/>
+            <label for="reasoning" class="image">Why did you give this rating?</label>
             <input type="text" id="reasoning" name="reasoning">
             <button type="submit">Submit</button>
         </form>
