@@ -13,7 +13,9 @@
         <h4>Bonus Points: {{attraction.bonusPoints}}</h2>
         <h5 class="bold">Tags: </h5>
             {{#each attraction.tags}}
-                <li>{{this}}</li>
+                <ul class="tags">
+                    <li>{{this}}</li>
+                </ul>
             {{/each}}
         <img src={{attraction.image}} alt="Image" width="200" height="300">
     </div>
