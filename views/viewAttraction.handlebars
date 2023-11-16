@@ -1,7 +1,8 @@
 <main>
     {{#if error}}
         <p>{{message}}</p>
-    {{else}}
+    {{!-- {{else}} --}}
+    {{/if}}
     <div id="information">
         <h1 id="info-title">{{attraction.attractionName}}</h1>
         <h3>Join us on {{attraction.date}}!</h3>
@@ -9,8 +10,8 @@
         <p></p>
         <p>{{attraction.description}}</p>
         <p></p>
-        <h4>Points Offered: {{attraction.pointsOffered}}</h2>
-        <h4>Bonus Points: {{attraction.bonusPoints}}</h2>
+        <h4>Points Offered: {{attraction.pointsOffered}}</h4>
+        <h4>Bonus Points: {{attraction.bonusPoints}}</h4>
         <h5 class="bold">Tags: </h5>
             {{#each attraction.tags}}
                 <ul class="tags">
@@ -19,7 +20,7 @@
             {{/each}}
         <img src={{attraction.image}} alt="Image" width="200" height="300">
     </div>
-    {{/if}}
+    
 
     {{#if isUser}}
         <form action= "/attractions/{{id}}" method="post" id="submission" class="column" enctype="multipart/form-data">
@@ -47,4 +48,28 @@
             <button type="submit">Submit</button>
         </form>
     {{/if}}
+
 </main>
+    <div class="attraction-holder">
+        <h2 id="submission-title">Submissions</h2>
+        {{#if approvedSubmissions}}
+        {{else}}
+            <p class="center-text">No approved submissions yet! Check back later!</p>
+        {{/if}}
+        {{#each approvedSubmissions}}
+            <div class="submission">
+                <div class="row">
+                    <img src={{this.image}} alt="Image" width="200" height="300">
+                    <p class="date"> {{this.date}}, {{this.time}}</p>
+                </div>
+                <div class="row">
+                    <i>{{this.comment}}</i>
+                </div>
+                <div class="row">
+                    <p class="bold">Rating: </p>
+                    <p>{{this.rating}}</p>
+                </div>
+            </div>
+        <br/>
+        {{/each}}
+    </div>

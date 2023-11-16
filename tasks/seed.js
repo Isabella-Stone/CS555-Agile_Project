@@ -19,7 +19,8 @@ async function main() {
         "areeb1@gmail.com", 
         "Qwertyuiop@123", 
         "kash123", 
-        21
+        21,
+        []
     );
     user2 = await editUserData.createUser(
         'Shailaja', 
@@ -27,7 +28,8 @@ async function main() {
         'svyaslol@gmail.com',
         'Hello!123',
         "svyas456",
-        22
+        22,
+        []
     );
     user3 = await editUserData.createUser(
         "Mariam", 
@@ -35,7 +37,8 @@ async function main() {
         "mariamd@gmail.com", 
         "Happy123!", 
         "mxrixm", 
-        21
+        21,
+        []
     );
     user4 = await editUserData.createUser(
         "Patrick", 
@@ -43,7 +46,8 @@ async function main() {
         "pattyhills@gmail.com", 
         "Abcd123!!", 
         "pattyhill", 
-        48
+        48,
+        []
     );
     user5 = await editUserData.createUser(
         "Megan", 
@@ -51,7 +55,8 @@ async function main() {
         "msanford@gmail.com", 
         "Abc123!!", 
         "megsan", 
-        21
+        21,
+        []
     );
     user6 = await editUserData.createUser(
       "Ryan", 
@@ -59,7 +64,8 @@ async function main() {
       "rcgiovanniello@gmail.com", 
       "Wrong123!", 
       "rgiova", 
-      21
+      21,
+      []
   );
   } catch (e) {
     console.log('User: ' + e);
@@ -126,7 +132,8 @@ async function main() {
         "11/14/2023", 
         "08:00", 
         "12:00",
-        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        []
       );
       business1_attraction2 = await attractionData.createAttraction(
         business1._id.toString(),
@@ -137,7 +144,8 @@ async function main() {
         "11/23/2023", 
         "10:00", 
         "12:30",
-        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        []
       );
       business2_attraction1 = await attractionData.createAttraction(
           business2._id.toString(),
@@ -148,8 +156,8 @@ async function main() {
           "11/25/2023", 
           "17:00", 
           "20:00",
-          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
-
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+          []
       );
         business3_attraction1 = await attractionData.createAttraction(
           business3._id.toString(),
@@ -160,7 +168,8 @@ async function main() {
           "11/10/2023", 
           "12:00", 
           "14:00",
-          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+          []
 
       );
       business4_attraction1 = await attractionData.createAttraction(
@@ -172,8 +181,8 @@ async function main() {
           "11/24/2023", 
           "12:00", 
           "20:00",
-          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
-
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+          []
         );
       business5_attraction1 = await attractionData.createAttraction(
           business5._id.toString(),
@@ -184,17 +193,17 @@ async function main() {
           "12/05/2023", 
           "15:00", 
           "19:00",
-          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png"
-
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+          []
       );
   } catch (e) {
-    console.log('Business: ' + e);
+    console.log('Business/Attraction: ' + e);
   }
   try {
     attraction1_submission1 = await submissionData.newSubmission(
       //attractionId, userId, image, comment, rating, date, time, status
       business1_attraction1._id.toString(),
-      user1._id.toString(),
+      user4._id.toString(),
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I love bagels", 
       4,

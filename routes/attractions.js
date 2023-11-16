@@ -7,7 +7,7 @@ import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessById, getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
-import { newSubmission } from "../data/submissions.js";
+import { newSubmission, getApprovedSubmissions } from "../data/submissions.js";
 import { getUserByEmail } from "../data/getUsers.js";
 
 cloudinary.config({
@@ -47,6 +47,7 @@ router
         let attractionList = await getAttractionsBasedOnUserInterests(user.interests);
         return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
       } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
       }
     } else {
@@ -244,12 +245,24 @@ router
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
-      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id});
+      let approvedSubmissions = await getApprovedSubmissions(id);
+      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, approvedSubmissions: approvedSubmissions});
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }
   })
   .post(upload.single("image"), async (req, res) => {
+    let id = req.params.id;
+    let attractionName = "";
+    let attraction = undefined;
+    try {
+      id = checkId(id);
+      attraction = await get(id);
+      attractionName = attraction.attractionName;
+    } catch (e) {
+      return res.status(400).json({error: `${e}`});
+    }
+    
     let submissionInfo = req.body;
     let image = null;
     if(req.file && req.file.path){
@@ -271,13 +284,20 @@ router
     }
     let time = `${hour}:${minute}`
 
+    let approvedSubmissions = undefined;
     try{
       //now run the function and then render the proper page
+      approvedSubmissions = await getApprovedSubmissions(id);
       let submission = await newSubmission(req.params.id, req.session.user._id, image, submissionInfo.reasoning, parseInt(submissionInfo.rating), fullDate, time)
-      console.log(submission);
-      // return res.render('viewAttraction', {attraction: req.params.id, auth: false, isUser: !req.session.user.is_business, submission: submission});
+      // return res.redirect("/attractions/" + id);
+      // return res.render('viewSubmissionsUser', {attraction: req.params.id, auth: false, approvedSubmissions: approvedSubmissions, attractionName: attractionName});
+      // return res.redirect("/attractions/" + id);
+      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, approvedSubmissions: approvedSubmissions});
+
     } catch (e) {
-      return res.status(404).json({error: `${e}`});
+      console.log(e);
+      // return res.status(404).json({error: `${e}`});
+      return res.render('viewAttraction', {error: true, message: e, attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, approvedSubmissions: approvedSubmissions});
     }
 
   });

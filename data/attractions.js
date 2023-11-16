@@ -6,7 +6,7 @@ import { getBusinessById, getBusinessByUsername } from './business.js';
 // no error checking for ids yet, need to add in photo
 const createAttraction = async (businessId, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image, tags) => {
     if (!businessId || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName || !tags || !image) {
-      throw 'Error: All fields need to have valid values';
+      throw 'Error: All fields need to have valid values (createAttraction)';
     }
     description = helpers.checkString(description, "Attraction description");
     date = helpers.checkString(date, "Attraction date");
