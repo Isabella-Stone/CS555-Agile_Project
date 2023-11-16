@@ -20,7 +20,7 @@ async function main() {
         "Qwertyuiop@123", 
         "kash123", 
         21,
-        []
+        ["City-wide Events", "Business/Restaurant Events", "Cultural Events"]
     );
     user2 = await editUserData.createUser(
         'Shailaja', 
@@ -29,7 +29,7 @@ async function main() {
         'Hello!123',
         "svyas456",
         22,
-        []
+        ["Business/Restaurant Events", "Art Events", "Cultural Events", "Volunteering Events"]
     );
     user3 = await editUserData.createUser(
         "Mariam", 
@@ -38,7 +38,7 @@ async function main() {
         "Happy123!", 
         "mxrixm", 
         21,
-        []
+        ["City-wide Events", "Business/Restaurant Events", "Art Events", "Cultural Events", "Volunteering Events"]
     );
     user4 = await editUserData.createUser(
         "Patrick", 
@@ -47,7 +47,7 @@ async function main() {
         "Abcd123!!", 
         "pattyhill", 
         48,
-        []
+        ["Cultural Events", "Volunteering Events"]
     );
     user5 = await editUserData.createUser(
         "Megan", 
@@ -56,7 +56,7 @@ async function main() {
         "Abc123!!", 
         "megsan", 
         21,
-        []
+        ["City-wide Events", "Cultural Events", "Volunteering Events"]
     );
     user6 = await editUserData.createUser(
       "Ryan", 
@@ -65,7 +65,7 @@ async function main() {
       "Wrong123!", 
       "rgiova", 
       21,
-      []
+      ["City-wide Events", "Business/Restaurant Events", "Art Events", "Cultural Events"]
   );
   } catch (e) {
     console.log('User: ' + e);
@@ -133,7 +133,7 @@ async function main() {
         "08:00", 
         "12:00",
         "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-        []
+        ["Business/Restaurant Events"]
       );
       business1_attraction2 = await attractionData.createAttraction(
         business1._id.toString(),
@@ -145,7 +145,7 @@ async function main() {
         "10:00", 
         "12:30",
         "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-        []
+        ["City-wide Events", "Business/Restaurant Events", "Cultural Events"]
       );
       business2_attraction1 = await attractionData.createAttraction(
           business2._id.toString(),
@@ -157,7 +157,7 @@ async function main() {
           "17:00", 
           "20:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          []
+          ["Cultural Events"]
       );
         business3_attraction1 = await attractionData.createAttraction(
           business3._id.toString(),
@@ -169,7 +169,7 @@ async function main() {
           "12:00", 
           "14:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          []
+          ["Business/Restaurant Events"]
 
       );
       business4_attraction1 = await attractionData.createAttraction(
@@ -182,7 +182,7 @@ async function main() {
           "12:00", 
           "20:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          []
+          ["City-wide Events"]
         );
       business5_attraction1 = await attractionData.createAttraction(
           business5._id.toString(),
@@ -194,7 +194,7 @@ async function main() {
           "15:00", 
           "19:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          []
+          ["City-wide Events", "Art Events"]
       );
   } catch (e) {
     console.log('Business/Attraction: ' + e);
