@@ -2,6 +2,7 @@ import authRoutes from "./auth.js";
 import userRoutes from "./users.js";
 import attractionRoutes from "./attractions.js";
 import businessRoutes from "./business.js";
+import leaderboardRoutes from "./leaderboard.js"
 
 const middleware = (req, res, next) => {
   if(req.path == '/' || req.path == '/auth/login' || req.path == '/user/signup' || req.path == '/business/signup') {
@@ -31,6 +32,7 @@ const constructor = (app) => {
   app.use("/user", userRoutes);
   app.use("/attractions", attractionRoutes);
   app.use("/business", businessRoutes);
+  app.use("/leaderboard", leaderboardRoutes);
 
   app.get("/", async (req, res) => {
     if (!req.session || !req.session.user || !req.session.user.id) {

@@ -88,3 +88,9 @@ export const emailAlreadyExists = async (email) => {
       return true;
     }
 };
+
+export const getTopUsers = async () => {
+  const userCollection = await users();
+  const topUsers = await userCollection.find({}).sort({points: -1}).limit(10).toArray();
+  return topUsers;
+};
