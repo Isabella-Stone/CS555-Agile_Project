@@ -8,7 +8,7 @@ await db.dropDatabase();
 async function main() {
   let user1, user2, user3, user4, user5, user6;
   let business1, business2, business3, business4, business5;
-  let business1_attraction1, business1_attraction2, business2_attraction1, business3_attraction1, business4_attraction1, business5_attraction1;
+  let business1_attraction1, business1_attraction2, business2_attraction1, business3_attraction1, business4_attraction1, business4_attraction2, business5_attraction1;
   let attraction1_submission1, attraction1_submission2, attraction1_submission3, attraction1_submission4;
   let attraction4_submission1, attraction4_submission2;
   let attraction6_submission1;
@@ -38,7 +38,7 @@ async function main() {
         "Happy123!", 
         "mxrixm", 
         21,
-        ["City-wide Events", "Business/Restaurant Events", "Art Events", "Cultural Events", "Volunteering Events"]
+        ["Volunteering Events"]
     );
     user4 = await editUserData.createUser(
         "Patrick", 
@@ -183,6 +183,18 @@ async function main() {
           "20:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
           ["City-wide Events"]
+        );
+        business4_attraction2 = await attractionData.createAttraction(
+          business4._id.toString(),
+          "Park Cleanup", 
+          "100", 
+          "Park Cleanup Volunteering Event", 
+          "0", 
+          "11/27/2023", 
+          "08:00", 
+          "14:00",
+          "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+          ["City-wide Events", "Volunteering Events"]
         );
       business5_attraction1 = await attractionData.createAttraction(
           business5._id.toString(),
