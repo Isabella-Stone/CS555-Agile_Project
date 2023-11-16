@@ -11,20 +11,27 @@ export const createUser = async (firstName, lastName, emailAddress, password, us
     throw 'All input fields must be provided (createUser)';
   }
 
+  let businessCollection = await businesses();
+
   firstName = checkName(firstName);
   lastName = checkName(lastName);
   emailAddress = checkEmail(emailAddress);
   password = checkPassword(password);
   username = checkUsername(username);
   let userExists = await usernameAlreadyExists(username);
-  if (userExists) {
+  let userExists2 = await await businessCollection.findOne({username: username});
+  if (userExists || userExists2) {
     throw `Username already exists (createUser)`;
   }
   let emailExists = await emailAlreadyExists(emailAddress);
-  if (emailExists) {
+  let emailExists2 = await businessCollection.findOne({emailAddress: emailAddress});
+  if (emailExists || emailExists2) {
     throw `emailAddress already exists (createUser)`;
   }
   age = checkAge(age);
+  if (interests.length === 0) {
+    throw `Error: No interests chosen`;
+  }
 
   const hashed = await bcrypt.hash(password, saltRounds);
   let newUser = {
@@ -133,19 +140,25 @@ export const editUserInfo = async (id, firstName, lastName, emailAddress, passwo
 
   let oldUser = await getUserById(id);
   let usernameExists = false;
+  let usernameExists2 = false;
   let emailExists = false;
+  let emailExists2 = false;
+
+  let businessCollection = await businesses();
   
   if (oldUser.username !== username && username) {
     console.log("usernameAlreadyExists");
     usernameExists = await usernameAlreadyExists(username);
-    if (usernameExists) {
+    usernameExists2 = await businessCollection.findOne({username: username});
+    if (usernameExists || usernameExists2) {
       throw `Username already exists (updateUser)`
     }
   }
 
   if (oldUser.emailAddress !== emailAddress && emailAddress) {
     emailExists = await emailAlreadyExists(emailAddress);
-    if (emailExists) {
+    emailExists2 = await businessCollection.findOne({emailAddress: emailAddress});
+    if (emailExists || emailExists2) {
       throw `Email already exists (updateUser)`
     }
   }

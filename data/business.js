@@ -1,4 +1,4 @@
-import { businesses } from "../config/mongoCollections.js";
+import { businesses, users } from "../config/mongoCollections.js";
 import { checkName, checkEmail, checkPassword, checkAge, checkUsername, checkId, checkString, checkBusinessName } from "../helpers.js";
 import { ObjectId } from 'mongodb';
 import bcrypt, { hash } from 'bcrypt';
@@ -17,12 +17,21 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     username = checkString(username);
   
     const businessCollection = await businesses();
+    const userCollection = await users();
     let business = await businessCollection.findOne({username: username})
+    if (business) {
+      throw `Username already exists (createBusiness)`;
+    }
+    business = await userCollection.findOne({username: username})
     if (business) {
       throw `Username already exists (createBusiness)`;
     }
 
     business = await businessCollection.findOne({emailAddress: emailAddress})
+    if (business) {
+      throw `Email address already exists (createBusiness)`;
+    }
+    business = await userCollection.findOne({emailAddress: emailAddress})
     if (business) {
       throw `Email address already exists (createBusiness)`;
     }
@@ -85,6 +94,7 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
   export const editBusinessInfo = async (id, firstName, lastName, name, emailAddress, password, username, age) => {
     
     const businessCollection = await businesses();
+    const userCollection = await users();
     
     let hashed1;
     if (firstName)
@@ -107,6 +117,16 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
     if (emailAddress)
     {
       emailAddress = checkEmail(emailAddress);
+      let business = await businessCollection.findOne({emailAddress: emailAddress})
+      if (business)
+      {
+        throw 'Business email already associated to another business';
+      }
+      business = await userCollection.findOne({emailAddress: emailAddress})
+      if (business)
+      {
+        throw 'Business email already associated to another user';
+      }
     }
     if (password)
     {
@@ -120,6 +140,11 @@ export const createBusiness = async (firstName, lastName, name, emailAddress, pa
       if (business)
       {
         throw 'Username already associated to a business';
+      }
+      business = await userCollection.findOne({username: username})
+      if (business)
+      {
+        throw 'Username already associated to a user';
       }
     }
     if (age)

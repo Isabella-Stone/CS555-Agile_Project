@@ -136,7 +136,7 @@ test("Should not allow user to change email into one that already exists", async
     let errorz;
     try {
         const blah = await createUser("Areeb", "Chaudhry", "blah@gmail.com", "Qwertyuiop@123", "blah123", 21, ["City-wide Events", "Business/Restaurant Events", "Art Events", "Cultural Events", "Volunteering Events"])
-        const newAreeb = await editUserInfo(blah._id, "Areeb", "Chaudhry", "areeberz@gmail.com", "Qwertyuiop@123", "blah123", 21);
+        const newAreeb = await editUserInfo(blah._id, "Areeb", "Chaudhry", "areeberz@gmail.com", "Qwertyuiop@123", "blah123", 21, ["City-wide Events"]);
     } catch (e) {
         errorz = e;
     }
@@ -147,7 +147,7 @@ test("Should not allow user to change username into one that already exists", as
     let error1;
     try {
         const blah2 = await createUser("Areeb", "Chaudhry", "blah2@gmail.com", "Qwertyuiop@123", "blah1234", 21, ["City-wide Events", "Business/Restaurant Events", "Art Events", "Cultural Events", "Volunteering Events"])
-        const newAreeb = await editUserInfo(blah2._id, "Areeb", "Chaudhry", "blah2@gmail.com", "Qwertyuiop@123", "blah123", 21);
+        const newAreeb = await editUserInfo(blah2._id, "Areeb", "Chaudhry", "blah2@gmail.com", "Qwertyuiop@123", "blah123", 21, ["City-wide Events", "Business/Restaurant Events", "Art Events", "Cultural Events", "Volunteering Events"]);
     } catch (e) {
         error1 = e;
     }

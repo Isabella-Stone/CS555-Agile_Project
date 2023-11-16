@@ -5,9 +5,10 @@ import e from 'express';
 import { getBusinessById, getBusinessByUsername } from './business.js';
 // no error checking for ids yet, need to add in photo
 const createAttraction = async (businessId, attractionName, pointsOffered, description, bonusPoints, date, startTime, endTime, image, tags) => {
-    if (!businessId || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName || !tags || !image) {
+    if (!businessId || !pointsOffered || !description || !bonusPoints || !date || !startTime || !endTime || !attractionName || !image || !tags) {
       throw 'Error: All fields need to have valid values (createAttraction)';
     }
+
     description = helpers.checkString(description, "Attraction description");
     date = helpers.checkString(date, "Attraction date");
     attractionName = helpers.checkString(attractionName, "Attraction name");
@@ -55,6 +56,10 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
     }
     pointsOffered = parseInt(pointsOffered);
     bonusPoints = parseInt(bonusPoints);
+
+    if (tags.length === 0) {
+      throw `Error: No tags chosen`;
+    }
 
     const businessCollection = await businesses();
     const existingBusiness = await businessCollection.findOne({ _id: new ObjectId(businessId) });
@@ -160,6 +165,9 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
       }
       pointsOffered = parseInt(pointsOffered);
       bonusPoints = parseInt(bonusPoints);
+      if (tags.length === 0) {
+        throw `Error: No tags chosen`;
+      }
 
     const attractionCollection = await attractions();
     // let attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
