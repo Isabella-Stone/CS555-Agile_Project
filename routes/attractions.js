@@ -7,7 +7,7 @@ import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessById, getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
-import { newSubmission, getApprovedSubmissions } from "../data/submissions.js";
+import { newSubmission, getApprovedSubmissions, getSubmissions } from "../data/submissions.js";
 import { getUserByEmail } from "../data/getUsers.js";
 
 cloudinary.config({
@@ -227,6 +227,45 @@ router
       // console.log(req.session.errorMessage);
       console.log(url2);
       return res.status(500).json(`${e}`)
+    }
+  });
+
+  router.route("/submissions")
+  .post(async (req, res) => {
+    //add check to make sure authenticated user has same id as param
+    try {
+      let businessName = await getBusinessNameByAttractionName(req.body.attractionName);
+      return res.redirect(`/attractions/submissions/${businessName}/${req.body.attractionName}`)
+    } catch (e) {
+      console.log(e);
+      return res.render("chooseAttractionForSubmissionView", {auth: true, error: true, message: e});
+    }
+  });
+  router.route("/submissions/:busname")
+  .get(async (req, res) => {
+    let busName = req.params.busname;
+    try {
+      const attractions = await getAttractionByBusinessName(busName);
+      return res.render("chooseAttractionForSubmissionView", {auth: false, attractions: attractions});
+    }
+    catch (e)
+    {
+      console.log(e);
+      return res.status(400).render("upcomingAttractions", {auth: true, error: true, message: e});
+    }
+  });
+  router.route("/submissions/:busname/:attname")
+  .get(async (req, res) => {
+    let attname = req.params.attname;
+    try {
+      const attractions = await getByName(attname);
+      let submissions = await getSubmissions(attractions._id.toString());
+      return res.status(200).render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions});
+    }
+    catch (e)
+    {
+      console.log(e);
+      return res.render("upcomingAttractions", {auth: true, error: true, message: e});
     }
   });
 

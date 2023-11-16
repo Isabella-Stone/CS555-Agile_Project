@@ -1,0 +1,16 @@
+<main>
+    <form id="selection" action="/attractions/submissions" method="POST">
+            {{#if attractions.length}}
+                <select name="attractionName" id="attractionName">
+                {{#each attractions}}
+                    <option value="{{this.attractionName}}">{{this.attractionName}}</option>
+                {{/each}}
+                </select>
+                <label for="submit">
+                    <button type="submit" name="submit" id="submit">Submit</button>
+                </label>
+            {{else}}
+                <a href="/attractions/create">create an attraction first!</a>
+            {{/if}}
+    </form>
+</main>

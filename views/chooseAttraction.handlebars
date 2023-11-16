@@ -1,4 +1,5 @@
-<form id="selection" action="/attractions/editAttraction" method="POST">
+<main>
+    <form id="selection" action="/attractions/editAttraction" method="POST">
         {{#if attractions.length}}
             <select name="attractionName" id="attractionName">
             {{#each attractions}}
@@ -11,4 +12,5 @@
         {{else}}
             <a href="/attractions/create">create an attraction first!</a>
         {{/if}}
-</form>
+    </form>
+</main>
