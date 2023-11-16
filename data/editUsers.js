@@ -163,6 +163,10 @@ export const editUserInfo = async (id, firstName, lastName, emailAddress, passwo
     }
   }
 
+  if (interests.length === 0) {
+    interests = null;
+  }
+
   const userUpdate = {
     firstName: firstName ? firstName : oldUser.firstName,
     lastName: lastName ? lastName : oldUser.lastName,

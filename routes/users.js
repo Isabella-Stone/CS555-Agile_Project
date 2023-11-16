@@ -120,7 +120,7 @@ router.route("/signup")
     }
     catch (e) {
       console.log(e);
-      return res.status(400).render("editProfile", {auth: false, error: true, message: e});
+      return res.status(400).render("editProfile", {auth: false, error: true, message: e, user: user});
     }
     try {
       let interests = [];
@@ -155,20 +155,21 @@ router.route("/signup")
       return res.redirect(url);
     } catch (e) {
       console.log(e);
-      return res.status(400).render("editProfile", {auth: false, error: true, message: e});
+      return res.status(400).render("editProfile", {auth: false, error: true, message: e, user: user});
     }
   });
 
   router.route("/editProfile/:id")
   .get(async (req, res) => {
+    let user;
     try {
       let userId = checkId(req.params.id);
-      let user = await getUserById(userId);
+      user = await getUserById(userId);
       return res.render("editProfile", {auth: false, user: user});
     }
     catch (e)
     {
-      return res.status(400).render("editProfile", {auth: true, error: true, message: e});
+      return res.status(400).render("editProfile", {auth: true, error: true, message: e, user: user});
     }
   });
 

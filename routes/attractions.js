@@ -225,8 +225,10 @@ router
       // req.session.error = true;
       // req.session.errorMessage = e;
       // console.log(req.session.errorMessage);
-      console.log(url2);
-      return res.status(500).json(`${e}`)
+      // console.log(url2);
+      // return res.status(500).json(`${e}`)
+      const attractions = await getByName(busname);
+      return res.status(400).render("editAttractions", {attractions: attractions, error: e})
     }
   });
 
