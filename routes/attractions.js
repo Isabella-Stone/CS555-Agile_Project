@@ -7,7 +7,7 @@ import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessById, getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
-import { newSubmission, getApprovedSubmissions, getSubmissions } from "../data/submissions.js";
+import { newSubmission, getApprovedSubmissions, getSubmissions, getDeclinedSubmissions, getPendingSubmissions } from "../data/submissions.js";
 import { getUserByEmail } from "../data/getUsers.js";
 
 cloudinary.config({
@@ -262,12 +262,54 @@ router
     try {
       const attractions = await getByName(attname);
       let submissions = await getSubmissions(attractions._id.toString());
-      return res.status(200).render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions});
+      return res.status(200).render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
     }
     catch (e)
     {
       console.log(e);
       return res.render("upcomingAttractions", {auth: true, error: true, message: e});
+    }
+  })
+  .post(async (req, res) => {
+    console.log(req.body.filterOptions);
+    console.log(req.params);
+    let filterOp = req.body;
+    let attname = req.params.attname;
+    let attractions;
+    try {
+      attractions = await getByName(attname);
+    } catch (e) {
+      return res.status(500).json(`${e}`);
+    }
+    if (!filterOp || Object.keys(filterOp).length === 0) {
+      return res.status(400).json({error: 'There are no fields in the request body'});
+    }
+    let submissions;
+    if (filterOp.filterOptions === 'Approved') {
+      try {
+        submissions = await getApprovedSubmissions(attractions._id.toString());
+        console.log(submissions);
+        return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+      } catch (e) {
+        return res.status(500).json(`${e}`);
+      }
+    } else if (filterOp.filterOptions === 'Pending') {
+      try {
+        submissions = await getPendingSubmissions(attractions._id.toString());
+        return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+      } catch (e) {
+        return res.status(500).json(`${e}`);
+      }
+    } else if (filterOp.filterOptions === 'Declined') {
+      try {
+        submissions = await getDeclinedSubmissions(attractions._id.toString());
+        return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+      } catch (e) {
+        return res.status(500).json(`${e}`);
+      }
+    } 
+    else {
+      return res.status(500).json(`IDK`);
     }
   });
 

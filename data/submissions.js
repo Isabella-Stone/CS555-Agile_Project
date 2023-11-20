@@ -112,6 +112,7 @@ const getSubmissions = async (attractionId) => {
     if (!attraction) throw 'Error: Attraction not found';
     return attraction.submissions;
 };
+
 const getApprovedSubmissions = async (attractionId) => {
     if (!attractionId) {
         throw 'You must provide an id to search for';
@@ -199,4 +200,56 @@ const editSubmission = async () => {
     //may not need
 };
 
-export { newSubmission, getSubmissions, getSubmission, getApprovedSubmissions, approveSubmission, declineSubmission, editSubmission};
+const getPendingSubmissions = async (attractionId) => {
+    if (!attractionId) {
+        throw 'You must provide an id to search for';
+    }
+    attractionId = helpers.checkString(attractionId, "Attraction ID");
+    if (!ObjectId.isValid(attractionId)) {
+        throw 'Error: Invalid Object Id';
+    }
+    const attractionCollection = await attractions();
+    const attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
+
+    if (!attraction) throw 'Error: Attraction not found';
+    let fullSubList = attraction.submissions;
+    
+    let pendingSubsList = [];
+    for (let i=0;i<fullSubList.length;i++)
+    {
+        let currentSub = fullSubList[i];
+        if (currentSub.status.localeCompare('pending') == 0)
+        {
+            pendingSubsList.push(fullSubList[i]);
+        }
+    }
+    return pendingSubsList;
+};
+
+const getDeclinedSubmissions = async (attractionId) => {
+    if (!attractionId) {
+        throw 'You must provide an id to search for';
+    }
+    attractionId = helpers.checkString(attractionId, "Attraction ID");
+    if (!ObjectId.isValid(attractionId)) {
+        throw 'Error: Invalid Object Id';
+    }
+    const attractionCollection = await attractions();
+    const attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
+
+    if (!attraction) throw 'Error: Attraction not found';
+    let fullSubList = attraction.submissions;
+    
+    let declinedSubsList = [];
+    for (let i=0;i<fullSubList.length;i++)
+    {
+        let currentSub = fullSubList[i];
+        if (currentSub.status.localeCompare('declined') == 0)
+        {
+            declinedSubsList.push(fullSubList[i]);
+        }
+    }
+    return declinedSubsList;
+};
+
+export { newSubmission, getSubmissions, getSubmission, getApprovedSubmissions, approveSubmission, declineSubmission, editSubmission, getPendingSubmissions, getDeclinedSubmissions};
