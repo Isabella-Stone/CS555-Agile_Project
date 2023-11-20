@@ -15,39 +15,8 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
     date = helpers.checkDate(date);
     startTime = helpers.checkString(startTime, "Attraction start time");
     endTime = helpers.checkString(endTime, "Attraction end time");
+    let time = helpers.checkTime(startTime, endTime);
     let regexNum = /^[0-9]*$/;
-    let splitStartTime = startTime.split(':');
-    let splitEndTime = endTime.split(':');
-    if (
-      splitStartTime.length != 2 ||
-      splitStartTime[0].length != 2 ||
-      splitStartTime[1].length != 2 ||
-      !regexNum.test(splitStartTime[0]) ||
-      !regexNum.test(splitStartTime[1])
-    ) {
-      throw 'Error: Must provide start time in HH:MM format';
-    }
-    if (
-      splitEndTime.length != 2 ||
-      splitEndTime[0].length != 2 ||
-      splitEndTime[1].length != 2 ||
-      !regexNum.test(splitEndTime[0]) ||
-      !regexNum.test(splitEndTime[1])
-    ) {
-      throw 'Error: Must provide end time in HH:MM format';
-    }
-    if (splitStartTime[0] * 1 < 0 || splitStartTime[0] * 1 > 23) {
-      throw 'Error: Must provide start time in HH:MM format';
-    }
-    if (splitStartTime[1] * 1 < 0 || splitStartTime[1] * 1 > 59) {
-      throw 'Error: Must provide start time in HH:MM format';
-    }
-    if (splitEndTime[0] * 1 < 0 || splitEndTime[0] * 1 > 23) {
-      throw 'Error: Must provide end time in HH:MM format';
-    }
-    if (splitEndTime[1] * 1 < 0 || splitEndTime[1] * 1 > 59) {
-      throw 'Error: Must provide end time in HH:MM format';
-    }
     if (!regexNum.test(pointsOffered)) {
       throw 'Points offered must be a number';
     }
@@ -81,8 +50,8 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
       businessId: businessId,
       attractionName: attractionName,
       date: date,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: time.startTime,
+      endTime: time.endTime,
       pointsOffered: pointsOffered,
       bonusPoints: bonusPoints,
       description: description,
