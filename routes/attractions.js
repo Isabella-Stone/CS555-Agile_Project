@@ -311,7 +311,16 @@ router
     else {
       return res.status(500).json(`IDK`);
     }
+  })
+  .put(async (res, req) => {
+    console.log("IN PUT")
+    console.log(req.params)
   });
+  // router
+  //   .route('/goingThroughSubmissions')
+  //   .post(async (res, req) => {
+  //     console.log(req.body)
+  //   });
 
   router
   .route("/:id")

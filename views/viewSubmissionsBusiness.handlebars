@@ -39,14 +39,14 @@
                 </div> --}}
             </div>
         <br/>
-        {{!-- need to figure out where the form submits to before changing the status of them --}}
-        <form id="finalizeSubmission"  method="POST">
+        <form id="finalizeSubmission" action="/attractions/submissions/{{busName}}/{{attName}}" method="POST">
             <label for="submission">Is submission accepted?</label>
             <select id="submission" name="submission">
                 <option>Yes</option>
                 <option>Yes - With Bonus Points</option>
                 <option>No</option>
             </select>
+            <input type="hidden" name="_method" value="PUT">
             <button type="submit">Submit</button>
 
         </form>
