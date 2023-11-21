@@ -7,7 +7,7 @@ import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessById, getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
-import { newSubmission, getApprovedSubmissions, getSubmissions, getDeclinedSubmissions, getPendingSubmissions } from "../data/submissions.js";
+import { newSubmission, getApprovedSubmissions, getSubmissions, getDeclinedSubmissions, getPendingSubmissions, declineSubmission } from "../data/submissions.js";
 import { getUserByEmail } from "../data/getUsers.js";
 
 cloudinary.config({
@@ -314,13 +314,23 @@ router
   })
   .put(async (res, req) => {
     console.log("IN PUT")
-    console.log(req.params)
+    console.log(res.body)
+    if(res.body.submission === "Yes"){
+
+    }else if(res.body.submission === "No"){
+      try{
+        let denied = await declineSubmission(res.body.post);
+        console.log(denied);
+        // figure out how to render back to the page
+        // return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: res.body.submissions, busName: res.body.busname, attName: res.body.attname});
+      }catch(e){
+        console.log(e)
+      }
+    }else{
+
+    }
   });
-  // router
-  //   .route('/goingThroughSubmissions')
-  //   .post(async (res, req) => {
-  //     console.log(req.body)
-  //   });
+
 
   router
   .route("/:id")
