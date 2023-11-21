@@ -314,7 +314,7 @@ router
   })
   .put(async (res, req) => {
     console.log("IN PUT")
-    console.log(res.body)
+    console.log(res.params)
     if(res.body.submission === "Yes"){
 
     }else if(res.body.submission === "No"){
@@ -322,7 +322,8 @@ router
         let denied = await declineSubmission(res.body.post);
         console.log(denied);
         // figure out how to render back to the page
-        // return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: res.body.submissions, busName: res.body.busname, attName: res.body.attname});
+        // return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: res.body.submissions, busName: res.params.busname, attName: res.params.attname});
+        // res.redirect(`/submissions/${res.params.busname}/${res.params.attname}`)
       }catch(e){
         console.log(e)
       }

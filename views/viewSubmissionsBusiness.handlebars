@@ -39,22 +39,18 @@
                 </div>
             </div>
         <br/>
-        <form id="finalizeSubmission" action="/attractions/submissions/{{../busName}}/{{../attName}}" method="POST">
-            <label for="submission">Is submission accepted?</label>
-            <select id="submission" name="submission">
-                <option>Yes</option>
-                <option>Yes - With Bonus Points</option>
-                <option>No</option>
-            </select>
-            <input type="hidden" id="post", name="post" value={{this._id}}>
-            <input type="hidden" id="busName", name="busName" value={{../busName}}>
-            <input type="hidden" id="attName", name="attName" value={{./attName}}>
-            {{!-- <input type="hidden" id="submissions", name="submissions" value={{..submissions}}> --}}
+            <form id="finalizeSubmission" action="/attractions/submissions/{{../busName}}/{{../attName}}" method="POST">
+                <label for="submission">Is submission accepted?</label>
+                <select id="submission" name="submission">
+                    <option>Yes</option>
+                    <option>Yes - With Bonus Points</option>
+                    <option>No</option>
+                </select>
+                <input type="hidden" id="post", name="post" value={{this._id}}>
+                <input type="hidden" name="_method" value="PUT">
+                <button type="submit">Submit</button>
 
-            <input type="hidden" name="_method" value="PUT">
-            <button type="submit">Submit</button>
-
-        </form>
+            </form>
         {{/each}}
     </div>
 </main>
