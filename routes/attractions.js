@@ -150,19 +150,19 @@ router
       return res.status(400).render("upcomingAttractions", {auth: true, error: true, message: e});
     }
   })
-  .post(async (req, res) => {
-    //add check to make sure authenticated user has same id as param
-    console.log("Post")
-    try
-    {
+  // .post(async (req, res) => {
+  //   //add check to make sure authenticated user has same id as param
+  //   console.log("Post")
+  //   try
+  //   {
 
-    }
-    catch (e)
-    {
-      return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
-    }
-  })
-  .put(upload.single("image"), async (req, res) => {
+  //   }
+  //   catch (e)
+  //   {
+  //     return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
+  //   }
+  // })
+  .post(upload.single("image"), async (req, res) => {
     let busname = req.params.busname;
     let attInfo = req.body;
     if (!attInfo || Object.keys(attInfo).length === 0) {
@@ -170,20 +170,20 @@ router
         .status(400)
         .json({error: 'There are no fields in the request body'});
     }
-    console.log(req.file);
     let image = null;
     if(req.file && req.file.path){
       image = req.file.path;
       let cloudinaryImage = await cloudinary.uploader.upload(image);
       image = cloudinaryImage.secure_url;
     }
-    console.log("Image: ")
-    console.log(image);
     let old;
     let oldBus;
     try {
       old = await getByName(busname);
       let a = await getBusinessById(old.businessId);
+      if(image === null){
+        image = attInfo.image
+      }
       oldBus = a.name;
       let tags = [];
       if (Object.keys(attInfo).includes("interestsInput1")) {
@@ -212,7 +212,7 @@ router
         attInfo.date, 
         attInfo.startTime, 
         attInfo.endTime,
-        "https://res.cloudinary.com/djllvfvts/image/upload/v1699984515/ruchypija6nuegzftr7q.png",
+        image,
         tags);
         console.log(updated);
         let url = "/attractions/" + updated._id;
