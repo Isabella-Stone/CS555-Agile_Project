@@ -39,6 +39,7 @@
                 </div>
             </div>
         <br/>
+        {{#if (isPending this)}}
             <form id="finalizeSubmission" action="/attractions/submissions/{{../busName}}/{{../attName}}" method="POST">
                 <label for="submission">Is submission accepted?</label>
                 <select id="submission" name="submission">
@@ -51,6 +52,7 @@
                 <button type="submit">Submit</button>
 
             </form>
+        {{/if}}
         {{/each}}
     </div>
 </main>
