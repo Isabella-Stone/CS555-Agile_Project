@@ -1,0 +1,32 @@
+<main>
+    <div class="attraction-holder">
+        <h1 id="submission-title">Your Submissions</h1>
+        {{#if submissionsList}}
+        {{else}}
+        <div class="center-text">
+            <p>No submissions yet!</p>
+            <a href="/attractions/" class="a-format">Click here view attractions</a>
+        </div>
+        {{/if}}
+        {{#each submissionsList}}
+            <div class="submission">
+                <h2>{{this.attractionName}}</h2>
+                <div class="row">
+                    <img src={{this.submission.image}} alt="Image" width="200" height="300">
+                    <p class="date"> {{this.submission.date}}, {{this.submission.time}}</p>
+                </div>
+                <div class="row">
+                    <i>{{this.submission.comment}}</i>
+                </div>
+                <div class="row">
+                    <p class="bold">Rating: </p>
+                    <p>{{this.submission.rating}}</p>
+                </div>
+                <div class="row">
+                    <p class="bold">Status: </p>
+                    <p>{{this.submission.status}}</p>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</main>

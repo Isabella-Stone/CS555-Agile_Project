@@ -16,7 +16,7 @@
         </form>
     </div>
     <div class="attraction-holder">
-        <h1 id="submission-title">{{attractions.attractionName}} Submissions</h2>
+        <h1 id="submission-title">{{attractions.attractionName}} Submissions</h1>
         {{#if submissions}}
         {{else}}
             <p class="center-text">No submissions yet! Check back later!</p>
@@ -35,6 +35,7 @@
                     <p>{{this.rating}}</p>
                 </div>
                 <div class="row">
+                    <p class="bold">Status: </p>
                     <p>{{this.status}}</p>
                 </div>
             </div>

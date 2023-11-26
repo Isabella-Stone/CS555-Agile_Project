@@ -4,6 +4,8 @@ const router = Router();
 import { } from "../data/business.js";
 import { createUser, editUserInfo } from "../data/editUsers.js";
 import { getAllUsers, getUserById, getUserByUsername, getUserByEmail, usernameAlreadyExists, emailAlreadyExists } from "../data/getUsers.js";
+import { getAllSubmissionsByUserId } from "../data/submissions.js";
+import { get } from "../data/attractions.js";
 import { checkAge, checkEmail, checkId, checkName, checkPassword, checkUsername } from "../helpers.js";
 
 router.route("/signup")
@@ -188,6 +190,29 @@ router.route("/signup")
     
   })
 
-
+  router.route("/submissions/:username")
+  .get(async (req, res) => {
+    console.log("/submissions/:username")
+    let username = req.params.username;
+    username = checkUsername(username);
+    let user;
+    try {
+      user = await getUserByUsername(username);
+      let submissionsList = await getAllSubmissionsByUserId(user._id.toString());
+      // console.log(submissionsList);
+      for (let i=0;i<submissionsList.length;i++)
+      {
+        let attractionId = submissionsList[i].attractionId.toString();
+        let attraction = await get(attractionId);
+        submissionsList[i]['attractionName'] = attraction.attractionName;
+      }
+      // console.log(submissionsList);
+      return res.render("userSubmissions", {auth: true, user: user, submissionsList: submissionsList});
+    } catch (e) {
+      //Might have to change what page is renders to
+      return res.status(400).render("upcomingAttractions", {error: true, message: e})
+    }
+    
+  })
 
 export default router;
