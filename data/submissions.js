@@ -99,6 +99,21 @@ const getSubmissionsByUserId = async (userId, attractionId) => {
 
     return submissionsForAUser;
 };
+const getAllSubmissionsByUserId = async (userId) => {
+    if (!userId) {
+        throw 'Error: User ID is required';
+    }
+    userId = helpers.checkString(userId, "User ID");
+
+    const attractionCollection = await attractions();
+    let allSubmissionsForAUser = await attractionCollection.aggregate([
+        {$unwind: '$submissions'},
+        {$match: {'submissions.userId': userId}},
+        {$project: {_id: 1, attractionId: '$_id', submission: '$submissions'}}
+    ]).toArray();
+
+    return allSubmissionsForAUser; //return includes objectIDs not strings for IDs
+};
 const getSubmissions = async (attractionId) => {
     if (!attractionId) {
         throw 'You must provide an id to search for';
@@ -252,4 +267,4 @@ const getDeclinedSubmissions = async (attractionId) => {
     return declinedSubsList;
 };
 
-export { newSubmission, getSubmissions, getSubmission, getApprovedSubmissions, approveSubmission, declineSubmission, editSubmission, getPendingSubmissions, getDeclinedSubmissions};
+export { newSubmission, getAllSubmissionsByUserId, getSubmissions, getSubmission, getApprovedSubmissions, approveSubmission, declineSubmission, editSubmission, getPendingSubmissions, getDeclinedSubmissions};
