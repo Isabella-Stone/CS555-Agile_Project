@@ -259,3 +259,39 @@ test("approve submission", async () => {
         status: "approved"
     });
 })
+
+test("decline submission", async () => {
+    const user = await createUser("Isabella", "Stoner", "harlemshake4life@gmail.com", "Taylor123!", "swiftie22", 21, ["City-wide Events", "Business/Restaurant Events", "Art Events", "Cultural Events", "Volunteering Events"]);
+    let business1 = await businessData.createBusiness
+    (
+        'Kyle', 
+        'Halton', 
+        'Kyle\'s Kunundrums', 
+        'blastyourearsoff@gmail.com',
+        'KyleH123!',
+        'haltondemhoes',
+        21
+    );
+    const att = await createAttraction(business1._id.toString(), "Drum Solos", "80", "learn drumming with friends", "1", "12/30/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Cultural Events"]);
+    let sub = await submissionData.newSubmission(
+        att._id.toString(),
+        user._id.toString(),
+        "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        "I learned to use drumsticks and had fun!", 
+        5,
+        "12/30/2023", 
+        "11:30",
+        "pending"
+    );
+    let declineIt = await submissionData.declineSubmission(sub._id.toString())
+    expect(declineIt).toStrictEqual({
+        _id: declineIt._id.toString(),
+        userId: user._id.toString(),
+        image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
+        comment: "I learned to use drumsticks and had fun!", 
+        rating: 5,
+        date: "12/30/2023", 
+        time: "11:30",
+        status: "declined"
+    });
+})
