@@ -208,6 +208,10 @@ async function main() {
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
           ["City-wide Events", "Art Events"]
       );
+    let attending1 = await attractionData.rsvp(business1_attraction1._id, 'rsvp');
+    let attending2 = await attractionData.rsvp(business1_attraction1._id, 'rsvp');
+    let attending3 = await attractionData.rsvp(business1_attraction1._id, 'rsvp');
+    let notattending = await attractionData.rsvp(business1_attraction1._id, 'undo');
   } catch (e) {
     console.log('Business/Attraction: ' + e);
   }

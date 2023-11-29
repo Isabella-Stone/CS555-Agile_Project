@@ -57,7 +57,8 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
       description: description,
       submissions: [],
       image: image,
-      tags: tags
+      tags: tags,
+      attending: 0
     };
     const attractionCollection = await attractions();
     if (await attractionCollection.findOne({ attractionName: attractionName })) {
@@ -68,6 +69,49 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
     const attraction = await get(newAttraction._id.toString());
     return attraction;
   };
+
+const rsvp = async (attractionId, action) => {
+  if (!attractionId || !action) {
+    throw `Missing field :: rsvp()`;
+  }
+
+  const attractionCollection = await attractions();
+  let attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
+
+  let count = attraction.attending;
+  if (action.toLowerCase().trim() === "rsvp") {
+    count++;
+  }
+  else if (action.toLowerCase().trim() === "undo") {
+    count--;
+  }
+  else {
+    throw `Enter valid action :: rsvp()`;
+  }
+
+  const updatedAttraction = {
+    businessId: attraction.businessId,
+    attractionName: attraction.attractionName,
+    date: attraction.date,
+    startTime: attraction.startTime,
+    endTime: attraction.endTime,
+    pointsOffered: attraction.pointsOffered,
+    bonusPoints: attraction.bonusPoints,
+    description: attraction.description,
+    submissions: attraction.submissions,
+    image: attraction.image,
+    tags: attraction.tags,
+    attending: count
+  };
+
+  const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
+
+  if (updatedInfo.modifiedCount === 0) {
+    throw 'Could not rsvp to attraction successfully';
+  }
+
+  return updatedInfo;
+}
 
 //getAllAttractions()
 const getAllAttractionsByBusinessId = async (businessId) => {
@@ -139,7 +183,7 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
       }
 
     const attractionCollection = await attractions();
-    // let attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
+    let attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
     const updatedAttraction = {
         businessId: businessId,
         attractionName: attractionName,
@@ -151,7 +195,8 @@ const editAttraction = async (businessId, attractionId, submissions, attractionN
         description: description,
         submissions: submissions,
         image: image,
-        tags: tags
+        tags: tags,
+        attending: attraction.attending
     };
     const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
   
@@ -252,4 +297,4 @@ const getAttractionsBasedOnUserInterests = async (interests) => {
   }
 }
 
-export { createAttraction, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests };
+export { createAttraction, rsvp, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests };
