@@ -58,7 +58,7 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
       submissions: [],
       image: image,
       tags: tags,
-      attending: 0
+      attending: []
     };
     const attractionCollection = await attractions();
     if (await attractionCollection.findOne({ attractionName: attractionName })) {
@@ -70,7 +70,7 @@ const createAttraction = async (businessId, attractionName, pointsOffered, descr
     return attraction;
   };
 
-const rsvp = async (attractionId, action) => {
+const rsvp = async (attractionId, action, userId) => {
   if (!attractionId || !action) {
     throw `Missing field :: rsvp()`;
   }
@@ -78,12 +78,12 @@ const rsvp = async (attractionId, action) => {
   const attractionCollection = await attractions();
   let attraction = await attractionCollection.findOne({ _id: new ObjectId(attractionId) });
 
-  let count = attraction.attending;
+  let rsvpList = attraction.attending;
   if (action.toLowerCase().trim() === "rsvp") {
-    count++;
+    rsvpList.push(userId);
   }
   else if (action.toLowerCase().trim() === "undo") {
-    count--;
+    rsvpList = rsvpList.filter(id => id != userId)  
   }
   else {
     throw `Enter valid action :: rsvp()`;
@@ -101,11 +101,10 @@ const rsvp = async (attractionId, action) => {
     submissions: attraction.submissions,
     image: attraction.image,
     tags: attraction.tags,
-    attending: count
+    attending: rsvpList
   };
 
   const updatedInfo = await attractionCollection.replaceOne({ _id: new ObjectId(attractionId) }, updatedAttraction);
-
   if (updatedInfo.modifiedCount === 0) {
     throw 'Could not rsvp to attraction successfully';
   }
