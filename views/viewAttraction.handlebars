@@ -23,6 +23,7 @@
     
 
     {{#if isUser}}
+    {{#if (didEventStart this.attraction)}}
         <div class="column">
             <form action="/attractions/rsvp" method="post">
                 {{#if coming}}
@@ -63,6 +64,7 @@
                 <button type="submit">Submit</button>
             </form>
         </div>
+    {{/if}}
     {{/if}}
 
 </main>
