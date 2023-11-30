@@ -188,6 +188,14 @@ button {
 
 }
 
+#rsvpBtn {
+    background-color: rgb(52, 177, 52);
+}
+
+#cancelRsvpBtn {
+    background-color: rgb(210, 72, 72);
+}
+
 #submission-title {
     font-size: 30px;
     font-family: Arial, Helvetica, sans-serif;

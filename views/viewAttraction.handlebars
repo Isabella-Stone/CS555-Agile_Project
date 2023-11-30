@@ -23,53 +23,70 @@
     
 
     {{#if isUser}}
-        <form action= "/attractions/{{id}}" method="post" id="submission" class="column" enctype="multipart/form-data">
-            <label for="image" class="image">Photo Submission</label>
+        <div class="column">
+            <form action="/attractions/rsvp" method="post">
+                {{#if coming}}
+                    <input type="hidden" id="rsvp" name="rsvp" value="undo">
+                    <input type="hidden" id="attractionId" name="attractionId" value={{id}}>
+                    <input type="hidden" id="userId" name="userId" value={{userId}}>
+                    <button id="cancelRsvpBtn" type="submit">cancel RSVP</button>
+                {{else}}
+                    <input type="hidden" id="rsvp" name="rsvp" value="rsvp">
+                     <input type="hidden" id="attractionId" name="attractionId" value={{id}}>
+                    <input type="hidden" id="userId" name="userId" value={{userId}}>
+                    <button id="rsvpBtn" type="submit">RSVP</button>
+                {{/if}}
+            </form>
             <br/>
-            <input 
-                type="file"
-                id="image"
-                accept=".img,.jpeg,.png"
-                name="image"
-            >
-            <br/>
+            <form action= "/attractions/{{id}}" method="post" id="submission" class="column" enctype="multipart/form-data">
+                <label for="image" class="image">Photo Submission</label>
+                <br/>
+                <input 
+                    type="file"
+                    id="image"
+                    accept=".img,.jpeg,.png"
+                    name="image"
+                >
+                <br/>
 
-            <label for="rating" class="image">On a scale of 1 to 5, how satisfied were you with the event?</label>
-            <select id="rating" name="rating">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
-            <br/>
-            <label for="reasoning" class="image">Why did you give this rating?</label>
-            <input type="text" id="reasoning" name="reasoning">
-            <button type="submit">Submit</button>
-        </form>
+                <label for="rating" class="image">On a scale of 1 to 5, how satisfied were you with the event?</label>
+                <select id="rating" name="rating">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+                <br/>
+                <label for="reasoning" class="image">Why did you give this rating?</label>
+                <input type="text" id="reasoning" name="reasoning">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     {{/if}}
 
 </main>
-    <div class="attraction-holder">
-        <h2 id="submission-title">Approved Submissions</h2>
-        {{#if approvedSubmissions}}
-        {{else}}
-            <p class="center-text">No approved submissions yet! Check back later!</p>
-        {{/if}}
-        {{#each approvedSubmissions}}
-            <div class="submission">
-                <div class="row">
-                    <img src={{this.image}} alt="Image" width="200" height="300">
-                    <p class="date"> {{this.date}}, {{this.time}}</p>
-                </div>
-                <div class="row">
-                    <i>{{this.comment}}</i>
-                </div>
-                <div class="row">
-                    <p class="bold">Rating: </p>
-                    <p>{{this.rating}}</p>
-                </div>
+
+<div class="attraction-holder">
+    <h2 id="submission-title">Approved Submissions</h2>
+    {{#if approvedSubmissions}}
+    {{else}}
+        <p class="center-text">No approved submissions yet! Check back later!</p>
+    {{/if}}
+    {{#each approvedSubmissions}}
+        <div class="submission">
+            <div class="row">
+                <img src={{this.image}} alt="Image" width="200" height="300">
+                <p class="date"> {{this.date}}, {{this.time}}</p>
             </div>
-        <br/>
-        {{/each}}
-    </div>
+            <div class="row">
+                <i>{{this.comment}}</i>
+            </div>
+            <div class="row">
+                <p class="bold">Rating: </p>
+                <p>{{this.rating}}</p>
+            </div>
+        </div>
+    <br/>
+    {{/each}}
+</div>

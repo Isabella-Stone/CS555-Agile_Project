@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests} from "../data/attractions.js";
+import { createAttraction, rsvp, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests} from "../data/attractions.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
@@ -328,11 +328,26 @@ router
     }
   });
 
-
+  
+  router
+  .route("/rsvp")
+  .post(async (req, res) => {
+    let action = req.body.rsvp;
+    let attractionId = req.body.attractionId;
+    let userId = req.body.userId;
+    try {
+      await rsvp(attractionId, action, userId);
+    }
+    catch (e) {
+      return res.status(500).json({error: "internal service error"});
+    }
+    return res.redirect(`/attractions/${attractionId}`);
+  });
+  
   router
   .route("/:id")
   .get(async (req, res) => {
-    console.log(req.session)
+    // console.log(req.session)
     let id = req.params.id;
     try {
       id = checkId(id);
@@ -341,11 +356,15 @@ router
     }
     try {
       let attraction = await get(id);
+      let bool = false;
       if (!attraction) {
         return res.status(404).json({ error: 'Attraction not found' });
       }
+      if (attraction.attending.includes(req.session.user._id)) {
+        bool = true;
+      }
       let approvedSubmissions = await getApprovedSubmissions(id);
-      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, approvedSubmissions: approvedSubmissions});
+      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }
@@ -354,10 +373,14 @@ router
     let id = req.params.id;
     let attractionName = "";
     let attraction = undefined;
+    let bool = false;
     try {
       id = checkId(id);
       attraction = await get(id);
       attractionName = attraction.attractionName;
+      if (attraction.attending.includes(req.session.user._id)) {
+        bool = true;
+      }
     } catch (e) {
       return res.status(400).json({error: `${e}`});
     }
@@ -391,14 +414,15 @@ router
       // return res.redirect("/attractions/" + id);
       // return res.render('viewSubmissionsUser', {attraction: req.params.id, auth: false, approvedSubmissions: approvedSubmissions, attractionName: attractionName});
       // return res.redirect("/attractions/" + id);
-      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, approvedSubmissions: approvedSubmissions});
+      // console.log('**********************', req.session)
+      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
 
     } catch (e) {
       console.log(e);
       // return res.status(404).json({error: `${e}`});
-      return res.render('viewAttraction', {error: true, message: e, attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, approvedSubmissions: approvedSubmissions});
+      return res.render('viewAttraction', {error: true, message: e, attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id,  userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
     }
 
   });
-  
+
 export default router;
