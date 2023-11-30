@@ -131,6 +131,13 @@ export const checkTime = (startTime, endTime) =>
       if (et[1] * 1 < 0 || et[1] * 1 > 59) {
         throw 'Error: Must provide end time in HH:MM format';
       }
+      const startTimeInMinutes = st[0] * 60 + st[1] * 1;
+      const endTimeInMinutes = et[0] * 60 + et[1] * 1;
+    
+      if (startTimeInMinutes >= endTimeInMinutes) {
+        throw 'Error: Start time must be before end time';
+      }
+
       let times = {startTime: startTime, endTime: endTime}
       return times;
   }
