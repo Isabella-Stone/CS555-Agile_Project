@@ -55,6 +55,26 @@ app.set('view engine', 'handlebars');
 Handlebars.registerHelper('isPending', function(value){
   return value.status == 'pending'
 })
+Handlebars.registerHelper('eventDidntHappen', function(value){
+  let date = new Date();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let year = date.getFullYear();
+  let eventMonth = (value.date).substring(0, 2);
+  let eventDay = (value.date).substring(3,5);
+  let eventYear = (value.date).substring(6);
+
+  if(parseInt(year) > parseInt(eventYear)){
+    return false;
+  }
+  if(parseInt(year) == parseInt(eventYear) && parseInt(month) > parseInt(eventMonth)){
+    return false;
+  }
+  if(parseInt(month) == parseInt(eventMonth) && parseInt(day) > parseInt(eventDay)){
+    return false;
+  }
+  return true;
+})
 
 configRoutes(app);
 
