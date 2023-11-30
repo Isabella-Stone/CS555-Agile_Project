@@ -23,6 +23,7 @@
     
 
     {{#if isUser}}
+    {{!-- {{#if (didEventStart this.attraction)}} --}}
         <div class="column">
             <form action="/attractions/rsvp" method="post">
                 {{#if coming}}
@@ -37,6 +38,7 @@
                     <button id="rsvpBtn" type="submit">RSVP</button>
                 {{/if}}
             </form>
+        {{#if (didEventStart this.attraction)}}
             <br/>
             <form action= "/attractions/{{id}}" method="post" id="submission" class="column" enctype="multipart/form-data">
                 <label for="image" class="image">Photo Submission</label>
@@ -63,6 +65,7 @@
                 <button type="submit">Submit</button>
             </form>
         </div>
+    {{/if}}
     {{/if}}
 
 </main>

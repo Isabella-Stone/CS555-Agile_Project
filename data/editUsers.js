@@ -175,7 +175,7 @@ export const editUserInfo = async (id, firstName, lastName, emailAddress, passwo
     username: username ? username : oldUser.username,
     age: age ? age : oldUser.age,
     points: oldUser.points,
-    interests: interests ? interests : oldUser.interests
+    interests: interests !== null && interests !== oldUser.interests ? interests : oldUser.interests
   };
 
   const userCollection = await users();

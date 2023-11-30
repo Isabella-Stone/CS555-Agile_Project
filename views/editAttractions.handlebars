@@ -153,8 +153,8 @@ label {
        </div>
     </fieldset>
 
-        {{#if req.session.error}}
-            <p>{{req.session.errorMessage}}</p>
+        {{#if error}}
+            <p>{{message}}</p>
         {{/if}}
 
         <br>     
