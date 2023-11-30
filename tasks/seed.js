@@ -133,7 +133,8 @@ async function main() {
         "08:00", 
         "12:00",
         "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-        ["Business/Restaurant Events"]
+        ["Business/Restaurant Events"],
+        [user1._id.toString(), user2._id.toString()]
       );
       business1_attraction2 = await attractionData.createAttraction(
         business1._id.toString(),
@@ -145,7 +146,8 @@ async function main() {
         "10:00", 
         "12:30",
         "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-        ["City-wide Events", "Business/Restaurant Events", "Cultural Events"]
+        ["City-wide Events", "Business/Restaurant Events", "Cultural Events"],
+        []
       );
       business2_attraction1 = await attractionData.createAttraction(
           business2._id.toString(),
@@ -157,7 +159,8 @@ async function main() {
           "17:00", 
           "20:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          ["Cultural Events"]
+          ["Cultural Events"],
+          [user2._id.toString()]
       );
         business3_attraction1 = await attractionData.createAttraction(
           business3._id.toString(),
@@ -169,7 +172,8 @@ async function main() {
           "12:00", 
           "14:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          ["Business/Restaurant Events"]
+          ["Business/Restaurant Events"],
+          []
 
       );
       business4_attraction1 = await attractionData.createAttraction(
@@ -182,7 +186,8 @@ async function main() {
           "12:00", 
           "20:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          ["City-wide Events"]
+          ["City-wide Events"],
+          []
         );
         business4_attraction2 = await attractionData.createAttraction(
           business4._id.toString(),
@@ -194,7 +199,8 @@ async function main() {
           "08:00", 
           "14:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          ["City-wide Events", "Volunteering Events"]
+          ["City-wide Events", "Volunteering Events"],
+          []
         );
       business5_attraction1 = await attractionData.createAttraction(
           business5._id.toString(),
@@ -206,7 +212,8 @@ async function main() {
           "15:00", 
           "19:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
-          ["City-wide Events", "Art Events"]
+          ["City-wide Events", "Art Events"],
+          []
       );
     // let attending1 = await attractionData.rsvp(business1_attraction1._id, 'rsvp', user1._id);
     // let attending2 = await attractionData.rsvp(business1_attraction1._id, 'rsvp', user2._id);
