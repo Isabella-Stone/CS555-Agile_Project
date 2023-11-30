@@ -20,7 +20,7 @@ async function main() {
         "Qwertyuiop@123", 
         "kash123", 
         21,
-        ["City-wide Events", "Business/Restaurant Events", "Cultural Events"]
+        ["City-wide Events", "Business/Restaurant Events"]
     );
     user2 = await editUserData.createUser(
         'Shailaja', 

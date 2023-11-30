@@ -296,4 +296,32 @@ const getAttractionsBasedOnUserInterests = async (interests) => {
   }
 }
 
-export { createAttraction, rsvp, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests };
+const getPopularAttractions = async () => {
+  const attractionCollection = await attractions();
+  const attractionList = await attractionCollection.find({}).toArray();
+  const sortedAttractions = attractionList.sort((a, b) => b.attending.length - a.attending.length);
+  if (!sortedAttractions) {
+    return [];
+  } 
+  else{
+    return sortedAttractions;
+  }
+}
+
+const getPopularAttractionsBasedOnUserInterests = async (interests) => {
+  if (!interests) {
+    throw "Error: No user interests given";
+  }
+
+  const attractionCollection = await attractions();
+  const attractionList = await attractionCollection.find({tags: {$in: interests}}).toArray();
+  const sortedAttractions = attractionList.sort((a, b) => b.attending.length - a.attending.length);
+  if (!sortedAttractions) {
+    return [];
+  } 
+  else{
+    return sortedAttractions;
+  }
+}
+
+export { createAttraction, rsvp, editAttraction, deleteAttraction, getAllAttractions, getAllAttractionsByBusinessId, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests, getPopularAttractions, getPopularAttractionsBasedOnUserInterests };

@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, rsvp, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests} from "../data/attractions.js";
+import { createAttraction, rsvp, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests, getPopularAttractions, getPopularAttractionsBasedOnUserInterests} from "../data/attractions.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
@@ -34,24 +34,45 @@ router
     if (!filterOp || Object.keys(filterOp).length === 0) {
       return res.status(400).json({error: 'There are no fields in the request body'});
     }
+    let atts;
+    try {
+      atts = await getAttractionsInChronologicalOrder();
+    } catch (e) {
+      return res.sendStatus(500);
+    }
+    
     if (filterOp.filterOptions === 'date') {
       try {
         let attractionList = await getAttractionsInChronologicalOrder();
         return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
       } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
       }
-    } else if (filterOp.filterOptions === 'Recommended') {
+    } else if (filterOp.filterOptions === 'recommendedDate') {
       try {
         let user = await getUserByEmail(req.session.user.emailAddress);
         let attractionList = await getAttractionsBasedOnUserInterests(user.interests);
         return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
       } catch (e) {
-        console.log(e)
-        return res.sendStatus(500);
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+      }
+    } else if (filterOp.filterOptions === 'popular') {
+      try {
+        let attractionList = await getPopularAttractions();
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+      }
+    } else if (filterOp.filterOptions === 'recommendedPopular') {
+      try {
+        let user = await getUserByEmail(req.session.user.emailAddress);
+        let attractionList = await getPopularAttractionsBasedOnUserInterests(user.interests);
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
       }
     } else {
-      return res.sendStatus(500);
+      return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: "No option chosen"});
     }
   })
 
