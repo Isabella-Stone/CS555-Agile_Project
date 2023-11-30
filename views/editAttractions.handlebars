@@ -1,4 +1,73 @@
-<form action="/attractions/editAttraction/{{attractions.attractionName}}" method="post" id="editAttraction" class="column" enctype="multipart/form-data">
+<head>
+    <h2>Edit Attractions</h2>
+        <p>If you don't want to change a field, input the same information as before.</p>
+    <style>
+       input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+  #editAttraction-form {
+    {{!-- max-width: 400px; --}}
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+  }
+  main {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    /* height: 100vh; */
+}
+  #navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #3066BE;
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#navbar li a {
+    display: block;
+    color: #fff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#navbar li a:hover {
+    background-color: #0074d9;
+}
+label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    /* background-color: #F1FFE7; */
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+}
+
+
+</style>
+</head>
+<main>
+        <form action="/attractions/editAttraction/{{attractions.attractionName}}" method="post" id="editAttraction-form" enctype="multipart/form-data">
 
         {{!-- <label for="businessIDInput">
         BusinessID:
@@ -92,3 +161,4 @@
         <input type="hidden" name="_method" value="PUT">
         <button type="submit">Submit</button>
     </form>
+</main>
