@@ -10,9 +10,14 @@
                         <p></p>
                         <select name="filterOptions" id="filterOptions">
                             <option value="date">Date</option>
-                            <option value="Recommended">Recommended</option>
+                            <option value="popular">Popular</option>
+                            <option value="recommendedDate">Recommended (Ordered By Date)</option>
+                            <option value="recommendedPopular">Recommended (Ordered By Popularity)</option>
                         </select>
                         <p></p>
+                        {{#if error}}
+                            <p>{{message}}</p>
+                        {{/if}}
                         <label for="submit">
                             <button type="submit" name="submit" id="submit">Submit</button>
                         </label>
