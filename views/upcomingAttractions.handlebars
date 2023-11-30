@@ -23,6 +23,7 @@
         
         <div class="attraction-holder">
             {{#each attractions}}
+                {{#if (eventDidntHappen this)}}
                 <div class="attraction">
                         <div class="row">
                             <a href="http://localhost:3000/attractions/{{this._id}}" target="_self" class="attractionUrl">{{this.attractionName}}</a>
@@ -46,6 +47,7 @@
                         <button>RSVP</button>
                 </div>
             <br/>
+            {{/if}}
             {{/each}}
         </div>
     </div>
