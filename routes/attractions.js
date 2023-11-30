@@ -106,7 +106,7 @@ router
       );
       return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
-      return res.status(500).json(`${e}`)    
+      return res.status(500).render("createAttraction", {auth: true, error: true, message: e});    
     }
     
   });
