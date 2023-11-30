@@ -122,7 +122,8 @@ router
         attractionInfo.startTime,
         attractionInfo.endTime,
         image,
-        tags
+        tags,
+        []
       );
       return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
