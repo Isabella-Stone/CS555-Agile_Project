@@ -284,7 +284,7 @@ async function main() {
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I'm thankful for a good breakfast", 
       3,
-      "12/23/2023", 
+      "11/23/2023", 
       "11:00",
       "approved"
     );
