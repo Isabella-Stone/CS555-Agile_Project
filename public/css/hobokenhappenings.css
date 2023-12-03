@@ -28,6 +28,10 @@ body {
     color:#0074d9;
 }
 
+#bold {
+    font-weight: bold;
+}
+
 main {
     display: flex;
     justify-content: center;
