@@ -1,7 +1,7 @@
 import { attractions } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
-import { createAttraction, rsvp, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests} from "../data/attractions.js";
+import { createAttraction, rsvp, getAllAttractions, editAttraction, deleteAttraction, get, getAttractionByBusinessName, getByName, getBusinessNameByAttractionName, getAttractionsInChronologicalOrder, getAttractionsBasedOnUserInterests, getPopularAttractions, getPopularAttractionsBasedOnUserInterests} from "../data/attractions.js";
 import {checkId} from "../helpers.js";
 import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
@@ -34,31 +34,51 @@ router
     if (!filterOp || Object.keys(filterOp).length === 0) {
       return res.status(400).json({error: 'There are no fields in the request body'});
     }
+    let atts;
+    try {
+      atts = await getAttractionsInChronologicalOrder();
+    } catch (e) {
+      return res.sendStatus(500);
+    }
+    
     if (filterOp.filterOptions === 'date') {
       try {
         let attractionList = await getAttractionsInChronologicalOrder();
         return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
       } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
       }
-    } else if (filterOp.filterOptions === 'Recommended') {
+    } else if (filterOp.filterOptions === 'recommendedDate') {
       try {
         let user = await getUserByEmail(req.session.user.emailAddress);
         let attractionList = await getAttractionsBasedOnUserInterests(user.interests);
         return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
       } catch (e) {
-        console.log(e)
-        return res.sendStatus(500);
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+      }
+    } else if (filterOp.filterOptions === 'popular') {
+      try {
+        let attractionList = await getPopularAttractions();
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+      }
+    } else if (filterOp.filterOptions === 'recommendedPopular') {
+      try {
+        let user = await getUserByEmail(req.session.user.emailAddress);
+        let attractionList = await getPopularAttractionsBasedOnUserInterests(user.interests);
+        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      } catch (e) {
+        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
       }
     } else {
-      return res.sendStatus(500);
+      return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: "Chosen option is not valid"});
     }
   })
 
 router
   .route("/create")
   .get(async (req, res) => {
-    console.log("In get");
     try {
       return res.render("createAttraction", {auth: true});
     } 
@@ -102,11 +122,12 @@ router
         attractionInfo.startTime,
         attractionInfo.endTime,
         image,
-        tags
+        tags,
+        []
       );
       return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
-      return res.status(500).json(`${e}`)    
+      return res.status(500).render("createAttraction", {auth: true, error: true, message: e});    
     }
     
   });
@@ -117,7 +138,7 @@ router
     let attname = req.params.attname;
     try {
       const attractions = await getByName(attname);
-      return res.status(400).render("editAttractions", {auth: false, attractions: attractions});
+      return res.status(400).render("editAttractions", {auth: true, attractions: attractions});
     }
     catch (e)
     {
@@ -128,7 +149,6 @@ router
   router.route("/editAttraction")
   .post(async (req, res) => {
     //add check to make sure authenticated user has same id as param
-    console.log("Here 2")
     try {
       let businessName = await getBusinessNameByAttractionName(req.body.attractionName);
       return res.redirect(`/attractions/editAttraction/${businessName}/${req.body.attractionName}`)
@@ -150,18 +170,6 @@ router
       return res.status(400).render("upcomingAttractions", {auth: true, error: true, message: e});
     }
   })
-  // .post(async (req, res) => {
-  //   //add check to make sure authenticated user has same id as param
-  //   console.log("Post")
-  //   try
-  //   {
-
-  //   }
-  //   catch (e)
-  //   {
-  //     return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
-  //   }
-  // })
   .post(upload.single("image"), async (req, res) => {
     let busname = req.params.busname;
     let attInfo = req.body;
@@ -214,21 +222,11 @@ router
         attInfo.endTime,
         image,
         tags);
-        console.log(updated);
         let url = "/attractions/" + updated._id;
         
       return res.redirect(url);
     } catch (e) {
-      let busiName = oldBus.replace(/ /g, '%20');
-      let attrName = old.attractionName.replace(/ /g, '%20');
-      let url2 = `http://localhost:3000/attractions/editAttraction/${busiName}/${attrName}`
-      // req.session.error = true;
-      // req.session.errorMessage = e;
-      // console.log(req.session.errorMessage);
-      // console.log(url2);
-      // return res.status(500).json(`${e}`)
-      const attractions = await getByName(busname);
-      return res.status(400).render("editAttractions", {attractions: attractions, error: e})
+      return res.status(400).render("editAttractions", {attractions: old, error: true, message: e})
     }
   });
 
@@ -239,7 +237,6 @@ router
       let businessName = await getBusinessNameByAttractionName(req.body.attractionName);
       return res.redirect(`/attractions/submissions/${businessName}/${req.body.attractionName}`)
     } catch (e) {
-      console.log(e);
       return res.render("chooseAttractionForSubmissionView", {auth: true, error: true, message: e});
     }
   });
@@ -252,7 +249,6 @@ router
     }
     catch (e)
     {
-      console.log(e);
       return res.status(400).render("upcomingAttractions", {auth: true, error: true, message: e});
     }
   });
@@ -266,13 +262,10 @@ router
     }
     catch (e)
     {
-      console.log(e);
       return res.render("upcomingAttractions", {auth: true, error: true, message: e});
     }
   })
   .post(async (req, res) => {
-    console.log(req.body.filterOptions);
-    console.log(req.params);
     let filterOp = req.body;
     let attname = req.params.attname;
     let attractions;
@@ -285,31 +278,43 @@ router
       return res.status(400).json({error: 'There are no fields in the request body'});
     }
     let submissions;
-    if (filterOp.filterOptions === 'Approved') {
+    let errSub;
+    try {
+      errSub = await getSubmissions(attractions._id.toString());
+    } catch (e) {
+      return res.status(500).json(`${e}`);
+    }
+    if (filterOp.filterOptions === 'All') {
+      try {
+        submissions = await getSubmissions(attractions._id.toString());
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+      } catch (e) {
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+      }
+    } else if (filterOp.filterOptions === 'Approved') {
       try {
         submissions = await getApprovedSubmissions(attractions._id.toString());
-        console.log(submissions);
-        return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.status(500).json(`${e}`);
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'Pending') {
       try {
         submissions = await getPendingSubmissions(attractions._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.status(500).json(`${e}`);
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
-    } else if (filterOp.filterOptions === 'Declined') {
+     } else if (filterOp.filterOptions === 'Declined') {
       try {
         submissions = await getDeclinedSubmissions(attractions._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.status(500).json(`${e}`);
+        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } 
     else {
-      return res.status(500).json(`IDK`);
+      return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: "Chosen option is not valid"});
     }
   })
   .put(async (res, req) => {
@@ -347,7 +352,6 @@ router
   router
   .route("/:id")
   .get(async (req, res) => {
-    // console.log(req.session)
     let id = req.params.id;
     try {
       id = checkId(id);

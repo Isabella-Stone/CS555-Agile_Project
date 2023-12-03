@@ -7,10 +7,14 @@
                 <p></p>
                 <div class="row">
                     <select name="filterOptions" id="filterOptions">
+                <option value="All">All</option>
                         <option value="Approved">Approved</option>
                         <option value="Pending">Pending</option>
                         <option value="Declined">Declined</option>
                     </select>
+            {{#if error}}
+                <p>{{message}}</p>
+            {{/if}}
                     <label for="submit">
                         <button type="submit" name="submit" id="filter">Filter</button>
                     </label>
