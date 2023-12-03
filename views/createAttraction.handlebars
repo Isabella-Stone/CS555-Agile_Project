@@ -1,4 +1,5 @@
 <main>
+    <br/>
     <form action="/attractions/create" method="post" id="signUpUser-form" class="column" enctype="multipart/form-data">
         <label for="attractionName">Attraction Name:</label>
         <input type="text" id="attractionName" name="attractionName">
@@ -69,7 +70,9 @@
         {{/if}}
 
         <br/>
-        <button type="submit" class="btn">Submit</button>
+        <div>
+            <button type="submit" class="btn">Submit</button>
+        </div>
     </form>
 
 </main>
