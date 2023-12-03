@@ -217,3 +217,29 @@ button {
 .center-text {
     text-align: center;
 }
+
+/*view submissions as a business page*/
+#finalizeSubmission {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#finalizeSubmission label, #finalizeSubmission select, #finalizeSubmission button {
+    margin: 10px;
+}
+
+.row {
+    display: flex;
+    align-items: baseline; 
+}
+
+#filterOptions {
+    margin-right: 10px; 
+}
+
+#filter {
+    padding: 2px;
+}
