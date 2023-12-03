@@ -1,7 +1,9 @@
 <div>
-    {{#each users}}
-        <div>
-            <p>#{{math @index "+" 1}}: {{this.username}} ({{this.points}})</p>
-        </div>
-    {{/each}}
+    <div class="leaderboard">
+        {{#each users}}
+            <div>
+                <p>#{{math @index "+" 1}}: {{this.username}} ({{this.points}})</p>
+            </div>
+        {{/each}}
+    </div>
 </div>

@@ -1,11 +1,13 @@
 <main>
-    <form id="selection" action="/attractions/editAttraction" method="POST">
+    <form class="column-form" id="selection" action="/attractions/editAttraction" method="POST">
         {{#if attractions.length}}
+            <h1>Choose an attraction to edit: </h1>
             <select name="attractionName" id="attractionName">
             {{#each attractions}}
                 <option value="{{this.attractionName}}">{{this.attractionName}}</option>
             {{/each}}
             </select>
+            <br/>
             <label for="submit">
                 <button type="submit" name="submit" id="submit">Submit</button>
             </label>

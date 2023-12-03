@@ -1,8 +1,8 @@
 <main>
-    <a href="/business/editProfile/{{business._id}}" class="a-format">Click here to edit your profile</a>
     {{#if error}}
         <p>{{message}}</p>
     {{else}}
+    <div class="column">
         <div>
             <h1>{{business.name}}</h1>
             <p id="username">Username: {{business.username}}</p>
@@ -13,6 +13,8 @@
             <p id="numPosted">Number of Postings: {{business.numPosted}}</p>
             <p id="lastDatePosted">Date of Last Post: {{business.lastDatePosted}}</p>
         </div>
+        <a href="/business/editProfile/{{business._id}}" class="a-format">Click here to edit your profile</a>
+    </div>
     {{/if}}
 
 </main>

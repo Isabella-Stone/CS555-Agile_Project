@@ -14,7 +14,13 @@ body {
 .column {
     display: flex;
     flex-direction: column;
-    /* background-color: #F1FFE7; */
+}
+
+.column-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
 }
 
 .row {
@@ -247,3 +253,13 @@ button {
 #filter {
     padding: 2px;
 }
+
+/* leaderboard */
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    min-width: 100vw;
+}
+
