@@ -44,7 +44,7 @@ test("successfully creates an attraction", async () => {
         'obagel_official',
         20
     );
-    const att = await createAttraction(business1._id.toString(), "Movie2 Nights", "50", "fun night out", "0", "10/25/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Business/Restaurant Events"]);
+    const att = await createAttraction(business1._id.toString(), "Movie2 Nights", "50", "fun night out", "0", "10/25/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Business/Restaurant Events"], []);
     expect(att).toStrictEqual({_id: att._id, businessId: business1._id.toString(), attractionName: "Movie2 Nights", date: "10/25/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: [], image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", tags: ["Business/Restaurant Events"], attending: []});
 })
 
@@ -59,7 +59,7 @@ test("gets attraction by id", async () => {
         'giovannis_italian',
         30
     );
-    const a1 = await createAttraction(business2._id.toString(), "Movie3 Night 2.0", "50", "fun night out", "0", "10/26/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Business/Restaurant Events"]);
+    const a1 = await createAttraction(business2._id.toString(), "Movie3 Night 2.0", "50", "fun night out", "0", "10/26/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Business/Restaurant Events"],[]);
     const getAttraction = await get(a1._id.toString());
     expect(getAttraction).toStrictEqual({_id: getAttraction._id, businessId: business2._id.toString(), attractionName: "Movie3 Night 2.0", date: "10/26/2023", startTime: "08:00", endTime: "12:00", pointsOffered: 50, bonusPoints: 0, description: "fun night out",  submissions: [], image: "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", tags: ["Business/Restaurant Events"], attending: []});
 })
@@ -165,7 +165,7 @@ test("create submission", async () => {
         'faster_official',
         50
     );
-    const att = await createAttraction(business1._id.toString(), "5k Race", "50", "run for fun", "0", "11/24/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["City-wide Events"]);
+    const att = await createAttraction(business1._id.toString(), "5k Race", "50", "run for fun", "0", "11/24/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["City-wide Events"], []);
     let sub = await submissionData.newSubmission(
         att._id.toString(),
         unicornUser._id.toString(),
@@ -200,7 +200,7 @@ test("get submission", async () => {
         'floppy_futbol',
         30
     );
-    const att = await createAttraction(business1._id.toString(), "Swim on land or sea!", "75", "practice diving", "2", "12/25/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Business/Restaurant Events"]);
+    const att = await createAttraction(business1._id.toString(), "Swim on land or sea!", "75", "practice diving", "2", "12/25/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Business/Restaurant Events"],[]);
     let sub = await submissionData.newSubmission(
         att._id.toString(),
         user._id.toString(),
@@ -236,7 +236,7 @@ test("approve submission", async () => {
         'partyintheUSA',
         30
     );
-    const att = await createAttraction(business1._id.toString(), "argue with friends!", "100", "practice yelling", "3", "12/30/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Art Events"]);
+    const att = await createAttraction(business1._id.toString(), "argue with friends!", "100", "practice yelling", "3", "12/30/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Art Events"],[]);
     let sub = await submissionData.newSubmission(
         att._id.toString(),
         user._id.toString(),
@@ -272,7 +272,7 @@ test("decline submission", async () => {
         'haltondemhoes',
         21
     );
-    const att = await createAttraction(business1._id.toString(), "Drum Solos", "80", "learn drumming with friends", "1", "12/30/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Cultural Events"]);
+    const att = await createAttraction(business1._id.toString(), "Drum Solos", "80", "learn drumming with friends", "1", "12/30/2023", "08:00", "12:00", "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png", ["Cultural Events"],[]);
     let sub = await submissionData.newSubmission(
         att._id.toString(),
         user._id.toString(),
