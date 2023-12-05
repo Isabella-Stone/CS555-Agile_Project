@@ -279,3 +279,24 @@ button {
     min-width: 100vw;
 }
 
+/* profile page */
+
+/* grid setup taken from https://codedamn.com/news/frontend/how-to-put-image-and-text-side-by-side-in-html */
+#profile-group {
+    display: grid;
+    align-items: center; 
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5px;
+  }
+#profile {
+    float: left;
+    padding-left: 20px;
+}
+
+#user-info {
+    padding-right: 20px;
+    float: left;
+}
+li {
+    list-style-type: none;
+  }
