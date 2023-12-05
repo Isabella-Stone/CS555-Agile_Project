@@ -401,6 +401,12 @@ router
     let month = date.getMonth() + 1;
     let day = date.getDate();
     let year = date.getFullYear();
+    if(day < 10){
+      day = `0${day}`
+    }
+    if(month < 10){
+      month = `0${month}`
+    }
     let fullDate = `${month}/${day}/${year}`;
     //get the time in the format hh:mm
     let hour = date.getHours();
@@ -409,7 +415,6 @@ router
       minute = `0${minute}`
     }
     let time = `${hour}:${minute}`
-
     let approvedSubmissions = undefined;
     try{
       //now run the function and then render the proper page
