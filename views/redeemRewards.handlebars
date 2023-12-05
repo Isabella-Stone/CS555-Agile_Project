@@ -1,12 +1,52 @@
 <main>
+    <script>
+    //https://www.w3schools.com/js/tryit.asp?filename=tryjs_addeventlistener_displaydate
+      document.addEventListener("DOMContentLoaded", function() {
+      function checkRewards() { 
+            var points = parseInt({{user.points}});
+            console.log(points);
+            var redeemed = document.getElementById("rewards").value;
+             document.getElementById('hiddenPointsInput').value = redeemed;
+            if (points >= parseInt(redeemed) && points > 0) {
+               var update = points -= parseInt(redeemed);
+               alert("You have enough points! Remaining Points: " + update);
+            } else {
+                alert("Sorry, you do not have enough points.");
+             }
+      }
+        document.getElementById("redeemButton").addEventListener("click", checkRewards);
+    });
+   </script>
     <div class="rewards">
         <h1>Redeem Rewards</h1>
 
         <h2>Your points: {{user.points}}</h2>
 
-        <p>Rewards Offered: </p>
         </br>
-        <p>Target Gift Cards: </p>
+        <div class = "giftcard">
+        <form id="pointsForm" action="/user/updatePoints/{{user.username}}" method="post">
+        <label for="redeem"><h2>Choose a Reward:</h2></label>
+        <select name="rewards" id="rewards">
+            <option value="500">$5 Target</option>
+            <option value="1000">$10 Target</option>
+            <option value="1500">$15 Target</option>
+            
+            <option value="500">$5 Amazon</option>
+            <option value="1000">$10 Amazon</option>
+            <option value="1500">$15 Amazon</option>
+
+            <option value="500">$5 Macy's</option>
+            <option value="1000">$10 Macy's</option>
+            <option value="1500">$15 Macy's</option>
+        </select>
+        <br><br>
+        <input type="hidden" id="hiddenPointsInput" name="hiddenPointsInput" value="">
+        <input type="hidden" name="_method" value="PUT">
+        <button id="redeemButton">Redeem</button>
+        </form>
+    </div>
+    </br>
+        <h3>Target Gift Cards: </h3>
         <div id="target" class="giftcards">
             <p >$5 Target Gift Card: 500 points</p>
             <img class="giftcard" src="https://www.themontessorischool.org/uploads/1/4/0/7/140709692/s778706779831320800_p6_i1_w610.png" alt="$5 Target Gift Card">
@@ -17,8 +57,8 @@
             <p>$15 Target Gift Card: 1500 points</p>
             <img class="giftcard" src="https://www.themontessorischool.org/uploads/1/4/0/7/140709692/s778706779831320800_p6_i1_w610.png" alt="$15 Target Gift Card">
         </div>
-        </br>
-        <p>Amazon Gift Cards: </p>
+
+        <h3>Amazon Gift Cards: </h3>
         <div id="amazon" class="giftcards">
             <p>$5 Amazon Gift Card: 500 points</p>
             <img class="giftcard" src="https://m.media-amazon.com/images/I/710EvQUfNLL.jpg" alt="$5 Amazon Gift Card">
@@ -31,16 +71,15 @@
         </div>
 
         </br>
-        <p>Macy's Gift Cards: </p>
+        <h3>Macy's Gift Cards: </h3>
         <div id="macys" class="giftcards">
             <p>$5 Macy's Gift Card: 500 points</p>
-            <img class="giftcard" src="https://slimages.macysassets.com/is/image/MCY/products/0/optimized/20880440_fpx.tif?op_sharpen=1&wid=700&hei=855&fit=fit,1&fmt=webp" alt="$5 Macy's Gift Card" style="height:300px">
+            <img class="giftcard" src="https://productimages.nimbledeals.com/gift_card_skin/793160322e8173682e3ee7fd17369e1_1676982491855" alt="$5 Macy's Gift Card">
             
             <p>$10 Macy's Gift Card: 1000 points</p>
-            <img class="giftcard" src="https://slimages.macysassets.com/is/image/MCY/products/0/optimized/20880440_fpx.tif?op_sharpen=1&wid=700&hei=855&fit=fit,1&fmt=webp" alt="$10 Macy's Gift Card" style="height:300px">
-            
+            <img class="giftcard" src="https://productimages.nimbledeals.com/gift_card_skin/793160322e8173682e3ee7fd17369e1_1676982491855" alt="$5 Macy's Gift Card">
             <p>$15 Macy's Gift Card: 1500 points</p>
-            <img class="giftcard" src="https://slimages.macysassets.com/is/image/MCY/products/0/optimized/20880440_fpx.tif?op_sharpen=1&wid=700&hei=855&fit=fit,1&fmt=webp" alt="$15 Macy's Gift Card" style="height:300px">
-        </div>
+            <img class="giftcard" src="https://productimages.nimbledeals.com/gift_card_skin/793160322e8173682e3ee7fd17369e1_1676982491855" alt="$5 Macy's Gift Card">        </div>
     </div>
+
 </main>

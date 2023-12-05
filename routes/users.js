@@ -2,7 +2,7 @@ import { users } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
 import { } from "../data/business.js";
-import { createUser, editUserInfo } from "../data/editUsers.js";
+import { createUser, editUserInfo, updatePoints } from "../data/editUsers.js";
 import { getAllUsers, getUserById, getUserByUsername, getUserByEmail, usernameAlreadyExists, emailAlreadyExists } from "../data/getUsers.js";
 import { getAllSubmissionsByUserId } from "../data/submissions.js";
 import { get } from "../data/attractions.js";
@@ -188,8 +188,28 @@ router.route("/signup")
       return res.status(400).render("upcomingAttractions", {error: true, message: e})
     }
     
-  })
+  });
 
+  router.route("/updatePoints/:username")
+  .post(async (req, res) => {
+    console.log("POST");
+  })
+  .put(async (req, res) => {
+    const username = req.params.username;
+    const updatedPoints = req.body.hiddenPointsInput;
+
+    try {
+        const redeemed = await updatePoints(username, updatedPoints);
+        if(redeemed){
+          return res.status(200).render("redeemed");
+        }
+        else{
+          return res.redirect("/user/redeemRewards/" + username);
+        }
+    } catch (error) {
+       return res.redirect("/user/redeemRewards/" + username);
+    }
+});
   router.route("/submissions/:username")
   .get(async (req, res) => {
     console.log("/submissions/:username")

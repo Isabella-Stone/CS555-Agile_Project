@@ -213,3 +213,21 @@ export const deleteUser = async (id) => {
 
   return { ...deletionInfo.value, deleted: true };
 };
+
+export const updatePoints = async (username, points) => {
+const userCollection = await users();
+const oldUser = await getUserByUsername(username);
+if(oldUser.points <= 0 && points > oldUser.points){
+  return false;
+}else{
+  const updateInfo = await userCollection.updateOne(
+    { username: username},
+    { $set: { points: oldUser.points - points } }
+  );
+
+  if (updateInfo.modifiedCount === 0) {
+    throw new Error('Failed to update points');
+  }
+return true;
+}
+};
