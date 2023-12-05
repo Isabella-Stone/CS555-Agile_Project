@@ -300,3 +300,20 @@ button {
 li {
     list-style-type: none;
   }
+
+/* leaderboard */
+td, th {
+    border: 2px solid black;
+    text-align: left;
+    padding: 8px;
+  }
+table {
+    width: 100%;
+}
+
+#section {
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #090C9B;
+    background-color: #F1FFE7;
+}
