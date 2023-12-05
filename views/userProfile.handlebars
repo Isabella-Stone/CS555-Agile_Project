@@ -3,19 +3,27 @@
         {{#if error}}
             <p>{{message}}</p>
         {{else}}
-            <div>
-                <h1>{{user.firstName}} {{user.lastName}}</h1>
-                <p>Username: {{user.username}}</p>           
+            <div id="profile-group">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/So_happy_smiling_cat.jpg?20181228142032" alt="profile-pic" width="300" height="300" id="profile">
+            <div id="user-info">
+                <br/>
+                <br/>
+                <h1 id="info-title">{{user.firstName}} {{user.lastName}}</h1>
+                <h3>{{user.username}}</h3>           
                 <p id="emailAddress">Email Address: {{user.emailAddress}}</p>
                 <p id="age">Age: {{user.age}}</p>
                 <p id="points">Points: {{user.points}}</p>
-                <p id="interests">Interests: </p>
+                <br/>
+                <h4 id="interests">Interests</h4>
                 {{#each user.interests}}
-                <li>{{this}}</li>
+                <li class="bold">{{this}}</li>
                 {{/each}}
+                <br/>
+                <br/>
+                <a href="/user/editProfile/{{user._id}}" class="a-format">Click here to edit your profile</a>
+            </div>
             </div>
         {{/if}}
         <br/>
-        <a href="/user/editProfile/{{user._id}}" class="a-format">Click here to edit your profile</a>
     </div>
 </main>
