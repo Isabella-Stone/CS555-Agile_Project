@@ -179,9 +179,9 @@ async function main() {
       business4_attraction1 = await attractionData.createAttraction(
           business4._id.toString(),
           "Waterfront City Celebration", 
-          "300", 
+          "100", 
           "Community Get Together", 
-          "200", 
+          "50", 
           "12/07/2023", 
           "12:00", 
           "20:00",
@@ -276,7 +276,7 @@ async function main() {
       "13:30",
       "approved"
     );
-    await editUserData.awardPoints(user1._id.toString(), business4_attraction1.pointsOffered+business4_attraction1.bonusPoints);
+    await editUserData.awardPoints(user1._id.toString(), 500); //for redeeming purposes
     attraction4_submission2 = await submissionData.newSubmission(
       business4_attraction1._id.toString(),
       user2._id.toString(),
