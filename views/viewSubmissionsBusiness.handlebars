@@ -22,7 +22,7 @@
             </form>
         </div>
         <div class="attraction-holder">
-            <h1 id="submission-title">{{attractions.attractionName}} Submissions</h1>
+            <h1 id="submission-title">{{attName}} Submissions</h1>
             {{#if submissions}}
             {{else}}
                 <p class="center-text">No submissions yet! Check back later!</p>
@@ -55,6 +55,8 @@
                         <option>No</option>
                     </select>
                     <input type="hidden" id="post", name="post" value={{this._id}}>
+                    <input type="hidden" id="attname", name="attname" value="{{../attName}}">
+                    <input type="hidden" id="busname", name="busname" value="{{../busName}}">
                     <input type="hidden" name="_method" value="PUT">
                     <button type="submit">Submit</button>
                 </form>

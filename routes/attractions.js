@@ -7,8 +7,9 @@ import multer from "multer";
 import {v2 as cloudinary} from 'cloudinary';
 import { getBusinessById, getBusinessByUsername } from "../data/business.js";
 import dotenv from 'dotenv/config';
-import { newSubmission, getApprovedSubmissions, getSubmissions, getDeclinedSubmissions, getPendingSubmissions, declineSubmission } from "../data/submissions.js";
+import { newSubmission, getApprovedSubmissions, getSubmissions, getSubmission, getDeclinedSubmissions, getPendingSubmissions, declineSubmission, approveSubmission } from "../data/submissions.js";
 import { getUserByEmail } from "../data/getUsers.js";
+import { awardPoints } from "../data/editUsers.js";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -256,9 +257,9 @@ router
   .get(async (req, res) => {
     let attname = req.params.attname;
     try {
-      const attractions = await getByName(attname);
-      let submissions = await getSubmissions(attractions._id.toString());
-      return res.status(200).render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+      const attraction = await getByName(attname);
+      let submissions = await getSubmissions(attraction._id.toString());
+      return res.status(200).render("viewSubmissionsBusiness", {auth: false, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
     }
     catch (e)
     {
@@ -268,9 +269,9 @@ router
   .post(async (req, res) => {
     let filterOp = req.body;
     let attname = req.params.attname;
-    let attractions;
+    let attraction;
     try {
-      attractions = await getByName(attname);
+      attraction = await getByName(attname);
     } catch (e) {
       return res.status(500).json(`${e}`);
     }
@@ -280,57 +281,72 @@ router
     let submissions;
     let errSub;
     try {
-      errSub = await getSubmissions(attractions._id.toString());
+      errSub = await getSubmissions(attraction._id.toString());
     } catch (e) {
       return res.status(500).json(`${e}`);
     }
     if (filterOp.filterOptions === 'All') {
       try {
-        submissions = await getSubmissions(attractions._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        submissions = await getSubmissions(attraction._id.toString());
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'Approved') {
       try {
-        submissions = await getApprovedSubmissions(attractions._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        submissions = await getApprovedSubmissions(attraction._id.toString());
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'Pending') {
       try {
-        submissions = await getPendingSubmissions(attractions._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        submissions = await getPendingSubmissions(attraction._id.toString());
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
      } else if (filterOp.filterOptions === 'Declined') {
       try {
-        submissions = await getDeclinedSubmissions(attractions._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        submissions = await getDeclinedSubmissions(attraction._id.toString());
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } 
     else {
-      return res.render("viewSubmissionsBusiness", {auth: true, attractions: attractions, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: "Chosen option is not valid"});
+      return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: "Chosen option is not valid"});
     }
   })
-  .put(async (res, req) => {
-    if(res.body.submission === "Yes"){
+  .put(async (req, res) => {
+    let attraction = await getByName(req.body.attname);
+    let submission = await getSubmission(req.body.post);
 
-    }else if(res.body.submission === "No"){
+    if(req.body.submission === "Yes"){
+      try {
+        await approveSubmission(req.body.post);
+        await awardPoints(submission.userId, attraction.pointsOffered);
+      } catch(e) {
+        console.log(e)
+      }
+    }else if(req.body.submission === "No"){
       try{
-        let denied = await declineSubmission(res.body.post);
+        let denied = await declineSubmission(req.body.post);
         console.log(denied);
-        return req.render("viewSubmissionsBusiness", {auth: false, attractions: attractions, submissions: res.body.submissions, busName: res.params.busname, attName: res.params.attname});
       }catch(e){
         console.log(e)
       }
     }else{
-
+      try {
+        await approveSubmission(req.body.post);
+        await awardPoints(submission.userId, attraction.pointsOffered+attraction.bonusPoints);
+      } catch(e) {
+        console.log(e)
+      }
     }
+    console.log(req.body)
+    let submissions = await getSubmissions(attraction._id.toString());
+    return res.render("viewSubmissionsBusiness", {auth: false, submissions: submissions, busName: req.body.busname, attName: req.body.attname});
   });
 
   

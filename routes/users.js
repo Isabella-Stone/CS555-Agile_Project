@@ -2,7 +2,7 @@ import { users } from "../config/mongoCollections.js";
 import { Router } from "express";
 const router = Router();
 import { } from "../data/business.js";
-import { createUser, editUserInfo, updatePoints } from "../data/editUsers.js";
+import { createUser, editUserInfo, deductPoints } from "../data/editUsers.js";
 import { getAllUsers, getUserById, getUserByUsername, getUserByEmail, usernameAlreadyExists, emailAlreadyExists } from "../data/getUsers.js";
 import { getAllSubmissionsByUserId } from "../data/submissions.js";
 import { get } from "../data/attractions.js";
@@ -199,7 +199,7 @@ router.route("/signup")
     const updatedPoints = req.body.hiddenPointsInput;
 
     try {
-        const redeemed = await updatePoints(username, updatedPoints);
+        const redeemed = await deductPoints(username, updatedPoints);
         if(redeemed){
           return res.status(200).render("redeemed");
         }
