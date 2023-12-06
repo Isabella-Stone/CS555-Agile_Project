@@ -179,9 +179,9 @@ async function main() {
       business4_attraction1 = await attractionData.createAttraction(
           business4._id.toString(),
           "Waterfront City Celebration", 
-          "100", 
+          "300", 
           "Community Get Together", 
-          "0", 
+          "200", 
           "12/07/2023", 
           "12:00", 
           "20:00",
@@ -234,6 +234,7 @@ async function main() {
       "10:30",
       "approved"
     );
+    await editUserData.awardPoints(user4._id.toString(), business1_attraction1.pointsOffered);
     attraction1_submission2 = await submissionData.newSubmission(
       business1_attraction1._id.toString(),
       user2._id.toString(),
@@ -244,6 +245,7 @@ async function main() {
       "11:00",
       "approved"
     );
+    await editUserData.awardPoints(user2._id.toString(), business1_attraction1.pointsOffered);
     attraction1_submission3 = await submissionData.newSubmission(
       business1_attraction1._id.toString(),
       user3._id.toString(),
@@ -274,6 +276,7 @@ async function main() {
       "13:30",
       "approved"
     );
+    await editUserData.awardPoints(user1._id.toString(), business4_attraction1.pointsOffered+business4_attraction1.bonusPoints);
     attraction4_submission2 = await submissionData.newSubmission(
       business4_attraction1._id.toString(),
       user2._id.toString(),
@@ -295,6 +298,7 @@ async function main() {
       "11:00",
       "approved"
     );
+    await editUserData.awardPoints(user2._id.toString(), business1_attraction2.pointsOffered);
   }
   catch (e) {
     console.log('Submission: ' + e);
