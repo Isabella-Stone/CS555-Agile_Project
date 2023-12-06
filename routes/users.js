@@ -10,7 +10,7 @@ import { checkAge, checkEmail, checkId, checkName, checkPassword, checkUsername 
 
 router.route("/signup")
   .get(async (req, res) => {
-    return res.render("signUpUser", {auth: false});
+    return res.render("signUpUser");
   })
   .post(async (req, res) => {
     let userInfo = req.body;
@@ -122,7 +122,7 @@ router.route("/signup")
     }
     catch (e) {
       console.log(e);
-      return res.status(400).render("editProfile", {auth: false, error: true, message: e, user: user});
+      return res.status(400).render("editProfile", {error: true, message: e, user: user});
     }
     try {
       let interests = [];
@@ -157,7 +157,7 @@ router.route("/signup")
       return res.redirect(url);
     } catch (e) {
       console.log(e);
-      return res.status(400).render("editProfile", {auth: false, error: true, message: e, user: user});
+      return res.status(400).render("editProfile", {error: true, message: e, user: user});
     }
   });
 
@@ -167,11 +167,11 @@ router.route("/signup")
     try {
       let userId = checkId(req.params.id);
       user = await getUserById(userId);
-      return res.render("editProfile", {auth: false, user: user});
+      return res.render("editProfile", {user: user});
     }
     catch (e)
     {
-      return res.status(400).render("editProfile", {auth: true, error: true, message: e, user: user});
+      return res.status(400).render("editProfile", {error: true, message: e, user: user});
     }
   });
 
@@ -182,7 +182,7 @@ router.route("/signup")
     let user;
     try {
       user = await getUserByUsername(username);
-      return res.render("redeemRewards", {auth: true, user: user});
+      return res.render("redeemRewards", {user: user});
     } catch (e) {
       //Might have to change what page is renders to
       return res.status(400).render("upcomingAttractions", {error: true, message: e})
@@ -227,7 +227,7 @@ router.route("/signup")
         submissionsList[i]['attractionName'] = attraction.attractionName;
       }
       // console.log(submissionsList);
-      return res.render("userSubmissions", {auth: true, user: user, submissionsList: submissionsList});
+      return res.render("userSubmissions", {user: user, submissionsList: submissionsList});
     } catch (e) {
       //Might have to change what page is renders to
       return res.status(400).render("upcomingAttractions", {error: true, message: e})

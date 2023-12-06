@@ -7,7 +7,7 @@ const router = Router();
 
 router.route("/signup")
   .get(async (req, res) => {
-    return res.render("signUpBusiness", {auth: false});
+    return res.render("signUpBusiness");
   })
   .post(async (req, res) => {
     let businessInfo = req.body;
@@ -41,14 +41,14 @@ router.route("/signup")
       }
     }
     catch (e) {
-      return res.status(400).render("signUpBusiness", {auth: false, error: true, message: e});
+      return res.status(400).render("signUpBusiness", {error: true, message: e});
     }
     try {
       const newBusiness = await createBusiness(businessInfo.firstName, businessInfo.lastName, businessInfo.name,
       businessInfo.emailAddress, businessInfo.password, businessInfo.username, businessInfo.ageInput);
       return res.redirect("/auth/login");
     } catch (e) {
-      return res.status(400).render("signUpBusiness", {auth: false, error: true, message: e});
+      return res.status(400).render("signUpBusiness", {error: true, message: e});
     }
   });
 
@@ -65,12 +65,12 @@ router.route("/:id")
         id = req.params.id;
       }
       const business = await getBusinessById(id);
-      return res.render("businessProfile", {auth: true, business: business});
+      return res.render("businessProfile", {business: business});
     }
     catch (e)
     {
       console.log(e);
-      return res.status(400).render("businessProfile", {auth: true, error: true, message: e});
+      return res.status(400).render("businessProfile", {error: true, message: e});
     }
   })
   .post(async (req, res) => {
@@ -81,7 +81,7 @@ router.route("/:id")
     }
     catch (e)
     {
-      return res.status(400).render("businessProfile", {auth: false, error: true, message: e});
+      return res.status(400).render("businessProfile", {error: true, message: e});
     }
   })
   .put(async (req, res) => {
@@ -132,7 +132,7 @@ router.route("/:id")
     }
     catch (e) {
       console.log(e);
-      return res.status(400).render("editBusiness", {auth: false, error: true, message: e});
+      return res.status(400).render("editBusiness", {error: true, message: e});
     }
     try {
       const updated = await editBusinessInfo(business._id, businessInfo.firstName, businessInfo.lastName, businessInfo.name,
@@ -141,7 +141,7 @@ router.route("/:id")
       return res.redirect(url);
     } catch (e) {
       console.log(e);
-      return res.status(400).render("editBusiness", {auth: false, error: true, message: e});
+      return res.status(400).render("editBusiness", {error: true, message: e});
     }
   })
 
@@ -150,11 +150,11 @@ router.route("/:id")
     try {
       let id = checkId(req.params.id);
       let business = await getBusinessById(id);
-      return res.render("editBusiness", {auth: false, business: business});
+      return res.render("editBusiness", {business: business});
     }
     catch (e)
     {
-      return res.status(400).render("editBusiness", {auth: true, error: true, message: e});
+      return res.status(400).render("editBusiness", {error: true, message: e});
     }
   });
 

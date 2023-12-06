@@ -24,7 +24,7 @@ router
   .get(async (req, res) => {
     try {
       let attractionList = await getAttractionsInChronologicalOrder();
-      return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+      return res.render("upcomingAttractions", {attractions: attractionList, user: req.session.user});
     } 
     catch (e) {
       return res.sendStatus(500);
@@ -45,35 +45,35 @@ router
     if (filterOp.filterOptions === 'date') {
       try {
         let attractionList = await getAttractionsInChronologicalOrder();
-        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+        return res.render("upcomingAttractions", {attractions: attractionList, user: req.session.user});
       } catch (e) {
-        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+        return res.status(500).render("upcomingAttractions", {attractions: atts, user: req.session.user, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'recommendedDate') {
       try {
         let user = await getUserByEmail(req.session.user.emailAddress);
         let attractionList = await getAttractionsBasedOnUserInterests(user.interests);
-        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+        return res.render("upcomingAttractions", {attractions: attractionList, user: req.session.user});
       } catch (e) {
-        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+        return res.status(500).render("upcomingAttractions", {attractions: atts, user: req.session.user, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'popular') {
       try {
         let attractionList = await getPopularAttractions();
-        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+        return res.render("upcomingAttractions", {attractions: attractionList, user: req.session.user});
       } catch (e) {
-        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+        return res.status(500).render("upcomingAttractions", {attractions: atts, user: req.session.user, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'recommendedPopular') {
       try {
         let user = await getUserByEmail(req.session.user.emailAddress);
         let attractionList = await getPopularAttractionsBasedOnUserInterests(user.interests);
-        return res.render("upcomingAttractions", {attractions: attractionList, auth: true, user: req.session.user});
+        return res.render("upcomingAttractions", {attractions: attractionList, user: req.session.user});
       } catch (e) {
-        return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: e});
+        return res.status(500).render("upcomingAttractions", {attractions: atts, user: req.session.user, error: true, message: e});
       }
     } else {
-      return res.status(500).render("upcomingAttractions", {attractions: atts, auth: true, user: req.session.user, error: true, message: "Chosen option is not valid"});
+      return res.status(500).render("upcomingAttractions", {attractions: atts, user: req.session.user, error: true, message: "Chosen option is not valid"});
     }
   })
 
@@ -81,7 +81,7 @@ router
   .route("/create")
   .get(async (req, res) => {
     try {
-      return res.render("createAttraction", {auth: true});
+      return res.render("createAttraction");
     } 
     catch (e) {
       return res.sendStatus(500);
@@ -128,7 +128,7 @@ router
       );
       return res.redirect(`/attractions/${newAttraction._id}`);
     } catch (e) {
-      return res.status(500).render("createAttraction", {auth: true, error: true, message: e});    
+      return res.status(500).render("createAttraction", {error: true, message: e});    
     }
     
   });
@@ -139,11 +139,11 @@ router
     let attname = req.params.attname;
     try {
       const attractions = await getByName(attname);
-      return res.status(400).render("editAttractions", {auth: true, attractions: attractions});
+      return res.status(400).render("editAttractions", {attractions: attractions});
     }
     catch (e)
     {
-      return res.render("chooseAttraction", {auth: true, error: true, message: e});
+      return res.render("chooseAttraction", {error: true, message: e});
     }
   })
 
@@ -154,7 +154,7 @@ router
       let businessName = await getBusinessNameByAttractionName(req.body.attractionName);
       return res.redirect(`/attractions/editAttraction/${businessName}/${req.body.attractionName}`)
     } catch (e) {
-      return res.render("chooseAttraction", {auth: true, error: true, message: e});
+      return res.render("chooseAttraction", {error: true, message: e});
     }
     
   });
@@ -164,11 +164,11 @@ router
     let busName = req.params.busname;
     try {
       const attractions = await getAttractionByBusinessName(busName);
-      return res.render("chooseAttraction", {auth: false, attractions: attractions});
+      return res.render("chooseAttraction", {attractions: attractions});
     }
     catch (e)
     {
-      return res.status(400).render("upcomingAttractions", {auth: true, error: true, message: e});
+      return res.status(400).render("upcomingAttractions", {error: true, message: e});
     }
   })
   .post(upload.single("image"), async (req, res) => {
@@ -238,7 +238,7 @@ router
       let businessName = await getBusinessNameByAttractionName(req.body.attractionName);
       return res.redirect(`/attractions/submissions/${businessName}/${req.body.attractionName}`)
     } catch (e) {
-      return res.render("chooseAttractionForSubmissionView", {auth: true, error: true, message: e});
+      return res.render("chooseAttractionForSubmissionView", {error: true, message: e});
     }
   });
   router.route("/submissions/:busname")
@@ -246,11 +246,11 @@ router
     let busName = req.params.busname;
     try {
       const attractions = await getAttractionByBusinessName(busName);
-      return res.render("chooseAttractionForSubmissionView", {auth: false, attractions: attractions});
+      return res.render("chooseAttractionForSubmissionView", {attractions: attractions});
     }
     catch (e)
     {
-      return res.status(400).render("upcomingAttractions", {auth: true, error: true, message: e});
+      return res.status(400).render("upcomingAttractions", {error: true, message: e});
     }
   });
   router.route("/submissions/:busname/:attname")
@@ -259,11 +259,11 @@ router
     try {
       const attraction = await getByName(attname);
       let submissions = await getSubmissions(attraction._id.toString());
-      return res.status(200).render("viewSubmissionsBusiness", {auth: false, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+      return res.status(200).render("viewSubmissionsBusiness", {submissions: submissions, busName: req.params.busname, attName: req.params.attname});
     }
     catch (e)
     {
-      return res.render("upcomingAttractions", {auth: true, error: true, message: e});
+      return res.render("upcomingAttractions", {error: true, message: e});
     }
   })
   .post(async (req, res) => {
@@ -288,34 +288,34 @@ router
     if (filterOp.filterOptions === 'All') {
       try {
         submissions = await getSubmissions(attraction._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        return res.render("viewSubmissionsBusiness", {submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'Approved') {
       try {
         submissions = await getApprovedSubmissions(attraction._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        return res.render("viewSubmissionsBusiness", {submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } else if (filterOp.filterOptions === 'Pending') {
       try {
         submissions = await getPendingSubmissions(attraction._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        return res.render("viewSubmissionsBusiness", {submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
      } else if (filterOp.filterOptions === 'Declined') {
       try {
         submissions = await getDeclinedSubmissions(attraction._id.toString());
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: submissions, busName: req.params.busname, attName: req.params.attname});
+        return res.render("viewSubmissionsBusiness", {submissions: submissions, busName: req.params.busname, attName: req.params.attname});
       } catch (e) {
-        return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
+        return res.render("viewSubmissionsBusiness", {submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: e});
       }
     } 
     else {
-      return res.render("viewSubmissionsBusiness", {auth: true, submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: "Chosen option is not valid"});
+      return res.render("viewSubmissionsBusiness", {submissions: errSub, busName: req.params.busname, attName: req.params.attname, error: true, message: "Chosen option is not valid"});
     }
   })
   .put(async (req, res) => {
@@ -346,7 +346,7 @@ router
     }
     console.log(req.body)
     let submissions = await getSubmissions(attraction._id.toString());
-    return res.render("viewSubmissionsBusiness", {auth: false, submissions: submissions, busName: req.body.busname, attName: req.body.attname});
+    return res.render("viewSubmissionsBusiness", {submissions: submissions, busName: req.body.busname, attName: req.body.attname});
   });
 
   
@@ -384,7 +384,7 @@ router
         bool = true;
       }
       let approvedSubmissions = await getApprovedSubmissions(id);
-      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
+      return res.render('viewAttraction', {attraction: attraction, isUser: !req.session.user.is_business, id: id, userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
     } catch (e) {
       return res.status(404).json({error: `${e}`});
     }
@@ -440,12 +440,12 @@ router
       // return res.render('viewSubmissionsUser', {attraction: req.params.id, auth: false, approvedSubmissions: approvedSubmissions, attractionName: attractionName});
       // return res.redirect("/attractions/" + id);
       // console.log('**********************', req.session)
-      return res.render('viewAttraction', {attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id, userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
+      return res.render('viewAttraction', {attraction: attraction, isUser: !req.session.user.is_business, id: id, userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
 
     } catch (e) {
       console.log(e);
       // return res.status(404).json({error: `${e}`});
-      return res.render('viewAttraction', {error: true, message: e, attraction: attraction, auth: false, isUser: !req.session.user.is_business, id: id,  userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
+      return res.render('viewAttraction', {error: true, message: e, attraction: attraction, isUser: !req.session.user.is_business, id: id,  userId: req.session.user._id, approvedSubmissions: approvedSubmissions, coming: bool});
     }
 
   });
