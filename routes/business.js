@@ -85,7 +85,6 @@ router.route("/:id")
     }
   })
   .put(async (req, res) => {
-    console.log("TOP PUT BUSINESS")
     let businessInfo = req.body;
     let business;
     if (!businessInfo || Object.keys(businessInfo).length === 0) {
@@ -95,7 +94,6 @@ router.route("/:id")
     }
     try {
       business = await getBusinessById(req.params.id);
-      console.log(business);
       if (businessInfo.firstName)
       {
         businessInfo.firstName = checkName(businessInfo.firstName);

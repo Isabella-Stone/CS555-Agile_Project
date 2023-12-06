@@ -82,7 +82,6 @@ router.route("/signup")
     }
   })
   .put(async (req, res) => {
-    console.log("PUT")
     let userInfo = req.body;
     let user;
     if (!userInfo || Object.keys(userInfo).length === 0) {
@@ -192,7 +191,6 @@ router.route("/signup")
 
   router.route("/updatePoints/:username")
   .post(async (req, res) => {
-    console.log("POST");
   })
   .put(async (req, res) => {
     const username = req.params.username;
@@ -212,21 +210,19 @@ router.route("/signup")
 });
   router.route("/submissions/:username")
   .get(async (req, res) => {
-    console.log("/submissions/:username")
     let username = req.params.username;
     username = checkUsername(username);
     let user;
     try {
       user = await getUserByUsername(username);
       let submissionsList = await getAllSubmissionsByUserId(user._id.toString());
-      // console.log(submissionsList);
       for (let i=0;i<submissionsList.length;i++)
       {
         let attractionId = submissionsList[i].attractionId.toString();
         let attraction = await get(attractionId);
         submissionsList[i]['attractionName'] = attraction.attractionName;
       }
-      // console.log(submissionsList);
+
       return res.render("userSubmissions", {user: user, submissionsList: submissionsList});
     } catch (e) {
       //Might have to change what page is renders to

@@ -332,7 +332,6 @@ router
     }else if(req.body.submission === "No"){
       try{
         let denied = await declineSubmission(req.body.post);
-        console.log(denied);
       }catch(e){
         console.log(e)
       }
@@ -344,7 +343,6 @@ router
         console.log(e)
       }
     }
-    console.log(req.body)
     let submissions = await getSubmissions(attraction._id.toString());
     return res.render("viewSubmissionsBusiness", {submissions: submissions, busName: req.body.busname, attName: req.body.attname});
   });

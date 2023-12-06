@@ -4,7 +4,6 @@
       document.addEventListener("DOMContentLoaded", function() {
       function checkRewards() { 
             var points = parseInt({{user.points}});
-            console.log(points);
             var redeemed = document.getElementById("rewards").value;
              document.getElementById('hiddenPointsInput').value = redeemed;
             if (points >= parseInt(redeemed) && points > 0) {

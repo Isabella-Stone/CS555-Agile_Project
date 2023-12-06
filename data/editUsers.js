@@ -147,7 +147,6 @@ export const editUserInfo = async (id, firstName, lastName, emailAddress, passwo
   let businessCollection = await businesses();
   
   if (oldUser.username !== username && username) {
-    console.log("usernameAlreadyExists");
     usernameExists = await usernameAlreadyExists(username);
     usernameExists2 = await businessCollection.findOne({username: username});
     if (usernameExists || usernameExists2) {
