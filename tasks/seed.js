@@ -129,7 +129,7 @@ async function main() {
         "50", 
         "early bird special", 
         "0", 
-        "12/14/2023", 
+        "12/05/2023", 
         "08:00", 
         "12:00",
         "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
@@ -182,7 +182,7 @@ async function main() {
           "100", 
           "Community Get Together", 
           "0", 
-          "12/24/2023", 
+          "12/07/2023", 
           "12:00", 
           "20:00",
           "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
@@ -230,7 +230,7 @@ async function main() {
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I love bagels", 
       4,
-      "12/14/2023", 
+      "12/05/2023", 
       "10:30",
       "approved"
     );
@@ -240,7 +240,7 @@ async function main() {
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I've never had such a good breakfast sandwich!", 
       5,
-      "12/14/2023", 
+      "12/05/2023", 
       "11:00",
       "approved"
     );
@@ -250,7 +250,7 @@ async function main() {
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "This bagel is bussin", 
       5,
-      "12/14/2023", 
+      "12/05/2023", 
       "11:15",
       "pending"
     );
@@ -260,7 +260,7 @@ async function main() {
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "This food was awful! Never coming back", 
       1,
-      "12/14/2023", 
+      "12/05/2023", 
       "11:00",
       "declined"
     );
@@ -270,7 +270,7 @@ async function main() {
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "I love sushi", 
       5,
-      "12/10/2023", 
+      "12/07/2023", 
       "13:30",
       "approved"
     );
@@ -280,7 +280,7 @@ async function main() {
       "https://res.cloudinary.com/djllvfvts/image/upload/v1698704366/j9vlidni3pknclfw8qtn.png",
       "The sushi brings back memories", 
       4,
-      "12/10/2023", 
+      "12/07/2023", 
       "13:00",
       "pending"
     );
