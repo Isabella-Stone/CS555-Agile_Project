@@ -214,21 +214,21 @@ export const deleteUser = async (id) => {
 };
 
 export const deductPoints = async (username, points) => {
-const userCollection = await users();
-const oldUser = await getUserByUsername(username);
-if(oldUser.points <= 0 && points > oldUser.points){
-  return false;
-}else{
-  const updateInfo = await userCollection.updateOne(
-    { username: username},
-    { $set: { points: oldUser.points - points } }
-  );
+  const userCollection = await users();
+  const oldUser = await getUserByUsername(username);
+  if(oldUser.points <= 0 || points > oldUser.points){
+    return false;
+  } else{
+    const updateInfo = await userCollection.updateOne(
+      { username: username},
+      { $set: { points: oldUser.points - points } }
+    );
 
-  if (updateInfo.modifiedCount === 0) {
-    throw new Error('Failed to update points');
+    if (updateInfo.modifiedCount === 0) {
+      throw new Error('Failed to update points');
+    }
+  return true;
   }
-return true;
-}
 };
 
 export const awardPoints = async (userId, points) => {
