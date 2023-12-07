@@ -1,20 +1,28 @@
 <main>
+    <div class="column">
     {{#if error}}
         <p>{{message}}</p>
     {{else}}
-    <div class="column">
-        <div>
-            <h1>{{business.name}}</h1>
-            <p id="username">Username: {{business.username}}</p>
-            <p id="emailAddress">Email Address: {{business.emailAddress}}</p>
-            <p id="firstName">User First Name: {{business.firstName}}</p>
-            <p id="lastName">User Last Name: {{business.lastName}}</p>
+        <div id="profile-group">
+        <img src="https://static.thenounproject.com/png/1208704-200.png" alt="profile-pic" width="200" height="200" id="profile">
+        <div id="user-info">
+            <br/>
+            <br/>
+            <h1 id="info-title">{{business.name}}</h1>
+            <h3 id="username">{{business.username}}</h3>
+            <p id="firstName">First Name: {{business.firstName}}</p>
+            <p id="lastName">Last Name: {{business.lastName}}</p>
             <p id="age">Age: {{business.age}}</p>
-            <p id="numPosted">Number of Postings: {{business.numPosted}}</p>
+            <p id="emailAddress">Business Email Address: {{business.emailAddress}}</p>
+            <p id="numPosted">Number of Posts Made: {{business.numPosted}}</p>
             <p id="lastDatePosted">Date of Last Post: {{business.lastDatePosted}}</p>
+            <br/>
+            <br/>
+            <a href="/business/editProfile/{{business._id}}" class="a-format">Click here to edit your profile</a>
         </div>
-        <a href="/business/editProfile/{{business._id}}" class="a-format">Click here to edit your profile</a>
     </div>
     {{/if}}
+    <br/>
+    </div>
 
 </main>
